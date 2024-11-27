@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import FrontPage from './modules/content/FrontPage';
 import './App.css'
 
 function App() {
   return (
     <>
-      <h1>Hola</h1>
+        <Router>
+          <Routes>
+            <Route path="/" element={<FrontPage/>} />
+          </Routes>
+        </Router>
     </>
   )
 }

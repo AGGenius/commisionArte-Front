@@ -1,0 +1,15 @@
+img {
+    width: 500px;
+    height: auto;
+}
+
+img.blur {
+    filter: blur(30px)
+}
+
+.img__container {
+    overflow: hidden;
+
+    border: 2px solid rgb(230, 230, 230);
+    border-radius: 15px; 
+}
