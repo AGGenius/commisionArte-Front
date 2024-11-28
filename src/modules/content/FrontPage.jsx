@@ -12,7 +12,7 @@ const FrontPage = () => {
 
     const getImage = async () => {
         try {
-            const imageUrl = `http://localhost:3000/api/portfolio/1`;
+            const imageUrl = `http://localhost:3000/api/portfolio/2`;
             const response = await axios.get(imageUrl);
             const data = response.data;
             setMainImage(data);
