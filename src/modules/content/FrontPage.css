@@ -1,5 +1,12 @@
+.mainPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
 img {
-    width: 500px;
+    width: 300px;
     height: auto;
 }
 
