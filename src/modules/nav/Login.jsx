@@ -12,10 +12,13 @@ const Login = () => {
     const { user, setUser } = useUserContext();
     const [updateStatus, setUpadteStatus] = useState("");
     const [passwordType, setPassworodType] = useState("password");
-    const loginURL = "http://localhost:3000/api/artists/login"
+    const [loginType, setLoginType] = useState(false);
+    const [registerWindow, setRegisterWindow] = useState(false);
 
     const sendLogin = async (data) => {
-        4
+        const apiArtistURL = "http://localhost:3000/api/artists/";
+        const apiClientURL = "http://localhost:3000/api/clients/";
+
         if (data) {
             const payload = {
                 email: data.email,
@@ -23,12 +26,26 @@ const Login = () => {
             };
 
             try {
-                const response = await axios.post(loginURL, payload);
+                let response = "";
+
+                if (loginType) {
+                    response = await axios.post(apiArtistURL + "login", payload);
+                } else {
+                    response = await axios.post(apiClientURL + "login", payload);
+                }
+
                 const userData = response.data;
 
                 localStorage.setItem("token", userData.token);
 
-                const userResponse = await axios.get(`http://localhost:3000/api/artists/${userData.userId}/`);
+                let userResponse = "";
+
+                if (loginType) {
+                    userResponse = await axios.get(apiArtistURL + userData.userId + "/");
+                } else {
+                    userResponse = await axios.get(apiClientURL + userData.userId + "/");
+                }
+
                 const newUser = userResponse.data;
                 setUser(newUser);
                 navigate("/");
@@ -36,12 +53,6 @@ const Login = () => {
                 setUpadteStatus(err.response.data.estado);
             };
         };
-    };
-
-    const logOut = () => {
-        localStorage.removeItem("token");
-        setUser({});
-        navigate("/");
     };
 
     const managePasswordType = () => {
@@ -56,29 +67,70 @@ const Login = () => {
         }
     }
 
-    const logPage = (
-        <>
-            <form className="login--logForm" onSubmit={handleSubmit((data) => sendLogin(data))}>
-                <div className="login--formInputWrap">
-                    <input {...register("email", { required: { value: true, message: "Se debe introducir el email." } })} id="userEmail" type="text" placeholder={"email"}></input>
-                    {errors.email?.message && <p className="login--errorMessage">{errors.email.message}</p>}
-                    <div className="login--passwordWrap">
-                        <input autoComplete="new-password" {...register("password", { required: { value: true, message: "Se debe introducir la contraseña." } })} id="userPass" type={passwordType} placeholder={"contraseña"}></input>
-                        <span className="login--eyeWrap">
-                            <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}  onClick={() => managePasswordType()} />
-                        </span>
+    const handleToggle = () => {
+        setLoginType(!loginType);
+    }
+
+    const registerPage = () => {
+        return (
+            <>
+                <form className="register__registerForm" onSubmit={handleSubmit((data) => sendLogin(data))}>
+                    <div className="register__formInputWrap">
+                        <input {...register("email", { required: { value: true, message: "Se debe introducir el email." } })} id="userEmail" type="text" placeholder={"email"}></input>
+                        {errors.email?.message && <p className="login--errorMessage">{errors.email.message}</p>}
+                        <div className="login--passwordWrap">
+                            <input autoComplete="new-password" {...register("password", { required: { value: true, message: "Se debe introducir la contraseña." } })} id="userPass" type={passwordType} placeholder={"contraseña"}></input>
+                            <span className="login--eyeWrap">
+                                <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
+                            </span>
+                        </div>
+                        <label className="switch">
+                            <input type="checkbox" onClick={() => handleToggle()} />
+                            <span className="slider round"></span>
+                        </label>
+                        {loginType ? <p>Artist</p> : <p>Client</p>}
+                        {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
+                        <button className="login--submit" type="submit">Iniciar sesion</button>
+                        {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
+                        <button onClick={() => setRegisterWindow(false)}>Cancel</button>
                     </div>
-                    {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
-                </div>
-                <button className="login--submit" type="submit">Iniciar sesion</button>
-            </form>
-            {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
-        </>
-    );
+                </form>
+            </>
+        );
+    };
+
+    const logPage = () => {
+        return (
+            <>
+                <form className="login__logForm" onSubmit={handleSubmit((data) => sendLogin(data))}>
+                    <div className="login__formInputWrap">
+                        <input {...register("email", { required: { value: true, message: "Se debe introducir el email." } })} id="userEmail" type="text" placeholder={"email"}></input>
+                        {errors.email?.message && <p className="login--errorMessage">{errors.email.message}</p>}
+                        <div className="login--passwordWrap">
+                            <input autoComplete="new-password" {...register("password", { required: { value: true, message: "Se debe introducir la contraseña." } })} id="userPass" type={passwordType} placeholder={"contraseña"}></input>
+                            <span className="login--eyeWrap">
+                                <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
+                            </span>
+                        </div>
+                        <label className="switch">
+                            <input type="checkbox" onClick={() => handleToggle()} />
+                            <span className="slider round"></span>
+                        </label>
+                        {loginType ? <p>Artist</p> : <p>Client</p>}
+                        {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
+                        <button className="login__submit" type="submit">Iniciar sesion</button>
+                        {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
+                        <p onClick={() => setRegisterWindow(true)}>Don't have an account? Register here!</p>
+                        {registerWindow && registerPage()}
+                    </div>
+                </form>
+            </>
+        );
+    };
 
     return (
         <>
-            {logPage}
+            {logPage()}
         </>
     );
 };
