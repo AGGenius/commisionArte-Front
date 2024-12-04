@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
 import { Link, useNavigate } from "react-router-dom";
+import Register from "./register";
 import './Login.css'
 
 //Module to generate a login form. The content reacts when the users is logged to display a welcome message and the logout button. 
@@ -71,34 +72,6 @@ const Login = () => {
         setLoginType(!loginType);
     }
 
-    const registerPage = () => {
-        return (
-            <>
-                <form className="register__registerForm" onSubmit={handleSubmit((data) => sendLogin(data))}>
-                    <div className="register__formInputWrap">
-                        <input {...register("email", { required: { value: true, message: "Se debe introducir el email." } })} id="userEmail" type="text" placeholder={"email"}></input>
-                        {errors.email?.message && <p className="login--errorMessage">{errors.email.message}</p>}
-                        <div className="login--passwordWrap">
-                            <input autoComplete="new-password" {...register("password", { required: { value: true, message: "Se debe introducir la contraseña." } })} id="userPass" type={passwordType} placeholder={"contraseña"}></input>
-                            <span className="login--eyeWrap">
-                                <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
-                            </span>
-                        </div>
-                        <label className="switch">
-                            <input type="checkbox" onClick={() => handleToggle()} />
-                            <span className="slider round"></span>
-                        </label>
-                        {loginType ? <p>Artist</p> : <p>Client</p>}
-                        {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
-                        <button className="login--submit" type="submit">Iniciar sesion</button>
-                        {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
-                        <button onClick={() => setRegisterWindow(false)}>Cancel</button>
-                    </div>
-                </form>
-            </>
-        );
-    };
-
     const logPage = () => {
         return (
             <>
@@ -121,7 +94,7 @@ const Login = () => {
                         <button className="login__submit" type="submit">Iniciar sesion</button>
                         {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
                         <p onClick={() => setRegisterWindow(true)}>Don't have an account? Register here!</p>
-                        {registerWindow && registerPage()}
+                        {registerWindow && <Register/>}
                     </div>
                 </form>
             </>
@@ -130,7 +103,7 @@ const Login = () => {
 
     return (
         <>
-            {logPage()}
+            {registerWindow ? <Register/> : logPage()}
         </>
     );
 };
