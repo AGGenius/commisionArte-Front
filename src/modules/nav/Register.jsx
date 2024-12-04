@@ -1,10 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import './Register.css'
 
 //Module to generate a login form. The content reacts when the users is logged to display a welcome message and the logout button. 
-const Register = () => {
+const Register = ({ sendToParent }) => {
     //Fields
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,7 +20,6 @@ const Register = () => {
     const [nickState, setNickState] = useState("");
     const [registerState, setRegisterState] = useState("");
 
-    const navigate = useNavigate();
     const [registerType, setRegisterType] = useState(false);
     const apiArtistURL = "http://localhost:3000/api/artists/register";
     const apiClientURL = "http://localhost:3000/api/clients/register";
@@ -170,10 +168,10 @@ const Register = () => {
             try {
                 const response = "";
 
-                if(registerType) {
-                    response = await axios.post(apiArtistURL, payload);    
+                if (registerType) {
+                    response = await axios.post(apiArtistURL, payload);
                 } else {
-                    response = await axios.post(apiClientURL, payload);  
+                    response = await axios.post(apiClientURL, payload);
                 }
 
                 const registerStatus = response.data.estado;
@@ -210,6 +208,11 @@ const Register = () => {
     const handleToggle = () => {
         setRegisterType(!registerType);
     };
+
+    const handleClick = () => {
+        sendToParent(false);
+    };
+
 
     return (
         <div className="register__registerForm">
@@ -273,6 +276,7 @@ const Register = () => {
                 </form>
                 :
                 <p>{registerState}</p>}
+            <button onClick={handleClick}>Cancel</button>
         </div>
     )
 };

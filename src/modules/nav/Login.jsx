@@ -3,7 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
 import { Link, useNavigate } from "react-router-dom";
-import Register from "./register";
+import Register from "./Register";
 import './Login.css'
 
 //Module to generate a login form. The content reacts when the users is logged to display a welcome message and the logout button. 
@@ -72,6 +72,10 @@ const Login = () => {
         setLoginType(!loginType);
     }
 
+    const sendToParent = (data) => {
+        setRegisterWindow(data);
+    };
+
     const logPage = () => {
         return (
             <>
@@ -94,7 +98,6 @@ const Login = () => {
                         <button className="login__submit" type="submit">Iniciar sesion</button>
                         {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
                         <p onClick={() => setRegisterWindow(true)}>Don't have an account? Register here!</p>
-                        {registerWindow && <Register/>}
                     </div>
                 </form>
             </>
@@ -103,7 +106,7 @@ const Login = () => {
 
     return (
         <>
-            {registerWindow ? <Register/> : logPage()}
+            {registerWindow ? <Register sendToParent={sendToParent}/> : logPage()}
         </>
     );
 };
