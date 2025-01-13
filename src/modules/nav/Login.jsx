@@ -97,7 +97,7 @@ const Login = () => {
                         {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
                         <button className="login__submit" type="submit">Iniciar sesion</button>
                         {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
-                        <p onClick={() => setRegisterWindow(true)}>Don't have an account? Register here!</p>
+                        <p className="login_registerButton" onClick={() => setRegisterWindow(true)}>Don't have an account? Register here!</p>
                     </div>
                 </form>
             </>
