@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Nav from './modules/nav/Nav';
 import FrontPage from './modules/content/FrontPage';
 import UploadImage from './modules/content/UploadImage';
+import ProfilePage from './modules/content/Profile';
+import PersonalGalleryPage from './modules/content/PersonalGalery';
 //Context
 import { UserProvider } from './context/useUserContext';
 import './App.css'
@@ -15,6 +17,8 @@ function App() {
           <Routes>
             <Route path="/" element={<FrontPage />} />
             <Route path="/upload" element={<UploadImage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/personalGallery" element={<PersonalGalleryPage />} />
           </Routes>
         </UserProvider>
       </Router>

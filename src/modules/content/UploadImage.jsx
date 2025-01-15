@@ -10,6 +10,14 @@ const UploadImage = () => {
     const { user, setUser } = useUserContext();
     const [active, setActive] = useState(false);
     const [token, setToken] = useState("");
+    const [createStatus, setCreateStatus] = useState("");
+    const addImageURL = "http://localhost:3000/api/portfolio/upload";
+    const navigate = useNavigate();
+
+    //Redirect for unauthorized access
+    useEffect(() => {
+        if (!localStorage.getItem("token")) { navigate("/"); }
+    }, []);
 
     useEffect(() => {
         setToken(localStorage.getItem("token"));
@@ -20,10 +28,6 @@ const UploadImage = () => {
             name: "", artist_id: "", styles: "", sfw_status: ""
         }
     });
-
-    const [createStatus, setCreateStatus] = useState("");
-    const navigate = useNavigate();
-    const addImageURL = "http://localhost:3000/api/portfolio/upload";
 
     //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
     const uploadImage = async (data) => {
