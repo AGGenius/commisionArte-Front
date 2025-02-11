@@ -166,7 +166,7 @@ const Register = ({ sendToParent }) => {
             }
 
             try {
-                const response = "";
+                let response = "";
 
                 if (registerType) {
                     response = await axios.post(apiArtistURL, payload);

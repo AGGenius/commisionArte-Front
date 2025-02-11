@@ -70,7 +70,7 @@ function Nav() {
   const clientMenu = (e) => {
     return (
       <ul className="nav--menu">
-        {token && <li><Link to="/" className="nav--navButton">Solicitudes</Link></li>}
+        {token && <li><Link to="/clientOffers" className="nav--navButton">Solicitudes</Link></li>}
         {token && <li><Link to="/profile" className="nav--navButton">Perfil</Link></li>}
       </ul>
     )

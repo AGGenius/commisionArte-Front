@@ -4,6 +4,7 @@ import FrontPage from './modules/content/FrontPage';
 import UploadImage from './modules/content/UploadImage';
 import ProfilePage from './modules/content/Profile';
 import PersonalGalleryPage from './modules/content/PersonalGalery';
+import ClientOffersPage from './modules/content/Offers';
 //Context
 import { UserProvider } from './context/useUserContext';
 import './App.css'
@@ -19,6 +20,7 @@ function App() {
             <Route path="/upload" element={<UploadImage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/personalGallery" element={<PersonalGalleryPage />} />
+            <Route path="/clientOffers" element={<ClientOffersPage />} />
           </Routes>
         </UserProvider>
       </Router>

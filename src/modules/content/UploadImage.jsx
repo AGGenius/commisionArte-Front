@@ -25,7 +25,7 @@ const UploadImage = () => {
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
-            name: "", artist_id: "", styles: "", sfw_status: ""
+            name: "", artist_id: "", styles: "", sfw_status: false
         }
     });
 
@@ -49,8 +49,8 @@ const UploadImage = () => {
 
             try {
                 const response = await axios.post(addImageURL, formData, config);
-
-                console.log(response)
+                
+                reset();
                 setCreateStatus(response.data.estado);
             } catch (error) {
                 const errors = error.response.data.errors;
