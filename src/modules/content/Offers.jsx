@@ -56,23 +56,55 @@ const ClientOffersPage = () => {
                 sfw_status: data.sfw_status
             }
 
-            //Añadir en back el limite de cinco peticiones en los middleware de los open work. 
             //Añadir la posibilidad de borrar peticiones (mas adelante solo se podrán las que no tengan artista asociado distinto del dummy 0. Si un trabajo tiene artista no se podra borrar
             // hasta que el artista se de de baja de esa ficha)
             //continuar hacia que el artista pueda ver los trabajos publicados y aceptar alguno, ver los aceptados, y rechazarlos una vez aceptados. La work card debe generarse cuando se
             // acepta un trabajo, y por tanto puede desaparecer una vez se rechaza o se completa.
 
-            console.log(payload)
             try {
                 const response = await axios.post(addOffer, payload);
                 setCreateStatus(response.data.estado);
                 reset();
                 getMyOffers();
             } catch (error) {
+                console.log(error)
                 const errors = error.response.data.errors;
                 setCreateStatus(errors)
             };
         };
+    };
+
+    function formatDate(baseDate) {
+        const date = new Date(baseDate);
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const year = date.getUTCFullYear();
+        return `${day}-${month}-${year}`;
+    }
+
+    const deletePost = async (e) => {
+        if (!user.id) { return };
+    
+        const id = e.target.value;
+        const offerUrl = `http://localhost:3000/api/openWorks/`;
+
+        try {
+            const response = await axios.delete(offerUrl + id);;
+            setCreateStatus(response.data.estado);
+            getMyOffers();
+        } catch (error) {
+            const errors = error.response.data.errors;
+            setCreateStatus(errors)
+        };
+    };
+
+    const generateDeleteButton = (offer) => {    
+        if (token) {
+            return (
+                <>
+                    {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => deletePost(e)}>Borrar solicitud</button>}
+                </>);
+        }
     };
 
     return (
@@ -85,6 +117,10 @@ const ClientOffersPage = () => {
                         <div className="games--gameCardData">
                             <p>Titulo: {offer.tittle}</p>
                             <p>Contenido: {offer.content}</p>
+                            <p>Estado: {offer.status}</p>
+                            <p>SFW: {offer.sfw_status ? "SI" : "NO"}</p>
+                            <p>Creada: {formatDate(offer.creation_date)}</p>
+                            {generateDeleteButton(offer)}
                         </div>
                     </div>
                 ))
