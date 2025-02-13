@@ -1,43 +1,38 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../context/useUserContext";
 import Blur from "react-blur";
 import axios from 'axios';
-import './FrontPage.css'
 
-const FrontPage = () => {
-    const [mainImage, setMainImage] = useState();
+const PersonalGalleryPage = () => {
+    const { user } = useUserContext();
+    const navigate = useNavigate();
     const [imageSet, setImageSet] = useState([]);
 
+    //Redirect for unauthorized access
     useEffect(() => {
-        getImage();
-        getAllImages();
-    }, [])
+        if (!localStorage.getItem("token")) { navigate("/"); }
+    }, []);
 
-    const getImage = async () => {
-        try {
-            const imageUrl = `http://localhost:3000/api/portfolio/1`;
-            const response = await axios.get(imageUrl);
-            const data = response.data;
-            setMainImage(data);
-        } catch (error) {
-            //console.log(error);
-        };
-    };
+    useEffect(() => {
+        getMyImages();
+    }, [user])
 
-    const getAllImages = async () => {
+    const getMyImages = async () => {
         try {
-            const imageUrl = `http://localhost:3000/api/portfolio/`;
-            const response = await axios.get(imageUrl);
+            const imageUrl = `http://localhost:3000/api/portfolio/artist/`;
+            const response = await axios.get(imageUrl + user.id);
             const data = response.data;
             setImageSet(data);
         } catch (error) {
-            //console.log(error);
+            console.log(error);
         };
     };
 
     return (
         <>
-            <h1>PRIMERAS PRUEBAS</h1>
-            <div className="mainPage">
+            <h1>Mi Galeria</h1>
+            <div>
                 {imageSet ? imageSet.map((image) =>
                 (
                     <div className="games--gameCard" key={image.id}>
@@ -51,9 +46,10 @@ const FrontPage = () => {
                     : <p>Cargando datos...</p>
                 }
             </div>
+            <Link to="/upload" className="nav--navButton">Subir imagen</Link>
         </>
     )
 
 }
 
-export default FrontPage;
+export default PersonalGalleryPage;
