@@ -11,7 +11,6 @@ img {
 }
 
 img.blur {
-    filter: blur(30px)
 }
 
 .img__container {

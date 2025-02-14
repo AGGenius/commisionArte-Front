@@ -115,15 +115,19 @@ const OffersPage = () => {
     const takeOffer = async (e) => {
         if (!user.id) { return };
 
+        const payload = {
+            artist_id: user.id,
+        }
+
         const id = e.target.value;
         const offerUrl = `http://localhost:3000/api/openWorks/take/`;
 
         try {
-            const response = await axios.put(offerUrl + id);;
+            const response = await axios.put(offerUrl + id, payload);;
             setCreateStatus(response.data.estado);
             getOffers();
         } catch (error) {
-            const errors = error.response.data.errors;
+            const errors = error.response.data.estado;
             setCreateStatus(errors)
         };
     };
@@ -170,13 +174,13 @@ const OffersPage = () => {
                     {errors.sfw_status?.message && <p className="addGame--formError">{errors.sfw_status?.message}</p>}
                     <button className="addGame--formButton" type="submit">Crear solicitud</button>
                 </form>
-                {createStatus && <p>{createStatus}</p>}
             </>
         )
     };
 
     const renderOffers = () => {
         const baseOfferRender = (offer) => {
+
             return (
                 < div className="games--gameCard" key={offer.id} >
                     <div className="games--gameCardData">
@@ -194,6 +198,7 @@ const OffersPage = () => {
         if (user.acount_type === "artist") {
             return (
                 <>
+                    {createStatus && <p>{createStatus}</p>}
                     <h2>Peticiones publicas</h2>
                     {offerSet ? offerSet.filter((offer) => offer.status === "open").map((offer) =>
                     (
@@ -202,7 +207,7 @@ const OffersPage = () => {
                         : <p>Cargando datos peticiones abiertas...</p>
                     }
                     <h2>Peticiones aceptadas</h2>
-                    {offerSet ? offerSet.filter((offer) => offer.status === "taken" & offer.artist_id != user.id).map((offer) =>
+                    {offerSet ? offerSet.filter((offer) => offer.status === "taken" & offer.artist_id === user.id).map((offer) =>
                     (
                         baseOfferRender(offer)
                     ))
@@ -212,7 +217,8 @@ const OffersPage = () => {
             )
         } else {
             return (
-                <>
+                <>    
+                    {createStatus && <p>{createStatus}</p>}
                     <h2>Mis peticiones</h2>
                     {offerSet ? offerSet.map((offer) =>
                     (
