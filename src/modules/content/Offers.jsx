@@ -132,6 +132,38 @@ const OffersPage = () => {
         };
     };
 
+    const declineOffer = async (e) => {
+        if (!user.id) { return };
+
+        const id = e.target.value;
+        const offerUrl = `http://localhost:3000/api/openWorks/decline/`;
+
+        try {
+            const response = await axios.put(offerUrl + id);;
+            setCreateStatus(response.data.estado);
+            getOffers();
+        } catch (error) {
+            const errors = error.response.data.estado;
+            setCreateStatus(errors)
+        };
+    };
+
+    const confirmOffer = async (e) => {
+        if (!user.id) { return };
+
+        const id = e.target.value;
+        const offerUrl = `http://localhost:3000/api/openWorks/confirm/`;
+
+        try {
+            const response = await axios.put(offerUrl + id);;
+            setCreateStatus(response.data.estado);
+            getOffers();
+        } catch (error) {
+            const errors = error.response.data.estado;
+            setCreateStatus(errors)
+        };
+    };
+
     const generateDeleteOfferButton = (offer) => {
         if (token) {
             if (offer.status === "open") {
@@ -139,21 +171,33 @@ const OffersPage = () => {
                     <>
                         {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => deleteOffer(e)}>Borrar solicitud</button>}
                     </>);
+            } else if (offer.status === "confirmed") {
+                return (
+                    <>
+                    </>);
             } else {
                 return (
                     <>
-                        {<button className="posts--gameCardButton" value={offer.id} disabled={true}>Solicitud aceptada</button>}
+                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => declineOffer(e)}>Rechazar</button>}
+                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => confirmOffer(e)}>Confirmar</button>}
                     </>);
             }
-
         }
     };
 
     const generateTakeOfferButton = (offer) => {
-        if (token) {
+        let status = "";
+
+        if (offer.status === "open") {
+            status = "Tomar solicitud";
+        } else {
+            status = "Anular Solicitud";
+        }
+
+        if (token && offer.status !== "confirmed") {
             return (
                 <>
-                    {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => takeOffer(e)}>{offer.status === "open" ? "Tomar solicitud" : "Anular Solicitud"}</button>}
+                    {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => takeOffer(e)}>{status}</button>}
                 </>);
         }
     };
@@ -178,6 +222,16 @@ const OffersPage = () => {
         )
     };
 
+    const offerStatus = (offer) => {
+        if (offer.status === "open") {
+            return "Abierta";
+        } else if (offer.status === "taken") {
+            return "Tomada";
+        } else if (offer.status === "confirmed") {
+            return "Confirmada";
+        }
+    }
+
     const renderOffers = () => {
         const baseOfferRender = (offer) => {
 
@@ -186,9 +240,10 @@ const OffersPage = () => {
                     <div className="games--gameCardData">
                         <p>Titulo: {offer.tittle}</p>
                         <p>Contenido: {offer.content}</p>
-                        <p>Estado: {offer.status === "open" ? "Abierta" : "Tomada"}</p>
+                        <p>Estado: {offerStatus(offer)}</p>
                         <p>SFW: {offer.sfw_status ? "SI" : "NO"}</p>
                         <p>Creada: {formatDate(offer.creation_date)}</p>
+                        {user.acount_type === "client" && offer.status === "taken" && <p>Artist ID: {offer.artist_id}</p>}
                         {user.acount_type === "client" ? generateDeleteOfferButton(offer) : generateTakeOfferButton(offer)}
                     </div>
                 </div >
@@ -207,7 +262,7 @@ const OffersPage = () => {
                         : <p>Cargando datos peticiones abiertas...</p>
                     }
                     <h2>Peticiones aceptadas</h2>
-                    {offerSet ? offerSet.filter((offer) => offer.status === "taken" & offer.artist_id === user.id).map((offer) =>
+                    {offerSet ? offerSet.filter((offer) => (offer.status === "taken" || offer.status === "confirmed"  ) &&  offer.artist_id === user.id).map((offer) =>
                     (
                         baseOfferRender(offer)
                     ))
