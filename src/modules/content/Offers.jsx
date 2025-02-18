@@ -12,6 +12,7 @@ const OffersPage = () => {
     const [token, setToken] = useState("");
     const [createStatus, setCreateStatus] = useState("");
     const [offerSet, setOfferSet] = useState([]);
+    const [offerArtistSet, setArtisOfferSet] = useState([]);
     const addOffer = "http://localhost:3000/api/openWorks/upload";
     const navigate = useNavigate();
 
@@ -36,10 +37,10 @@ const OffersPage = () => {
             } catch (error) {
                 console.log(error);
             };
-        } else {
+        } else  if (user.acount_type === "artist") {
             try {
-                const offersUrl = `http://localhost:3000/api/openWorks`;
-                const response = await axios.get(offersUrl);
+                const offersUrl = `http://localhost:3000/api/openWorks/available/`;
+                const response = await axios.get(offersUrl + user.id);
                 const data = response.data;
 
                 setOfferSet(data);
@@ -47,6 +48,15 @@ const OffersPage = () => {
                 console.log(error);
             };
 
+            try {
+                const offersUrl = `http://localhost:3000/api/openWorks/artist/`;
+                const response = await axios.get(offersUrl + user.id);
+                const data = response.data;
+
+                setArtisOfferSet(data);
+            } catch (error) {
+                console.log(error);
+            };
         }
     };
 
@@ -132,19 +142,36 @@ const OffersPage = () => {
         };
     };
 
-    const declineOffer = async (e) => {
+    const declineOffer = async (e, offer) => {
         if (!user.id) { return };
 
         const id = e.target.value;
         const offerUrl = `http://localhost:3000/api/openWorks/decline/`;
+        const rejectUrl = `http://localhost:3000/api/rejected/upload`;
 
-        try {
-            const response = await axios.put(offerUrl + id);;
-            setCreateStatus(response.data.estado);
-            getOffers();
-        } catch (error) {
-            const errors = error.response.data.estado;
-            setCreateStatus(errors)
+        if (offer) {
+            if (!token) { return };
+
+            const payload = {
+                artist_id: offer.artist_id,
+                client_id: user.id,
+                openWork_id: id,
+            }
+
+            try {
+                const response = await axios.post(rejectUrl, payload);
+            } catch (error) {
+                const errors = error.response.data.errors;
+            };
+
+            try {
+                const response = await axios.put(offerUrl + id);;
+                setCreateStatus(response.data.estado);
+                getOffers();
+            } catch (error) {
+                const errors = error.response.data.estado;
+                setCreateStatus(errors)
+            };
         };
     };
 
@@ -178,7 +205,7 @@ const OffersPage = () => {
             } else {
                 return (
                     <>
-                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => declineOffer(e)}>Rechazar</button>}
+                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => declineOffer(e, offer)}>Rechazar</button>}
                         {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => confirmOffer(e)}>Confirmar</button>}
                     </>);
             }
@@ -255,14 +282,14 @@ const OffersPage = () => {
                 <>
                     {createStatus && <p>{createStatus}</p>}
                     <h2>Peticiones publicas</h2>
-                    {offerSet ? offerSet.filter((offer) => offer.status === "open").map((offer) =>
+                    {offerSet ? offerSet.map((offer) =>
                     (
                         baseOfferRender(offer)
                     ))
                         : <p>Cargando datos peticiones abiertas...</p>
                     }
                     <h2>Peticiones aceptadas</h2>
-                    {offerSet ? offerSet.filter((offer) => (offer.status === "taken" || offer.status === "confirmed"  ) &&  offer.artist_id === user.id).map((offer) =>
+                    {offerArtistSet ? offerArtistSet.map((offer) =>
                     (
                         baseOfferRender(offer)
                     ))
@@ -272,7 +299,7 @@ const OffersPage = () => {
             )
         } else {
             return (
-                <>    
+                <>
                     {createStatus && <p>{createStatus}</p>}
                     <h2>Mis peticiones</h2>
                     {offerSet ? offerSet.map((offer) =>
