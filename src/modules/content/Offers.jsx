@@ -8,13 +8,20 @@ import axios from 'axios';
 //Module to control the creation of new games.
 const OffersPage = () => {
     const { user, setUser } = useUserContext();
-    const [active, setActive] = useState(false);
     const [token, setToken] = useState("");
+
+    const navigate = useNavigate();
+
+    const [active, setActive] = useState(false);
     const [createStatus, setCreateStatus] = useState("");
     const [offerSet, setOfferSet] = useState([]);
     const [offerArtistSet, setArtisOfferSet] = useState([]);
     const addOffer = "http://localhost:3000/api/openWorks/upload";
-    const navigate = useNavigate();
+
+    const [showData, setShowData] = useState("");
+    const [clientData, setClientData] = useState([]);
+    const [artistData, setArtistData] = useState([]);
+    const [actualOfferDataID, setActualOfferDataID] = useState(0);
 
     //Redirect for unauthorized access
     useEffect(() => {
@@ -37,7 +44,7 @@ const OffersPage = () => {
             } catch (error) {
                 console.log(error);
             };
-        } else  if (user.acount_type === "artist") {
+        } else if (user.acount_type === "artist") {
             try {
                 const offersUrl = `http://localhost:3000/api/openWorks/available/`;
                 const response = await axios.get(offersUrl + user.id);
@@ -259,19 +266,121 @@ const OffersPage = () => {
         }
     }
 
+    const generateShowClientButton = (offer) => {
+        return (
+            <>
+                <button onClick={() => loadClientInfo(offer)}>Ver solicitante</button>
+            </>
+        )
+    };
+
+    const generateShowArtistButton = (offer) => {
+        if(offer.artist_id === 0 || offer.status === "open") {
+            return;
+        }
+
+        return (
+            <>
+                <button onClick={() => loadArtistInfo(offer)}>Ver artista</button>
+            </>
+        )
+    };
+
+    const loadClientInfo = async (offer) => {
+        console.log(actualOfferDataID)
+        if (offer.id === actualOfferDataID) {
+            setShowData(false);
+            setActualOfferDataID(0);
+            return;
+        }
+
+        try {
+            const clientUrl = `http://localhost:3000/api/clients/`;
+            const response = await axios.get(clientUrl + offer.client_id);
+            const data = response.data;
+
+            setActualOfferDataID(offer.id);
+            setClientData(data);
+            if (!showData) { setShowData(true); };
+        } catch (error) {
+            console.log(error);
+        };
+    }
+
+    const loadArtistInfo = async (offer) => {
+        if(offer.artist_id === 0 || offer.status === "open") {
+            setShowData(false);
+            setActualOfferDataID(0);
+            return;
+        }
+
+        if (offer.offer_id === actualOfferDataID) {
+            setShowData(false);
+            setActualOfferDataID(0);
+            return;
+        }
+
+        try {
+            const artistUrl = `http://localhost:3000/api/artists/`;
+            const response = await axios.get(artistUrl + offer.artist_id);
+            const data = response.data;
+
+            setActualOfferDataID(offer.offer_id);
+            setArtistData(data);
+            if (!showData) { setShowData(true); };
+        } catch (error) {
+            console.log(error);
+        };
+    }
+
     const renderOffers = () => {
+        const baseOfferContent = (offer) => {
+            return (
+                <>
+                    <p>Titulo: {offer.tittle}</p>
+                    <p>Contenido: {offer.content}</p>
+                    <p>Estado: {offerStatus(offer)}</p>
+                    <p>SFW: {offer.sfw_status ? "SI" : "NO"}</p>
+                    <p>Creada: {formatDate(offer.creation_date)}</p>
+                    {user.acount_type === "client" && offer.status === "taken" && <p>Artist ID: {offer.artist_id}</p>}
+                    {user.acount_type === "client" ? generateDeleteOfferButton(offer) : generateTakeOfferButton(offer)}
+                    {user.acount_type === "client" ? generateShowArtistButton(offer) : generateShowClientButton(offer)}
+                </>
+            )
+        }
+
+        const clientOfferContent = () => {
+            if (clientData) {
+                return (
+                    <div>
+                        <p>Nick: {clientData.nick}</p>
+                        <p>Reputacion: {clientData.reputation}</p>
+                        <p>Fecha de Registro: {new Date(clientData.register).toLocaleDateString("es-ES")}</p>
+                    </div>
+                )
+            };
+        }
+
+        const artistOfferContent = () => {
+            if (artistData) {
+                return (
+                    <div>
+                        <p>Nick: {artistData.nick}</p>
+                        <p>Estilos: {artistData.styles}</p>
+                        <p>Reputacion: {artistData.reputation}</p>
+                        <p>Fecha de Registro: {new Date(artistData.register).toLocaleDateString("es-ES")}</p>
+                    </div>
+                )
+            };
+        }
+
+
         const baseOfferRender = (offer) => {
 
             return (
                 < div className="games--gameCard" key={offer.id} >
                     <div className="games--gameCardData">
-                        <p>Titulo: {offer.tittle}</p>
-                        <p>Contenido: {offer.content}</p>
-                        <p>Estado: {offerStatus(offer)}</p>
-                        <p>SFW: {offer.sfw_status ? "SI" : "NO"}</p>
-                        <p>Creada: {formatDate(offer.creation_date)}</p>
-                        {user.acount_type === "client" && offer.status === "taken" && <p>Artist ID: {offer.artist_id}</p>}
-                        {user.acount_type === "client" ? generateDeleteOfferButton(offer) : generateTakeOfferButton(offer)}
+                        {baseOfferContent(offer)}
                     </div>
                 </div >
             )
@@ -280,6 +389,7 @@ const OffersPage = () => {
         if (user.acount_type === "artist") {
             return (
                 <>
+                    {showData && clientOfferContent()}
                     {createStatus && <p>{createStatus}</p>}
                     <h2>Peticiones publicas</h2>
                     {offerSet ? offerSet.map((offer) =>
@@ -300,6 +410,7 @@ const OffersPage = () => {
         } else {
             return (
                 <>
+                    {showData && artistOfferContent()}
                     {createStatus && <p>{createStatus}</p>}
                     <h2>Mis peticiones</h2>
                     {offerSet ? offerSet.map((offer) =>
