@@ -182,14 +182,20 @@ const OffersPage = () => {
         };
     };
 
-    const confirmOffer = async (e) => {
-        if (!user.id) { return };
+    const confirmOffer = async (e, offer) => {
+        if (!token) { return };
 
         const id = e.target.value;
         const offerUrl = `http://localhost:3000/api/openWorks/confirm/`;
 
+        const payload = {
+            artist_id: offer.artist_id,
+            client_id: user.id,
+            openWork_id: id,
+        }
+
         try {
-            const response = await axios.put(offerUrl + id);;
+            const response = await axios.put(offerUrl + id, payload);
             setCreateStatus(response.data.estado);
             getOffers();
         } catch (error) {
@@ -213,7 +219,7 @@ const OffersPage = () => {
                 return (
                     <>
                         {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => declineOffer(e, offer)}>Rechazar</button>}
-                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => confirmOffer(e)}>Confirmar</button>}
+                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => confirmOffer(e, offer)}>Confirmar</button>}
                     </>);
             }
         }
