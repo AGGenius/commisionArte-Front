@@ -72,6 +72,7 @@ function Nav() {
       <ul className="nav--menu">
         {token && <li><Link to="/offers" className="nav--navButton">Solicitudes</Link></li>}
         {token && <li><Link to="/profile" className="nav--navButton">Perfil</Link></li>}
+        {token && <li><Link to="/stateCard" className="nav--navButton">Tarjetas de trabajo</Link></li>}
       </ul>
     )
   }
@@ -82,6 +83,7 @@ function Nav() {
         {token && <li><Link to="/offers" className="nav--navButton">Trabajos</Link></li>}
         {token && <li><Link to="/personalGallery" className="nav--navButton">Mi galeria</Link></li>}
         {token && <li><Link to="/profile" className="nav--navButton">Perfil</Link></li>}
+        {token && <li><Link to="/stateCard" className="nav--navButton">Tarjetas de trabajo</Link></li>}
       </ul>
     )
   }

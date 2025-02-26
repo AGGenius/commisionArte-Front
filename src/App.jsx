@@ -5,6 +5,7 @@ import UploadImage from './modules/content/UploadImage';
 import ProfilePage from './modules/content/Profile';
 import PersonalGalleryPage from './modules/content/PersonalGalery';
 import OffersPage from './modules/content/Offers';
+import StateCardPage from './modules/content/StateCard';
 //Context
 import { UserProvider } from './context/useUserContext';
 import './App.css'
@@ -21,6 +22,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/personalGallery" element={<PersonalGalleryPage />} />
             <Route path="/offers" element={<OffersPage />} />
+            <Route path="/stateCard" element={<StateCardPage />} />
           </Routes>
         </UserProvider>
       </Router>

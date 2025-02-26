@@ -69,7 +69,7 @@ const OffersPage = () => {
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
-            artist_id: "", client_id: "", tittle: "", content: "", sfw_status: false
+            artist_id: "", client_id: "", title: "", content: "", sfw_status: false
         }
     });
 
@@ -82,7 +82,7 @@ const OffersPage = () => {
             const payload = {
                 artist_id: 0,
                 client_id: user.id,
-                tittle: data.tittle,
+                title: data.title,
                 content: data.content,
                 sfw_status: data.sfw_status
             }
@@ -245,11 +245,11 @@ const OffersPage = () => {
     const clientOfferPage = () => {
         return (
             <>
-                <h2 className="addGame--tittle">Sube una peticion</h2>
+                <h2 className="addGame--title">Sube una peticion</h2>
                 <form className="addGame--form" onSubmit={handleSubmit((data) => uploadOffer(data))}>
-                    <label htmlFor="createGameTittle">Titulo</label>
-                    <input id="createGameTittle" type="text" {...register("tittle", { required: { value: true, message: "Se debe introducir el titulo." } })}></input>
-                    {errors.tittle?.message && <p className="addGame--formError">{errors.tittle?.message}</p>}
+                    <label htmlFor="createGameTitle">Titulo</label>
+                    <input id="createGameTitle" type="text" {...register("title", { required: { value: true, message: "Se debe introducir el titulo." } })}></input>
+                    {errors.title?.message && <p className="addGame--formError">{errors.title?.message}</p>}
                     <label htmlFor="createGameDevelopa">Solicitud</label>
                     <textarea id="createGameDevelopa" type="text" {...register("content", { required: { value: true, message: "Se debe introducir un texto para la solicitud." } })}></textarea>
                     {errors.content?.message && <p className="addGame--formError">{errors.content?.message}</p>}
@@ -343,7 +343,7 @@ const OffersPage = () => {
         const baseOfferContent = (offer) => {
             return (
                 <>
-                    <p>Titulo: {offer.tittle}</p>
+                    <p>Titulo: {offer.title}</p>
                     <p>Contenido: {offer.content}</p>
                     <p>Estado: {offerStatus(offer)}</p>
                     <p>SFW: {offer.sfw_status ? "SI" : "NO"}</p>
