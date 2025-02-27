@@ -75,7 +75,6 @@ const OffersPage = () => {
 
     //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
     const uploadOffer = async (data) => {
-
         if (data) {
             if (!token) { return };
 
@@ -86,11 +85,6 @@ const OffersPage = () => {
                 content: data.content,
                 sfw_status: data.sfw_status
             }
-
-            //Añadir la posibilidad de borrar peticiones (mas adelante solo se podrán las que no tengan artista asociado distinto del dummy 0. Si un trabajo tiene artista no se podra borrar
-            // hasta que el artista se de de baja de esa ficha)
-            //continuar hacia que el artista pueda ver los trabajos publicados y aceptar alguno, ver los aceptados, y rechazarlos una vez aceptados. La work card debe generarse cuando se
-            // acepta un trabajo, y por tanto puede desaparecer una vez se rechaza o se completa.
 
             try {
                 const response = await axios.post(addOffer, payload);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
 import axios from 'axios';
 //import './AddGame.css'
@@ -11,6 +12,8 @@ const StateCardPage = () => {
 
     const [stateCardSet, setStateCardSet] = useState([]);
     const [createStatus, setCreateStatus] = useState("");
+    const [editStateCard, setEditStateCard] = useState(false);
+    const [editStateCardID, setEditStateCardID] = useState(0);
 
     const navigate = useNavigate();
 
@@ -25,6 +28,12 @@ const StateCardPage = () => {
         getStateCards();
     }, [user]);
 
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        defaultValues: {
+            estate: "", comment: ""
+        }
+    });
+
     function formatDate(baseDate) {
         const date = new Date(baseDate);
         const day = String(date.getUTCDate()).padStart(2, '0');
@@ -32,6 +41,61 @@ const StateCardPage = () => {
         const year = date.getUTCFullYear();
         return `${day}-${month}-${year}`;
     }
+
+    const manageEditStateCard = (stateCardID) => {
+
+        if (!editStateCard) {
+            setEditStateCard(true);
+            setEditStateCardID(stateCardID)
+        }
+        else {
+            setEditStateCard(false);
+            setEditStateCardID(0)
+        }
+    }
+
+    const editWorkcardPage = () => {
+        return (
+            <>
+                <h2 className="addGame--title">Modificar la petición: {editStateCardID}</h2>
+                <form className="addGame--form" onSubmit={handleSubmit((data) => uploadStateCard(data))}>
+                    <label htmlFor="createGameTitle">Estado actual</label>
+                    <input id="createGameTitle" type="text" {...register("estate", { required: { value: true, message: "Se debe introducir el estado." } })}></input>
+                    {errors.title?.message && <p className="addGame--formError">{errors.title?.message}</p>}
+                    <label htmlFor="createGameDevelopa">Nuevo comentario</label>
+                    <textarea id="createGameDevelopa" type="text" {...register("comment", { required: { value: true, message: "Se debe introducir un comentario." } })}></textarea>
+                    {errors.content?.message && <p className="addGame--formError">{errors.content?.message}</p>}
+                    <button className="addGame--formButton" type="submit">Actualizar tarjeta de trabajo</button>
+                </form>
+            </>
+        )
+    };
+
+    const uploadStateCard = async (data) => {
+        if (data) {
+            if (!token) { return };
+
+            const payload = {
+                status: data.estate,
+                commentary: data.comment,
+            }
+
+
+            const uploadStateCardURL = `http://localhost:3000/api/stateCards/update/`;
+
+            try {
+                const response = await axios.put(uploadStateCardURL + editStateCardID, payload);
+                setCreateStatus(response.data.estado);
+                reset();
+                getStateCards();
+                setEditStateCard(false);
+                setEditStateCardID(0)
+            } catch (error) {
+                const errors = error.response.data.errors;
+                setCreateStatus(errors)
+            };
+        };
+    };
 
     const getStateCards = async () => {
         if (user.acount_type === "client") {
@@ -68,6 +132,7 @@ const StateCardPage = () => {
                     <p>Comentario: {stateCard.commentary}</p>
                     <p>Creada: {formatDate(stateCard.creation_date)}</p>
                     <p>Modificada: {formatDate(stateCard.last_modification_date)}</p>
+                    <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>
                 </>
             )
         }
@@ -101,6 +166,7 @@ const StateCardPage = () => {
         <div className="addGame">
             <div>
                 {renderOffers()}
+                {user.acount_type === "artist" && editStateCard && editWorkcardPage()}
             </div>
         </div>
     )
