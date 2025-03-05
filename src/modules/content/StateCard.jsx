@@ -132,7 +132,7 @@ const StateCardPage = () => {
                     <p>Comentario: {stateCard.commentary}</p>
                     <p>Creada: {formatDate(stateCard.creation_date)}</p>
                     <p>Modificada: {formatDate(stateCard.last_modification_date)}</p>
-                    <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>
+                    {user.acount_type === "artist" && <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>}              
                 </>
             )
         }
