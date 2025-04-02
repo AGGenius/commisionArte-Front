@@ -53,13 +53,7 @@ const UploadImage = () => {
                 reset();
                 setCreateStatus(response.data.estado);
             } catch (error) {
-                const errors = error.response.data.errors;
-
-                errors.map((error) => {
-                    if (error.path == "tittle" && error.msg === `The game  ${data.tittle} already exists.`) {
-                        setCreateStatus("El juego que se intenta añadir ya existe.");
-                    };
-                });
+                setCreateStatus(error.response.data.error);
             };
         };
     };
