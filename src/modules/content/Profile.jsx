@@ -15,8 +15,10 @@ const ProfilePage = () => {
 
     //User values
     const [email, setEmail] = useState("");
+    const [contactEmail, setContactEmail] = useState("");
     const [name, setName] = useState("");
     const [nick, setNick] = useState("");
+    const [telephone, setTelephone] = useState("");
     const [sfwStatus, setSfwStatus] = useState("");
     const [reputation, setReputation] = useState(0);
     const [pass1, setPass1] = useState("");
@@ -35,9 +37,12 @@ const ProfilePage = () => {
     }, [user])
 
     const getUserData = async () => {
+        console.log(user)
         setEmail(user.email);
+        setContactEmail(user.contact_email);
         setName(user.name);
         setNick(user.nick);
+        setTelephone(user.telephone);
         setSfwStatus(user.sfw_status);
         setReputation(user.reputation);
     };
@@ -49,7 +54,9 @@ const ProfilePage = () => {
                 <h3>Información de usuario</h3>
                 <p className="profile--text profile--name">Nombre: <span>{name}</span></p>
                 <p className="profile--text profile--email">Correo: <span>{email}</span></p>
+                <p className="profile--text profile--email">Correo de contacto: <span>{contactEmail}</span></p>
                 <p className="profile--text profile--nick">Nick: <span>{nick}</span></p>
+                <p className="profile--text profile--nick">Telefono: <span>{telephone}</span></p>
                 <p className="profile--text profile--nick">Filtro SFW: <span>{sfwStatus ? "activo" : "inactivo"}</span></p>
                 <p className="profile--text profile--nick">Reputación: <span>{reputation}</span></p>
             </div>

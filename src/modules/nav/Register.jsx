@@ -6,18 +6,22 @@ import './Register.css'
 const Register = ({ sendToParent }) => {
     //Fields
     const [email, setEmail] = useState("");
+    const [contactEmail, setContactEmail] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
     const [name, setName] = useState("");
     const [nick, setNick] = useState("");
+    const [telephone, setTelephone] = useState("");
     const [passwordType, setPassworodType] = useState("password");
     const [repeatPasswordType, setRepeatPassworodType] = useState("password");
     //Fields State
     const [emailState, setEmailState] = useState("");
+    const [contactEmailState, setContactEmailState] = useState("");
     const [passwordState, setPasswordState] = useState([]);
     const [repeatPasswordState, setRepeatPasswordState] = useState("");
     const [nameState, setNameState] = useState("");
     const [nickState, setNickState] = useState("");
+    const [telephoneState, setTelephoneState] = useState("");
     const [registerState, setRegisterState] = useState("");
 
     const [registerType, setRegisterType] = useState(false);
@@ -33,7 +37,7 @@ const Register = ({ sendToParent }) => {
         };
     };
 
-    //Function to check the email input. Uses array of error messages and regex validators to check and reply on each case.
+    //Function to check the email & contat email inputs. Uses array of error messages and regex validators to check and reply on each case.
     const checkEmailFormat = () => {
         const emailCheckList = [
             "Tiene que tener al menos 6 caracteres",
@@ -45,18 +49,29 @@ const Register = ({ sendToParent }) => {
             { regex: /[@]/ }
         ];
 
-        let actualCheckList = [];
+        let actualCheckListForEmail = [];
+        let actualCheckListForContactEmail = [];
 
         validationRegex.forEach((item, i) => {
 
             let isValid = item.regex.test(email);
 
             if (!isValid) {
-                actualCheckList.push(emailCheckList[i])
+                actualCheckListForEmail.push(emailCheckList[i])
             }
         })
 
-        setEmailState(actualCheckList);
+        validationRegex.forEach((item, i) => {
+
+            let isValid = item.regex.test(contactEmail);
+
+            if (!isValid) {
+                actualCheckListForContactEmail.push(emailCheckList[i])
+            }
+        })
+
+        setEmailState(actualCheckListForEmail);
+        setContactEmailState(actualCheckListForContactEmail);
     };
 
     //Function to check the password strength. Uses array of error messages and regex validators to check and reply on each case.
@@ -141,19 +156,48 @@ const Register = ({ sendToParent }) => {
         setNickState(actualCheckList);
     };
 
+    //Function to check the telephone input. Uses array of error messages and regex validators to check and reply on each case.
+    const checkTelephoneFormat = () => {
+        const telephoneCheckList = [
+            "El campo no puede estar vacio",
+            "Debe contener solo numeros"
+        ]
+
+        const validationRegex = [
+            { regex: /.{1,}/ },            
+            { regex: /^-?\d+\.?\d*$/ }
+        ];
+
+        let actualCheckList = [];
+
+        validationRegex.forEach((item, i) => {
+
+            let isValid = item.regex.test(telephone);
+
+            if (!isValid) {
+                actualCheckList.push(telephoneCheckList[i])
+            }
+        })
+
+        setNickState(actualCheckList);
+    };
+
     //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
     const register = async (e) => {
         e.preventDefault();
 
         setEmailState([]);
+        setContactEmailState([]);
         setPasswordState([]);
         setNameState([]);
         setNickState([]);
+        setTelephoneState([]);
 
         checkEmailFormat();
         checkPassSecurity();
         checkNameFormat();
         checkNickFormat();
+        checkTelephoneFormat();
         checkPasswords();
 
         if (emailState.length === 0 && passwordState.length === 0 && repeatPasswordState.length === 0 && nameState.length === 0 && nickState.length === 0
@@ -169,11 +213,15 @@ const Register = ({ sendToParent }) => {
 
             const payload = {
                 email,
+                contactEmail,
                 password,
                 name,
                 nick,
+                telephone,
                 acountType
             }
+
+            console.log(payload)
 
             try {
                 let response = "";
@@ -239,6 +287,14 @@ const Register = ({ sendToParent }) => {
                             {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
                     <div className="register--formPair">
+                        <label htmlFor="newuserContactEmail">Email de contacto</label>
+                        <input id="newuserContactEmail" type="text" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)}></input>
+                    </div>
+                    {contactEmailState &&
+                        <ul>
+                            {contactEmailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        </ul>}
+                    <div className="register--formPair">
                         <label htmlFor="newuserPass">Contraseña</label>
                         <div className="register--passwordWrap">
                             <input id="newuserPass" autocomplete="new-password" type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)}></input>
@@ -276,6 +332,14 @@ const Register = ({ sendToParent }) => {
                     {nickState &&
                         <ul>
                             {nickState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        </ul>}
+                    <div className="register--formPair">
+                        <label htmlFor="newuserTelephone">Numero de telefono de contacto</label>
+                        <input id="newuserTelephone" type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)}></input>
+                    </div>
+                    {telephoneState &&
+                        <ul>
+                            {telephoneState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
                     <label className="switch">
                         <input type="checkbox" onClick={() => handleToggle()} />

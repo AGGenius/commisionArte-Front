@@ -287,7 +287,6 @@ const OffersPage = () => {
     };
 
     const loadClientInfo = async (offer) => {
-        console.log(actualOfferDataID)
         if (offer.id === actualOfferDataID) {
             setShowData(false);
             setActualOfferDataID(0);
@@ -354,6 +353,8 @@ const OffersPage = () => {
                 return (
                     <div>
                         <p>Nick: {clientData.nick}</p>
+                        <p>Email de contacto: {clientData.contact_email}</p>
+                        {clientData.telephone && <p>Telefono de contacto: {clientData.telephone}</p>}
                         <p>Reputacion: {clientData.reputation}</p>
                         <p>Fecha de Registro: {new Date(clientData.register).toLocaleDateString("es-ES")}</p>
                     </div>
@@ -366,6 +367,8 @@ const OffersPage = () => {
                 return (
                     <div>
                         <p>Nick: {artistData.nick}</p>
+                        <p>Email de contacto: {artistData.contact_email}</p>
+                        {artistData.telephone && <p>Telefono de contacto: {artistData.telephone}</p>}
                         <p>Estilos: {artistData.styles}</p>
                         <p>Reputacion: {artistData.reputation}</p>
                         <p>Fecha de Registro: {new Date(artistData.register).toLocaleDateString("es-ES")}</p>
