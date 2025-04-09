@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
-import Blur from "react-blur";
-import axios from 'axios';
+import EditProfileInfo from "./EditProfileInfo";
 
 const ProfilePage = () => {
     const { user, setUser } = useUserContext();
     const [token, setToken] = useState("");
     const navigate = useNavigate();
+
+    //Edit personal info
+    const [activeEditWindow, setActiveEditWindow] = useState(false);
 
     //url
     const clientsUrl = "http://localhost:3000/api/clients/";
@@ -37,7 +39,6 @@ const ProfilePage = () => {
     }, [user])
 
     const getUserData = async () => {
-        console.log(user)
         setEmail(user.email);
         setContactEmail(user.contact_email);
         setName(user.name);
@@ -47,8 +48,13 @@ const ProfilePage = () => {
         setReputation(user.reputation);
     };
 
-    return (
-        <>
+    const sendToParent = (data) => {
+        setActiveEditWindow(data);
+    };
+
+    const profilePage = () => {
+        return (
+            <>
             <h1 className="profile--tittle">Te encuentras en tu perfil, {name}</h1>
             <div className="profile--userData">
                 <h3>Información de usuario</h3>
@@ -60,9 +66,16 @@ const ProfilePage = () => {
                 <p className="profile--text profile--nick">Filtro SFW: <span>{sfwStatus ? "activo" : "inactivo"}</span></p>
                 <p className="profile--text profile--nick">Reputación: <span>{reputation}</span></p>
             </div>
+            <button onClick={() => setActiveEditWindow(true)}>ACTUALIZAR INFORMACION</button>
         </>
-    )
+        );
+    };
 
+    return (
+        <>
+            {activeEditWindow ? <EditProfileInfo sendToParent={sendToParent}/> : profilePage()}
+        </>
+    );
 }
 
 export default ProfilePage;
