@@ -17,6 +17,9 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [repeatNewPassword, setRepeatNewPassword] = useState("");
     const [name, setName] = useState("");
     const [nick, setNick] = useState("");
+    const [comm_status, setComm_status] = useState("");
+    const [sfw_status, setSfw_status] = useState("");
+    const [styles, setStyles] = useState("");
     const [telephone, setTelephone] = useState("");
     const [passwordType, setPassworodType] = useState("password");
     const [repeatPasswordType, setRepeatPassworodType] = useState("password");
@@ -33,8 +36,8 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [passwordState, setPasswordState] = useState([]);
 
     const [registerType, setRegisterType] = useState(false);
-    const apiArtistURL = "http://localhost:3000/api/artists/register";
-    const apiClientURL = "http://localhost:3000/api/clients/register";
+    const apiArtistURL = "http://localhost:3000/api/artists/editInfo/";
+    const apiClientURL = "http://localhost:3000/api/clients/editInfo/";
 
     //Redirect for unauthorized access
     useEffect(() => {
@@ -47,12 +50,17 @@ const EditProfileInfo = ({ sendToParent }) => {
     }, [user])
 
     const setActualValues = () => {
-        console.log(user)
         setEmail(user.email);
         setContactEmail(user.contact_email);
         setName(user.name);
         setNick(user.nick);
+        setSfw_status(user.sfw_status);
         setTelephone(user.telephone);
+
+        if (user.acount_type === "artist") {
+            setComm_status(user.comm_status);
+            setStyles(user.styles);
+        }
     }
 
     //Function to check the correlation on the passwords. As simple as it gets. Outputs a message if not valid.
@@ -213,48 +221,43 @@ const EditProfileInfo = ({ sendToParent }) => {
     const register = async (e) => {
         e.preventDefault();
 
-        setEmailState([]);
-        setContactEmailState([]);
-        setNewPasswordState([]);
-        setNameState([]);
-        setNickState([]);
-        setTelephoneState([]);
+        // setEmailState([]);
+        // setContactEmailState([]);
+        // setNewPasswordState([]);
+        // setNameState([]);
+        // setNickState([]);
+        // setTelephoneState([]);
 
-        checkEmailFormat();
-        checkPassSecurity();
-        checkNameFormat();
-        checkNickFormat();
-        checkTelephoneFormat();
-        checkPasswords();
+        // checkEmailFormat();
+        // checkPassSecurity();
+        // checkNameFormat();
+        // checkNickFormat();
+        // checkTelephoneFormat();
+        // checkPasswords();
 
         if (emailState.length === 0 && newPasswordState.length === 0 && repeatNewPasswordState.length === 0 && nameState.length === 0 && nickState.length === 0
             && email && password && name && nick) {
 
-            let acountType = "";
-
-            if (registerType) {
-                acountType = "artist";
-            } else {
-                acountType = "client";
-            }
-
             const payload = {
-                email,
-                contactEmail,
-                newPassword,
                 name,
                 nick,
+                email,
+                password,
+                contactEmail,
+                sfw_status,
+                comm_status,
+                styles,
                 telephone,
-                acountType
+                newPassword
             }
 
             try {
                 let response = "";
 
-                if (registerType) {
-                    response = await axios.post(apiArtistURL, payload);
+                if (user.acount_type === "artist") {
+                    response = await axios.put(apiArtistURL + user.id, payload);
                 } else {
-                    response = await axios.post(apiClientURL, payload);
+                    response = await axios.put(apiClientURL + user.id, payload);
                 }
 
                 const registerStatus = response.data.estado;
@@ -343,6 +346,37 @@ const EditProfileInfo = ({ sendToParent }) => {
                         <ul>
                             {telephoneState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
+
+                    <h3>Campos especificos</h3>
+                    <div className="register--formPair">
+                        <label htmlFor="newuserEmail">Filtro NSWF</label>
+                        <input id="newuserEmail" type="checkbox" value={sfw_status ? true : false} checked={sfw_status ? true : false} onChange={(e) => setSfw_status(e.target.checked)}></input>
+                    </div>
+                    {emailState &&
+                        <ul>
+                            {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        </ul>}
+                    {user.acount_type === "artist" &&
+                        <>
+                            <div className="register--formPair">
+                                <label htmlFor="newuserEmail">Comisiones activas</label>
+                                <input id="newuserEmail" type="checkbox" value={comm_status ? true : false} checked={comm_status ? true : false} onChange={(e) => setComm_status(e.target.checked)}></input>
+                            </div>
+                            {emailState &&
+                                <ul>
+                                    {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                                </ul>}
+                            <div className="register--formPair">
+                                <label htmlFor="newuserEmail">Estilos artisticos</label>
+                                <input id="newuserEmail" type="text" value={styles} onChange={(e) => setStyles(e.target.value)}></input>
+                            </div>
+                            {emailState &&
+                                <ul>
+                                    {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                                </ul>}
+                        </>
+                    }
+
                     <h3>Cambiar contraseña:</h3>
                     <h4>Solo completar los campos si se desea cambiar</h4>
                     <div className="register--formPair">
@@ -368,6 +402,7 @@ const EditProfileInfo = ({ sendToParent }) => {
                         </div>
                     </div>
                     {repeatNewPasswordState && <p className="register--formError">{repeatNewPasswordState}</p>}
+
                     <h3>Confirmar cambios</h3>
                     <div className="register--formPair">
                         <label htmlFor="newuserPass">Contraseña actual</label>
