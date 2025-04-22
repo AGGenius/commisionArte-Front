@@ -32,7 +32,7 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [nameState, setNameState] = useState("");
     const [nickState, setNickState] = useState("");
     const [telephoneState, setTelephoneState] = useState("");
-    const [registerState, setRegisterState] = useState("");
+    const [changeDataState, setChangeDataState] = useState("");
     const [passwordState, setPasswordState] = useState([]);
 
     const [registerType, setRegisterType] = useState(false);
@@ -238,6 +238,7 @@ const EditProfileInfo = ({ sendToParent }) => {
         if (emailState.length === 0 && newPasswordState.length === 0 && repeatNewPasswordState.length === 0 && nameState.length === 0 && nickState.length === 0
             && email && password && name && nick) {
 
+            //Has to change to adapt to either artist or clients, for now only is for artists.
             const payload = {
                 name,
                 nick,
@@ -260,8 +261,10 @@ const EditProfileInfo = ({ sendToParent }) => {
                     response = await axios.put(apiClientURL + user.id, payload);
                 }
 
-                const registerStatus = response.data.estado;
-                setRegisterState(registerStatus);
+                const changeDataStatus = response.data.estado;
+                const changedUser = response.data.artist;
+                setUser(changedUser);
+                setChangeDataState(changeDataStatus);
             } catch (error) {
             };
         };
@@ -303,7 +306,7 @@ const EditProfileInfo = ({ sendToParent }) => {
     return (
         <div className="register__registerForm">
             <h2 className="register--tittle">Cambia los datos que necesites.</h2>
-            {!registerState ?
+            {!changeDataState ?
                 <form className="register--form" onSubmit={register}>
                     <h3>Datos basicos</h3>
                     <div className="register--formPair">
@@ -420,8 +423,17 @@ const EditProfileInfo = ({ sendToParent }) => {
                     <button className="register--formButton" type="submit">Cambiar los datos</button>
                 </form>
                 :
-                <p>{registerState}</p>}
-            <button onClick={handleClick}>Cancelar</button>
+                <p>{changeDataState}</p>}
+            {!changeDataState ?
+                <>
+                    <button onClick={handleClick}>Cancelar</button>
+                </>
+                :
+                <>
+                    <button onClick={handleClick}>Salir</button>
+                </>
+            }
+
         </div>
     )
 };
