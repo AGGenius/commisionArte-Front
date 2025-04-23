@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
-import Blur from "react-blur";
 import axios from 'axios';
 
 const PersonalGalleryPage = () => {

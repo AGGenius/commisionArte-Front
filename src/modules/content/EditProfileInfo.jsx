@@ -31,6 +31,7 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [repeatNewPasswordState, setRepeatNewPasswordState] = useState("");
     const [nameState, setNameState] = useState("");
     const [nickState, setNickState] = useState("");
+    const [stylesState, setStylesState] = useState("");
     const [telephoneState, setTelephoneState] = useState("");
     const [changeDataState, setChangeDataState] = useState("");
     const [passwordState, setPasswordState] = useState([]);
@@ -191,6 +192,30 @@ const EditProfileInfo = ({ sendToParent }) => {
         setNickState(actualCheckList);
     };
 
+     //Function to check the nick input. Uses array of error messages and regex validators to check and reply on each case.
+     const checkStylesFormat = () => {
+        const nickCheckList = [
+            "El campo no puede estar vacio"
+        ]
+
+        const validationRegex = [
+            { regex: /.{1,}/ }
+        ];
+
+        let actualCheckList = [];
+
+        validationRegex.forEach((item, i) => {
+
+            let isValid = item.regex.test(styles);
+
+            if (!isValid) {
+                actualCheckList.push(nickCheckList[i])
+            }
+        })
+
+        setStylesState(actualCheckList);
+    };
+
     //Function to check the telephone input. Uses array of error messages and regex validators to check and reply on each case.
     const checkTelephoneFormat = () => {
         const telephoneCheckList = [
@@ -214,29 +239,61 @@ const EditProfileInfo = ({ sendToParent }) => {
             }
         })
 
-        setNickState(actualCheckList);
+        setTelephoneState(actualCheckList);
+    };
+
+     //Function to check the nick input. Uses array of error messages and regex validators to check and reply on each case.
+     const checkPasswordState = () => {
+        const nickCheckList = [
+            "Requiere la contraseña actual para su usuario"
+        ]
+
+        const validationRegex = [
+            { regex: /.{1,}/ }
+        ];
+
+        let actualCheckList = [];
+
+        validationRegex.forEach((item, i) => {
+
+            let isValid = item.regex.test(password);
+
+            if (!isValid) {
+                actualCheckList.push(nickCheckList[i])
+            }
+        })
+
+        setPasswordState(actualCheckList);
     };
 
     //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
     const register = async (e) => {
         e.preventDefault();
 
-        // setEmailState([]);
-        // setContactEmailState([]);
-        // setNewPasswordState([]);
-        // setNameState([]);
-        // setNickState([]);
-        // setTelephoneState([]);
+        setEmailState([]);
+        setContactEmailState([]);
+        setNewPasswordState([]);
+        setNameState([]);
+        setNickState([]);
+        setStylesState([]);
+        setTelephoneState([]);
+        setPasswordState([]);
 
-        // checkEmailFormat();
-        // checkPassSecurity();
-        // checkNameFormat();
-        // checkNickFormat();
-        // checkTelephoneFormat();
-        // checkPasswords();
+        checkEmailFormat();
+        checkNameFormat();
+        checkNickFormat();
+        checkStylesFormat();
+        checkTelephoneFormat();
 
-        if (emailState.length === 0 && newPasswordState.length === 0 && repeatNewPasswordState.length === 0 && nameState.length === 0 && nickState.length === 0
-            && email && password && name && nick) {
+        if(newPassword && repeatNewPassword) {
+            checkPassSecurity();
+            checkPasswords();
+        }
+
+        checkPasswordState();
+
+        if (emailState.length === 0 && contactEmailState.length === 0 &&  newPasswordState.length === 0 && repeatNewPasswordState.length === 0 && nameState.length === 0 
+            && nickState.length === 0 && stylesState.length === 0 && telephoneState.length === 0 && email && password && name && nick) {
 
             //Has to change to adapt to either artist or clients, for now only is for artists.
             const payload = {
@@ -261,10 +318,16 @@ const EditProfileInfo = ({ sendToParent }) => {
                     response = await axios.put(apiClientURL + user.id, payload);
                 }
 
+                if(response.data.artist) {
+                    const changedUser = response.data.artist;
+                    setUser(changedUser);
+                } else {       
+                    setChangeDataState("Error en el servidor");
+                }
+
                 const changeDataStatus = response.data.estado;
-                const changedUser = response.data.artist;
-                setUser(changedUser);
                 setChangeDataState(changeDataStatus);
+                
             } catch (error) {
             };
         };
@@ -310,40 +373,40 @@ const EditProfileInfo = ({ sendToParent }) => {
                 <form className="register--form" onSubmit={register}>
                     <h3>Datos basicos</h3>
                     <div className="register--formPair">
-                        <label htmlFor="newuserEmail">Email</label>
-                        <input id="newuserEmail" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                        <label htmlFor="editUserEmail">Email</label>
+                        <input id="editUserEmail" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                     </div>
                     {emailState &&
                         <ul>
                             {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
                     <div className="register--formPair">
-                        <label htmlFor="newuserContactEmail">Email de contacto</label>
-                        <input id="newuserContactEmail" type="text" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)}></input>
+                        <label htmlFor="editUserContactEmail">Email de contacto</label>
+                        <input id="editUserContactEmail" type="text" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)}></input>
                     </div>
                     {contactEmailState &&
                         <ul>
                             {contactEmailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
                     <div className="register--formPair">
-                        <label htmlFor="newuserName">Nombre</label>
-                        <input id="newuserName" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
+                        <label htmlFor="editUserName">Nombre</label>
+                        <input id="editUserName" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
                     </div>
                     {nameState &&
                         <ul>
                             {nameState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
                     <div className="register--formPair">
-                        <label htmlFor="newuserNick">Alias</label>
-                        <input id="newuserNick" type="text" value={nick} onChange={(e) => setNick(e.target.value)}></input>
+                        <label htmlFor="editUserNick">Alias</label>
+                        <input id="editUserNick" type="text" value={nick} onChange={(e) => setNick(e.target.value)}></input>
                     </div>
                     {nickState &&
                         <ul>
                             {nickState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
                     <div className="register--formPair">
-                        <label htmlFor="newuserTelephone">Numero de telefono de contacto</label>
-                        <input id="newuserTelephone" type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)}></input>
+                        <label htmlFor="editUserTelephone">Numero de telefono de contacto</label>
+                        <input id="editUserTelephone" type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)}></input>
                     </div>
                     {telephoneState &&
                         <ul>
@@ -352,30 +415,22 @@ const EditProfileInfo = ({ sendToParent }) => {
 
                     <h3>Campos especificos</h3>
                     <div className="register--formPair">
-                        <label htmlFor="newuserEmail">Filtro NSWF</label>
-                        <input id="newuserEmail" type="checkbox" value={sfw_status ? true : false} checked={sfw_status ? true : false} onChange={(e) => setSfw_status(e.target.checked)}></input>
+                        <label htmlFor="editUserNSFWfilter">Filtro NSWF</label>
+                        <input id="editUserNSFWfilter" type="checkbox" value={sfw_status ? true : false} checked={sfw_status ? true : false} onChange={(e) => setSfw_status(e.target.checked)}></input>
                     </div>
-                    {emailState &&
-                        <ul>
-                            {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                        </ul>}
                     {user.acount_type === "artist" &&
                         <>
                             <div className="register--formPair">
-                                <label htmlFor="newuserEmail">Comisiones activas</label>
-                                <input id="newuserEmail" type="checkbox" value={comm_status ? true : false} checked={comm_status ? true : false} onChange={(e) => setComm_status(e.target.checked)}></input>
+                                <label htmlFor="editUserActiveComissions">Comisiones activas</label>
+                                <input id="editUserActiveComissions" type="checkbox" value={comm_status ? true : false} checked={comm_status ? true : false} onChange={(e) => setComm_status(e.target.checked)}></input>
                             </div>
-                            {emailState &&
-                                <ul>
-                                    {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                                </ul>}
                             <div className="register--formPair">
-                                <label htmlFor="newuserEmail">Estilos artisticos</label>
-                                <input id="newuserEmail" type="text" value={styles} onChange={(e) => setStyles(e.target.value)}></input>
+                                <label htmlFor="editUserArtStyles">Estilos artisticos</label>
+                                <input id="editUserArtStyles" type="text" value={styles} onChange={(e) => setStyles(e.target.value)}></input>
                             </div>
-                            {emailState &&
+                            {stylesState &&
                                 <ul>
-                                    {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                                    {stylesState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                                 </ul>}
                         </>
                     }
@@ -385,7 +440,7 @@ const EditProfileInfo = ({ sendToParent }) => {
                     <div className="register--formPair">
                         <label htmlFor="newPass">Nueva contraseña</label>
                         <div className="register--passwordWrap">
-                            <input id="newPass" autocomplete="new-password" type={passwordType} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}></input>
+                            <input id="newPass" autoComplete="new-password" type={passwordType} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}></input>
                             <span className="register--eyeWrap">
                                 <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
                             </span>
@@ -393,12 +448,12 @@ const EditProfileInfo = ({ sendToParent }) => {
                     </div>
                     {newPasswordState &&
                         <ul>
-                            {passwordState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                            {newPasswordState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
                         </ul>}
                     <div className="register--formPair">
                         <label htmlFor="repeatNewUserPass">Repite la contraseña</label>
                         <div className="register--passwordWrap">
-                            <input id="repeatNewUserPass" autocomplete="new-password" type={repeatPasswordType} value={repeatNewPassword} onChange={(e) => setRepeatNewPassword(e.target.value)}></input>
+                            <input id="repeatNewUserPass" autoComplete="new-password" type={repeatPasswordType} value={repeatNewPassword} onChange={(e) => setRepeatNewPassword(e.target.value)}></input>
                             <span className="register--eyeWrap">
                                 <i className={repeatPasswordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => manageRepeatPasswordType()} />
                             </span>
@@ -410,7 +465,7 @@ const EditProfileInfo = ({ sendToParent }) => {
                     <div className="register--formPair">
                         <label htmlFor="newuserPass">Contraseña actual</label>
                         <div className="register--passwordWrap">
-                            <input id="newuserPass" autocomplete="new-password" type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                            <input id="newuserPass" autoComplete="new-password" type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)}></input>
                             <span className="register--eyeWrap">
                                 <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
                             </span>
