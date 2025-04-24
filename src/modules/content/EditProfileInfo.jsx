@@ -27,14 +27,14 @@ const EditProfileInfo = ({ sendToParent }) => {
     //Fields State
     const [emailState, setEmailState] = useState("");
     const [contactEmailState, setContactEmailState] = useState("");
-    const [newPasswordState, setNewPasswordState] = useState([]);
+    const [newPasswordState, setNewPasswordState] = useState("");
     const [repeatNewPasswordState, setRepeatNewPasswordState] = useState("");
     const [nameState, setNameState] = useState("");
     const [nickState, setNickState] = useState("");
     const [stylesState, setStylesState] = useState("");
     const [telephoneState, setTelephoneState] = useState("");
     const [changeDataState, setChangeDataState] = useState("");
-    const [passwordState, setPasswordState] = useState([]);
+    const [passwordState, setPasswordState] = useState("");
 
     const [registerType, setRegisterType] = useState(false);
     const apiArtistURL = "http://localhost:3000/api/artists/editInfo/";
@@ -68,8 +68,10 @@ const EditProfileInfo = ({ sendToParent }) => {
     const checkPasswords = () => {
         if (newPassword !== repeatNewPassword) {
             setRepeatNewPasswordState("No coinciden las contraseñas");
+            return 1;
         } else {
             setRepeatNewPasswordState("");
+            return 0;
         };
     };
 
@@ -108,6 +110,8 @@ const EditProfileInfo = ({ sendToParent }) => {
 
         setEmailState(actualCheckListForEmail);
         setContactEmailState(actualCheckListForContactEmail);
+        const totalErrors = actualCheckListForEmail.length + actualCheckListForContactEmail.length;
+        return totalErrors;
     };
 
     //Function to check the password strength. Uses array of error messages and regex validators to check and reply on each case.
@@ -140,6 +144,7 @@ const EditProfileInfo = ({ sendToParent }) => {
         })
 
         setNewPasswordState(actualCheckList);
+        return actualCheckList.length;
     };
 
     //Function to check the name input. Uses array of error messages and regex validators to check and reply on each case.
@@ -166,6 +171,7 @@ const EditProfileInfo = ({ sendToParent }) => {
         })
 
         setNameState(actualCheckList);
+        return actualCheckList.length;
     }
 
     //Function to check the nick input. Uses array of error messages and regex validators to check and reply on each case.
@@ -190,10 +196,11 @@ const EditProfileInfo = ({ sendToParent }) => {
         })
 
         setNickState(actualCheckList);
+        return actualCheckList.length;
     };
 
-     //Function to check the nick input. Uses array of error messages and regex validators to check and reply on each case.
-     const checkStylesFormat = () => {
+    //Function to check the nick input. Uses array of error messages and regex validators to check and reply on each case.
+    const checkStylesFormat = () => {
         const nickCheckList = [
             "El campo no puede estar vacio"
         ]
@@ -214,6 +221,7 @@ const EditProfileInfo = ({ sendToParent }) => {
         })
 
         setStylesState(actualCheckList);
+        return actualCheckList.length;
     };
 
     //Function to check the telephone input. Uses array of error messages and regex validators to check and reply on each case.
@@ -240,10 +248,11 @@ const EditProfileInfo = ({ sendToParent }) => {
         })
 
         setTelephoneState(actualCheckList);
+        return actualCheckList.length;
     };
 
-     //Function to check the nick input. Uses array of error messages and regex validators to check and reply on each case.
-     const checkPasswordState = () => {
+    //Function to check the nick input. Uses array of error messages and regex validators to check and reply on each case.
+    const checkPasswordState = () => {
         const nickCheckList = [
             "Requiere la contraseña actual para su usuario"
         ]
@@ -264,50 +273,77 @@ const EditProfileInfo = ({ sendToParent }) => {
         })
 
         setPasswordState(actualCheckList);
+        return actualCheckList.length;
     };
 
-    //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
-    const register = async (e) => {
-        e.preventDefault();
-
+    const restartChecks = () => {
         setEmailState([]);
         setContactEmailState([]);
         setNewPasswordState([]);
         setNameState([]);
         setNickState([]);
-        setStylesState([]);
         setTelephoneState([]);
         setPasswordState([]);
+        setStylesState([]);
+    };
 
-        checkEmailFormat();
-        checkNameFormat();
-        checkNickFormat();
-        checkStylesFormat();
-        checkTelephoneFormat();
+    const doChecks = () => {
+        let totalErrors = 0;
+        totalErrors +=  checkEmailFormat();
+        totalErrors +=  checkNameFormat();
+        totalErrors +=  checkNickFormat();
+        totalErrors +=  checkTelephoneFormat();
+        totalErrors +=  checkPasswordState();
 
-        if(newPassword && repeatNewPassword) {
-            checkPassSecurity();
-            checkPasswords();
+        if (user.acount_type === "artist") {
+            totalErrors +=  checkStylesFormat();
+        } 
+        
+        if (newPassword || repeatNewPassword) {
+            totalErrors +=  checkPassSecurity() + checkPasswords();
         }
 
-        checkPasswordState();
+        return totalErrors;
+    };
 
-        if (emailState.length === 0 && contactEmailState.length === 0 &&  newPasswordState.length === 0 && repeatNewPasswordState.length === 0 && nameState.length === 0 
-            && nickState.length === 0 && stylesState.length === 0 && telephoneState.length === 0 && email && password && name && nick) {
 
-            //Has to change to adapt to either artist or clients, for now only is for artists.
-            const payload = {
-                name,
-                nick,
-                email,
-                password,
-                contactEmail,
-                sfw_status,
-                comm_status,
-                styles,
-                telephone,
-                newPassword
+    //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
+    const register = async (e) => {
+        e.preventDefault();
+
+        restartChecks();
+        const totalErrors = doChecks();        
+
+        if (totalErrors === 0) {
+
+            let payload = {}
+
+            if (user.acount_type === "artist") {
+                payload = {
+                    name,
+                    nick,
+                    email,
+                    password,
+                    contactEmail,
+                    sfw_status,
+                    comm_status,
+                    styles,
+                    telephone,
+                    newPassword
+                }
+            } else {
+                payload = {
+                    name,
+                    nick,
+                    email,
+                    password,
+                    contactEmail,
+                    sfw_status,
+                    telephone,
+                    newPassword
+                }
             }
+
 
             try {
                 let response = "";
@@ -318,19 +354,25 @@ const EditProfileInfo = ({ sendToParent }) => {
                     response = await axios.put(apiClientURL + user.id, payload);
                 }
 
-                if(response.data.artist) {
-                    const changedUser = response.data.artist;
+                if (response.data.editedArtist) {
+                    const changedUser = response.data.editedArtist;
                     setUser(changedUser);
-                } else {       
+                } else if (response.data.editedClient) {
+                    const changedUser = response.data.editedClient;
+                    setUser(changedUser);
+                } else {
                     setChangeDataState("Error en el servidor");
                 }
 
                 const changeDataStatus = response.data.estado;
                 setChangeDataState(changeDataStatus);
-                
+
             } catch (error) {
             };
+
+            setPassword("");
         };
+        
     };
 
     const managePasswordType = () => {
