@@ -221,8 +221,6 @@ const Register = ({ sendToParent }) => {
                 acountType
             }
 
-            console.log(payload)
-
             try {
                 let response = "";
 
