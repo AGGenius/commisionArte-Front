@@ -51,7 +51,7 @@ const Login = () => {
                 setUser(newUser);
                 navigate("/");
             } catch (err) {
-                setUpadteStatus(err.response.data.estado);
+                setUpadteStatus(err.response.data.errors);
             };
         };
     };
