@@ -91,7 +91,7 @@ function Nav() {
   return (
     <nav className={"nav"} ref={newRef}>
       <Link to="/"><p className={"nav--webTittle"}>COMMISION ARTE</p></Link>
-      {token && user.acount_type === "client" ? clientMenu() : artistMenu()}
+      {token && user.account_type === "client" ? clientMenu() : artistMenu()}
       {!token && <button className="nav--loginWindow" onClick={() => setLoginWindow(!loginWindow)}>LOGIN/REGISTER</button>}
       {token && <button className="nav--loginWindow" onClick={() => logOut()}>LOGOUT</button>}
       {loginWindow && !token && <Login />}

@@ -34,7 +34,7 @@ const OffersPage = () => {
     }, [user]);
 
     const getOffers = async () => {
-        if (user.acount_type === "client") {
+        if (user.account_type === "client") {
             try {
                 const offersUrl = `http://localhost:3000/api/openWorks/client/`;
                 const response = await axios.get(offersUrl + user.id);
@@ -44,7 +44,7 @@ const OffersPage = () => {
             } catch (error) {
                 console.log(error);
             };
-        } else if (user.acount_type === "artist") {
+        } else if (user.account_type === "artist") {
             try {
                 const offersUrl = `http://localhost:3000/api/openWorks/available/`;
                 const response = await axios.get(offersUrl + user.id);
@@ -341,9 +341,9 @@ const OffersPage = () => {
                     <p>Estado: {offerStatus(offer)}</p>
                     <p>SFW: {offer.sfw_status ? "SI" : "NO"}</p>
                     <p>Creada: {formatDate(offer.creation_date)}</p>
-                    {user.acount_type === "client" && offer.status === "taken" && <p>Artist ID: {offer.artist_id}</p>}
-                    {user.acount_type === "client" ? generateDeleteOfferButton(offer) : generateTakeOfferButton(offer)}
-                    {user.acount_type === "client" ? generateShowArtistButton(offer) : generateShowClientButton(offer)}
+                    {user.account_type === "client" && offer.status === "taken" && <p>Artist ID: {offer.artist_id}</p>}
+                    {user.account_type === "client" ? generateDeleteOfferButton(offer) : generateTakeOfferButton(offer)}
+                    {user.account_type === "client" ? generateShowArtistButton(offer) : generateShowClientButton(offer)}
                 </>
             )
         }
@@ -389,7 +389,7 @@ const OffersPage = () => {
             )
         }
 
-        if (user.acount_type === "artist") {
+        if (user.account_type === "artist") {
             return (
                 <>
                     {showData && clientOfferContent()}
@@ -432,7 +432,7 @@ const OffersPage = () => {
         <div className="addGame">
             <div>
                 {renderOffers()}
-                {user.acount_type === "client" && clientOfferPage()}
+                {user.account_type === "client" && clientOfferPage()}
             </div>
 
         </div>

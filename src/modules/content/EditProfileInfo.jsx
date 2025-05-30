@@ -58,7 +58,7 @@ const EditProfileInfo = ({ sendToParent }) => {
         setSfw_status(user.sfw_status);
         setTelephone(user.telephone);
 
-        if (user.acount_type === "artist") {
+        if (user.account_type === "artist") {
             setComm_status(user.comm_status);
             setStyles(user.styles);
         }
@@ -295,7 +295,7 @@ const EditProfileInfo = ({ sendToParent }) => {
         totalErrors +=  checkTelephoneFormat();
         totalErrors +=  checkPasswordState();
 
-        if (user.acount_type === "artist") {
+        if (user.account_type === "artist") {
             totalErrors +=  checkStylesFormat();
         } 
         
@@ -318,7 +318,7 @@ const EditProfileInfo = ({ sendToParent }) => {
 
             let payload = {}
 
-            if (user.acount_type === "artist") {
+            if (user.account_type === "artist") {
                 payload = {
                     name,
                     nick,
@@ -348,7 +348,7 @@ const EditProfileInfo = ({ sendToParent }) => {
             try {
                 let response = "";
 
-                if (user.acount_type === "artist") {
+                if (user.account_type === "artist") {
                     response = await axios.put(apiArtistURL + user.id, payload);
                 } else {
                     response = await axios.put(apiClientURL + user.id, payload);
@@ -460,7 +460,7 @@ const EditProfileInfo = ({ sendToParent }) => {
                         <label htmlFor="editUserNSFWfilter">Filtro NSWF</label>
                         <input id="editUserNSFWfilter" type="checkbox" value={sfw_status ? true : false} checked={sfw_status ? true : false} onChange={(e) => setSfw_status(e.target.checked)}></input>
                     </div>
-                    {user.acount_type === "artist" &&
+                    {user.account_type === "artist" &&
                         <>
                             <div className="register--formPair">
                                 <label htmlFor="editUserActiveComissions">Comisiones activas</label>

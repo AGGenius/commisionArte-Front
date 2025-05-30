@@ -98,7 +98,7 @@ const StateCardPage = () => {
     };
 
     const getStateCards = async () => {
-        if (user.acount_type === "client") {
+        if (user.account_type === "client") {
             try {
                 const offersUrl = `http://localhost:3000/api/stateCards/client/`;
                 const response = await axios.get(offersUrl + user.id);
@@ -108,7 +108,7 @@ const StateCardPage = () => {
             } catch (error) {
                 console.log(error);
             };
-        } else if (user.acount_type === "artist") {
+        } else if (user.account_type === "artist") {
             try {
                 const offersUrl = `http://localhost:3000/api/stateCards/artist/`;
                 const response = await axios.get(offersUrl + user.id);
@@ -121,8 +121,35 @@ const StateCardPage = () => {
         }
     };
 
+    //Function to finalice the work. It has a confirmation window that is necessary to accept to finally delete the element.
+    const finaliceWork = async (stateCardID) => {
+        if (!token) { return };
+        const confirmation = await confirm("¿Estas seguro de que quieres confirmar el estado del trabajo como finalizado?");
+
+        if (confirmation) {
+            const payload = {
+                status: "Finalizado",
+                commentary: "Trabajo finalizado correctamente.",
+            }
+
+            const uploadStateCardURL = `http://localhost:3000/api/stateCards/update/`;
+
+            try {
+                const response = await axios.put(uploadStateCardURL + stateCardID, payload);
+                setCreateStatus(response.data.estado);
+                reset();
+                getStateCards();
+                setEditStateCard(false);
+                setEditStateCardID(0)
+            } catch (error) {
+                const errors = error.response.data.errors;
+                setCreateStatus(errors)
+            };
+        };
+    };
+
     const renderOffers = () => {
-        const baseOfferContent = (stateCard) => {
+        const setOfferContent = (stateCard) => {
             return (
                 <>
                     <p>Artista: {stateCard.artist_name}</p>
@@ -132,7 +159,12 @@ const StateCardPage = () => {
                     <p>Comentario: {stateCard.commentary}</p>
                     <p>Creada: {formatDate(stateCard.creation_date)}</p>
                     <p>Modificada: {formatDate(stateCard.last_modification_date)}</p>
-                    {user.acount_type === "artist" && <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>}              
+                    {stateCard.status != "Finalizado" ? (
+                        user.account_type == "artist" ? (
+                            <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>) :
+                            (<button onClick={() => finaliceWork(stateCard.id)}>Finalizar trabajo</button>)
+                    ) : null
+                    }
                 </>
             )
         }
@@ -142,7 +174,16 @@ const StateCardPage = () => {
             return (
                 < div className="games--gameCard" key={stateCard.id} >
                     <div className="games--gameCardData">
-                        {baseOfferContent(stateCard)}
+                        {stateCard.status != "Finalizado" ?
+                            <>
+                                <h3>Peticiones activas</h3>
+                                {setOfferContent(stateCard)}
+                            </> :
+                            <>
+                                <h3>Peticiones finalizadas</h3>
+                                {setOfferContent(stateCard)}
+                            </>
+                        }
                     </div>
                 </div >
             )
@@ -166,7 +207,7 @@ const StateCardPage = () => {
         <div className="addGame">
             <div>
                 {renderOffers()}
-                {user.acount_type === "artist" && editStateCard && editWorkcardPage()}
+                {user.account_type === "artist" && editStateCard && editWorkcardPage()}
             </div>
         </div>
     )

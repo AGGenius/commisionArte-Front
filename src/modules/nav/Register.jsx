@@ -203,12 +203,12 @@ const Register = ({ sendToParent }) => {
         if (emailState.length === 0 && passwordState.length === 0 && repeatPasswordState.length === 0 && nameState.length === 0 && nickState.length === 0
             && email && password && name && nick) {
 
-            let acountType = "";
+            let accountType = "";
 
             if (registerType) {
-                acountType = "artist";
+                accountType = "artist";
             } else {
-                acountType = "client";
+                accountType = "client";
             }
 
             const payload = {
@@ -218,7 +218,7 @@ const Register = ({ sendToParent }) => {
                 name,
                 nick,
                 telephone,
-                acountType
+                accountType
             }
 
             try {

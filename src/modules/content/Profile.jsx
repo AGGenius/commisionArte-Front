@@ -63,7 +63,7 @@ const ProfilePage = () => {
             try {
                 let response = "";
 
-                if (user.acount_type === "artist") {
+                if (user.account_type === "artist") {
                     response = await axios.delete(artistsUrl + user.id);
                 } else {
                     response = await axios.delete(clientsUrl + user.id);
