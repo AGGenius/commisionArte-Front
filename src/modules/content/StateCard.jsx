@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
+import RateUser from "./RateUser.jsx";
 import axios from 'axios';
 //import './AddGame.css'
 
@@ -15,12 +16,21 @@ const StateCardPage = () => {
     const [editStateCard, setEditStateCard] = useState(false);
     const [editStateCardID, setEditStateCardID] = useState(0);
 
+    const [rateUserWindowState, setRateUserWindowState] = useState(false);
+    const newRef = useRef(null);
+
     const navigate = useNavigate();
 
 
     //Redirect for unauthorized access
     useEffect(() => {
         if (!localStorage.getItem("token")) { navigate("/"); }
+
+        document.addEventListener("mousedown", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
     }, []);
 
     useEffect(() => {
@@ -33,6 +43,12 @@ const StateCardPage = () => {
             estate: "", comment: ""
         }
     });
+
+    const handleOutsideClick = (e) => {
+        if (newRef.current && !newRef.current.contains(e.target)) {
+            setRateUserWindowState(false);
+        }
+    };
 
     function formatDate(baseDate) {
         const date = new Date(baseDate);
@@ -163,7 +179,8 @@ const StateCardPage = () => {
                         user.account_type == "artist" ? (
                             <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>) :
                             (<button onClick={() => finaliceWork(stateCard.id)}>Finalizar trabajo</button>)
-                    ) : null
+                    ) :
+                        (<button onClick={() => setRateUserWindowState(true)}>Valorar usuario</button>)
                     }
                 </>
             )
@@ -204,10 +221,11 @@ const StateCardPage = () => {
     };
 
     return (
-        <div className="addGame">
+        <div className="offers" ref={newRef}>
             <div>
                 {renderOffers()}
                 {user.account_type === "artist" && editStateCard && editWorkcardPage()}
+                {rateUserWindowState && <RateUser />}
             </div>
         </div>
     )
