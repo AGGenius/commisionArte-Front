@@ -50,6 +50,10 @@ const StateCardPage = () => {
         }
     };
 
+    const sendToParent = (data) => {
+        setRateUserWindowState(data);
+    };
+
     function formatDate(baseDate) {
         const date = new Date(baseDate);
         const day = String(date.getUTCDate()).padStart(2, '0');
@@ -225,7 +229,7 @@ const StateCardPage = () => {
             <div>
                 {renderOffers()}
                 {user.account_type === "artist" && editStateCard && editWorkcardPage()}
-                {rateUserWindowState && <RateUser />}
+                {rateUserWindowState && <RateUser sendToParent={sendToParent}/>}
             </div>
         </div>
     )
