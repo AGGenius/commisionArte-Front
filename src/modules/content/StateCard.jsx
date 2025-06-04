@@ -17,6 +17,7 @@ const StateCardPage = () => {
     const [editStateCardID, setEditStateCardID] = useState(0);
 
     const [rateUserWindowState, setRateUserWindowState] = useState(false);
+    const [rateStateCard, setRateStateCard] = useState({})
     const newRef = useRef(null);
 
     const navigate = useNavigate();
@@ -168,6 +169,11 @@ const StateCardPage = () => {
         };
     };
 
+    const handleRateUser = stateCard => {
+        setRateStateCard(stateCard);
+        setRateUserWindowState(true);
+    }
+
     const renderOffers = () => {
         const setOfferContent = (stateCard) => {
             return (
@@ -184,7 +190,7 @@ const StateCardPage = () => {
                             <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>) :
                             (<button onClick={() => finaliceWork(stateCard.id)}>Finalizar trabajo</button>)
                     ) :
-                        (<button onClick={() => setRateUserWindowState(true)}>Valorar usuario</button>)
+                        (<button onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>)
                     }
                 </>
             )
@@ -229,7 +235,7 @@ const StateCardPage = () => {
             <div>
                 {renderOffers()}
                 {user.account_type === "artist" && editStateCard && editWorkcardPage()}
-                {rateUserWindowState && <RateUser sendToParent={sendToParent}/>}
+                {rateUserWindowState && <RateUser rateStateCard={rateStateCard} sendToParent={sendToParent}/>}
             </div>
         </div>
     )
