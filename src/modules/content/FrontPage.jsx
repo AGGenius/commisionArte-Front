@@ -6,13 +6,18 @@ import './FrontPage.css'
 
 const FrontPage = () => {
     const { user, setUser } = useUserContext();
+    const [token, setToken] = useState("");
+
     const [mainImage, setMainImage] = useState();
     const [imageSet, setImageSet] = useState([]);
 
     useEffect(() => {
-        getImage();
         getAllImages();
     }, [])
+
+    useEffect(() => {
+        setToken(localStorage.getItem("token"));
+    }, [user]);
 
     const getImage = async () => {
         try {
@@ -26,8 +31,10 @@ const FrontPage = () => {
     };
 
     const getAllImages = async () => {
+        const logedStatus = !!localStorage.getItem("token");
+
         try {
-            const imageUrl = `http://localhost:3000/api/portfolio/`;
+            const imageUrl = `http://localhost:3000/api/portfolio?logedStatus=${logedStatus}`;
             const response = await axios.get(imageUrl);
             const data = response.data;
             setImageSet(data);
@@ -37,9 +44,9 @@ const FrontPage = () => {
     };
 
     const checkSFW = async (e, image) => {
-        if (image.sfw_status) {return}
+        if (image.sfw_status) { return }
 
-        if(user.sfw_status === false && e.target.className === "blur") {
+        if (user.sfw_status === false && e.target.className === "blur") {
             e.target.className = "plain";
             e.target.src = image.location;
         } else {
@@ -58,11 +65,11 @@ const FrontPage = () => {
                         <div className="games--gameCardData">
                             <p>Nombre: {image.name}</p>
                             <p>Estilos: <span>{image.styles}</span></p>
-                            <div className="img__container"><img 
-                                className={image.sfw_status ? "plain" : "blur"} 
-                                src={image.sfw_status ? image.location : image.blurred_location } 
-                                alt={'Picture ' + image.name + ' - ' + image.sfw_status} 
-                                onClick={(e) => checkSFW(e, image)}/></div>
+                            <div className="img__container"><img
+                                className={image.sfw_status ? "plain" : "blur"}
+                                src={image.sfw_status ? image.location : image.blurred_location}
+                                alt={'Picture ' + image.name + ' - ' + image.sfw_status}
+                                onClick={(e) => checkSFW(e, image)} /></div>
                         </div>
                     </div>
                 ))
