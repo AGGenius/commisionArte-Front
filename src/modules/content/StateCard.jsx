@@ -53,6 +53,7 @@ const StateCardPage = () => {
 
     const sendToParent = (data) => {
         setRateUserWindowState(data);
+        getStateCards();
     };
 
     function formatDate(baseDate) {
@@ -189,8 +190,11 @@ const StateCardPage = () => {
                         user.account_type == "artist" ? (
                             <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>) :
                             (<button onClick={() => finaliceWork(stateCard.id)}>Finalizar trabajo</button>)
-                    ) :
-                        (<button onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>)
+                    ) : user.account_type == "artist" ? ( 
+                        !stateCard.client_rated && 
+                        <button onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>) : (
+                        !stateCard.artist_rated &&
+                        <button onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>)                      
                     }
                 </>
             )

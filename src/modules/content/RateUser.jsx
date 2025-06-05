@@ -32,11 +32,13 @@ const RateUser = ({ rateStateCard, sendToParent }) => {
         const rateValue = e.target.value;
         const artistId = rateStateCard.artist_id;
         const clientId = rateStateCard.client_id;
+        const workcardId = rateStateCard.id
 
         const payload = {
             rateValue,
             artistId,
-            clientId
+            clientId,
+            workcardId
         }
 
         let rateUserUrl;
