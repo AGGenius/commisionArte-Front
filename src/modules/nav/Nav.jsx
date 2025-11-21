@@ -64,7 +64,8 @@ function Nav() {
   const logOut = () => {
     localStorage.removeItem("token");
     setUser({});
-    navigate("/");
+    navigate("/"); 
+    window.location.reload();
   };
 
   const clientMenu = (e) => {

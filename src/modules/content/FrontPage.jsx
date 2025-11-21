@@ -10,6 +10,8 @@ const FrontPage = () => {
 
     const [mainImage, setMainImage] = useState();
     const [imageSet, setImageSet] = useState([]);
+    const [imageSize, setImageSize] = useState(false);
+    const [activeImages, setActiveImages] = useState([]);
 
     useEffect(() => {
         getAllImages();
@@ -19,15 +21,26 @@ const FrontPage = () => {
         setToken(localStorage.getItem("token"));
     }, [user]);
 
-    const getImage = async () => {
-        try {
-            const imageUrl = `http://localhost:3000/api/portfolio/1`;
-            const response = await axios.get(imageUrl);
-            const data = response.data;
-            setMainImage(data);
-        } catch (error) {
-            //console.log(error);
-        };
+    const getImage = async (image) => {
+        const imageId = image.id;
+
+        if (!imageSize) {
+            try {
+                const imageUrl = `http://localhost:3000/api/portfolio/`;
+                const response = await axios.get(imageUrl + imageId);
+                const data = response.data;
+
+                setMainImage(data);
+                setImageSize(true);
+                console.log(data);
+            } catch (error) {
+                //console.log(error);
+            };
+        } else {
+            setMainImage("");
+            setImageSize(false);
+        }
+
     };
 
     const getAllImages = async () => {
@@ -45,15 +58,27 @@ const FrontPage = () => {
 
     const checkSFW = async (e, image) => {
         if (image.sfw_status) { return }
+        if (!token) { return };        
+        if (user.sfw_status === true) { return };
 
-        if (user.sfw_status === false && e.target.className === "blur") {
-            e.target.className = "plain";
+        activateResizeButton(image);
+
+        if (e.target.className === "blur baseImage") {
+            e.target.className = "plain baseImage";
             e.target.src = image.location;
         } else {
-            e.target.className = "blur";
+            e.target.className = "blur baseImage";
             e.target.src = image.blurred_location;
-        }
+        };
     };
+
+    const activateResizeButton = async (image) => {
+        setActiveImages(prev =>
+            prev.includes(image.id)
+                ? prev.filter(x => x !== image.id)
+                : [...prev, image.id]
+        );
+    }
 
     return (
         <>
@@ -61,19 +86,44 @@ const FrontPage = () => {
             <div className="mainPage">
                 {imageSet ? imageSet.map((image) =>
                 (
-                    <div className="games--gameCard" key={image.id}>
-                        <div className="games--gameCardData">
-                            <p>Nombre: {image.name}</p>
-                            <p>Estilos: <span>{image.styles}</span></p>
-                            <div className="img__container"><img
-                                className={image.sfw_status ? "plain" : "blur"}
-                                src={image.sfw_status ? image.location : image.blurred_location}
-                                alt={'Picture ' + image.name + ' - ' + image.sfw_status}
-                                onClick={(e) => checkSFW(e, image)} /></div>
+                    <div className="frontPage--image" key={image.id}>
+                        <div className="frontPage--imageData">
+                            <p>Titulo: {image.name}</p>
+                            <p>Estilos:</p>
+                            <div>
+                                {image.styles.split(',').map((style, i) => (
+                                    <span className="images--styles" key={i}>{style}</span>
+                                ))}
+                            </div>
+                            <div className="img__container">
+                                <img
+                                    className={image.sfw_status ? "plain baseImage" : "blur baseImage"}
+                                    src={image.sfw_status ? image.location : image.blurred_location}
+                                    alt={'Picture ' + image.name + ' - ' + image.sfw_status}
+                                    onClick={(e) => checkSFW(e, image)} />
+                                {activeImages.includes(image.id) && <button className="img__changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
+                                {image.sfw_status && <button className="img__changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
+                            </div>
                         </div>
                     </div>
                 ))
                     : <p>Cargando datos...</p>
+                }
+                {imageSize &&
+                    <>
+                        <div className="frontPage--fullImage" key={mainImage.id}>
+                            <div className="frontPage--fullImageData" onClick={() => getImage(mainImage)}>
+                                <p>Titulo: {mainImage.name}</p>
+                                <div className="img__fullImageContainer">
+                                    <img
+                                        className={"plain img__fullImage"}
+                                        src={mainImage.location}
+                                        alt={'Picture ' + mainImage.name}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </>
                 }
             </div>
         </>

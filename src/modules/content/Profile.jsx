@@ -28,6 +28,7 @@ const ProfilePage = () => {
     const [telephone, setTelephone] = useState("");
     const [sfwStatus, setSfwStatus] = useState("");
     const [reputation, setReputation] = useState(0);
+    const [styles, setStyles] = useState([]);
 
     //Redirect for unauthorized access
     useEffect(() => {
@@ -47,6 +48,11 @@ const ProfilePage = () => {
         setTelephone(user.telephone);
         setSfwStatus(user.sfw_status);
         setReputation(user.reputation);
+
+        if (user.account_type === "artist") {
+            const formatedStyles = user.styles.replace(/^{|}$/g, "").split(",").map(s => s.replace(/^"|"$/g, "").trim());
+            setStyles(formatedStyles);
+        };
     };
 
     const sendToParent = (data) => {
@@ -79,7 +85,6 @@ const ProfilePage = () => {
                 }
             } catch (error) {
                 setChangeDataState("No fue posible borrar la cuenta.");
-                //console.log(error)
             };
         };
     };
@@ -101,6 +106,16 @@ const ProfilePage = () => {
                     <p className="profile--text profile--nick">Telefono: <span>{telephone}</span></p>
                     <p className="profile--text profile--nick">Filtro SFW: <span>{sfwStatus ? "activo" : "inactivo"}</span></p>
                     <p className="profile--text profile--nick">Reputación: <span>{reputation}</span></p>
+                    {user.account_type === "artist" &&
+                        <>
+                            <p>Estilos:</p>
+                            <div>
+                                {styles.map((style, i) => (
+                                    <span className="images--styles" key={i}>{style}</span>
+                                ))}
+                            </div>
+                        </>
+                    }
                 </div>
                 <button onClick={() => setActiveEditWindow(true)}>ACTUALIZAR INFORMACION</button>
                 <button onClick={() => deleteUser()}>BORRAR CUENTA</button>
@@ -121,7 +136,7 @@ const ProfilePage = () => {
 
     return (
         <>
-            {activeEditWindow ? <EditProfileInfo sendToParent={sendToParent} /> : activeEraseWindow ? deletePage() :  profilePage()}
+            {activeEditWindow ? <EditProfileInfo sendToParent={sendToParent} /> : activeEraseWindow ? deletePage() : profilePage()}
         </>
     );
 }

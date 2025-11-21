@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
 import axios from "axios";
-//import './Register.css'
+import './EditProfileInfo.css'
 
 //Module to generate a login form. The content reacts when the users is logged to display a welcome message and the logout button. 
 const EditProfileInfo = ({ sendToParent }) => {
@@ -20,6 +20,7 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [comm_status, setComm_status] = useState("");
     const [sfw_status, setSfw_status] = useState("");
     const [styles, setStyles] = useState("");
+    const [selectedStyles, setSelectedStyles] = useState([]);
     const [telephone, setTelephone] = useState("");
     const [passwordType, setPassworodType] = useState("password");
     const [repeatPasswordType, setRepeatPassworodType] = useState("password");
@@ -39,6 +40,33 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [registerType, setRegisterType] = useState(false);
     const apiArtistURL = "http://localhost:3000/api/artists/editInfo/";
     const apiClientURL = "http://localhost:3000/api/clients/editInfo/";
+
+    const stylesArr = [
+        "traditional",
+        "digital",
+        "realistic",
+        "color",
+        "lineart",
+        "rendered",
+        "sculpture",
+        "plush",
+        "full length portrait",
+        "headshot",
+        "adoptable",
+        "ych",
+        "reference sheet",
+        "sticker"
+    ];
+
+    useEffect(() => {
+        setStyles(selectedStyles);
+    }, [selectedStyles]);
+
+    const handleSelectChange = (e) => {
+        const selected = Array.from(e.target.selectedOptions).map(o => o.value);
+        setSelectedStyles(selected);   // actualiza con todas las opciones seleccionadas
+        setStyles(selectedStyles);
+    };
 
     //Redirect for unauthorized access
     useEffect(() => {
@@ -227,25 +255,22 @@ const EditProfileInfo = ({ sendToParent }) => {
     //Function to check the telephone input. Uses array of error messages and regex validators to check and reply on each case.
     const checkTelephoneFormat = () => {
         const telephoneCheckList = [
-            "El campo no puede estar vacio",
             "Debe contener solo numeros"
         ]
 
         const validationRegex = [
-            { regex: /.{1,}/ },
-            { regex: /^-?\d+\.?\d*$/ }
+            { regex: /^\d+$/ }
         ];
 
         let actualCheckList = [];
 
-        validationRegex.forEach((item, i) => {
-
-            let isValid = item.regex.test(telephone);
+        if (telephone && telephone.length > 0) {
+            const isValid = /^\d+$/.test(telephone);
 
             if (!isValid) {
-                actualCheckList.push(telephoneCheckList[i])
-            }
-        })
+                actualCheckList.push(telephoneCheckList[0]);
+            };
+        };
 
         setTelephoneState(actualCheckList);
         return actualCheckList.length;
@@ -289,18 +314,18 @@ const EditProfileInfo = ({ sendToParent }) => {
 
     const doChecks = () => {
         let totalErrors = 0;
-        totalErrors +=  checkEmailFormat();
-        totalErrors +=  checkNameFormat();
-        totalErrors +=  checkNickFormat();
-        totalErrors +=  checkTelephoneFormat();
-        totalErrors +=  checkPasswordState();
+        totalErrors += checkEmailFormat();
+        totalErrors += checkNameFormat();
+        totalErrors += checkNickFormat();
+        totalErrors += checkTelephoneFormat();
+        totalErrors += checkPasswordState();
 
         if (user.account_type === "artist") {
-            totalErrors +=  checkStylesFormat();
-        } 
-        
+            totalErrors += checkStylesFormat();
+        }
+
         if (newPassword || repeatNewPassword) {
-            totalErrors +=  checkPassSecurity() + checkPasswords();
+            totalErrors += checkPassSecurity() + checkPasswords();
         }
 
         return totalErrors;
@@ -312,7 +337,7 @@ const EditProfileInfo = ({ sendToParent }) => {
         e.preventDefault();
 
         restartChecks();
-        const totalErrors = doChecks();        
+        const totalErrors = doChecks();
 
         if (totalErrors === 0) {
 
@@ -372,7 +397,7 @@ const EditProfileInfo = ({ sendToParent }) => {
 
             setPassword("");
         };
-        
+
     };
 
     const managePasswordType = () => {
@@ -467,8 +492,13 @@ const EditProfileInfo = ({ sendToParent }) => {
                                 <input id="editUserActiveComissions" type="checkbox" value={comm_status ? true : false} checked={comm_status ? true : false} onChange={(e) => setComm_status(e.target.checked)}></input>
                             </div>
                             <div className="register--formPair">
-                                <label htmlFor="editUserArtStyles">Estilos artisticos</label>
-                                <input id="editUserArtStyles" type="text" value={styles} onChange={(e) => setStyles(e.target.value)}></input>
+                                <label htmlFor="editUserStyles">Estilos</label>
+                                <select id="createGameGenre"  className="editUserStyles" multiple value={selectedStyles} onChange={handleSelectChange}>
+                                    {stylesArr && stylesArr.sort().map((style, i) => (
+                                        <option key={i} value={style}>{style}</option>
+                                    ))}
+                                </select>
+                                <input type="text" readOnly value={selectedStyles.join(", ")} placeholder="Tus estilos seleccionados aparecerán aquí" />
                             </div>
                             {stylesState &&
                                 <ul>

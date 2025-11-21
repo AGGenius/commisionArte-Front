@@ -69,7 +69,12 @@ const PersonalGalleryPage = () => {
                     <div className="games--gameCard" key={image.id}>
                         <div className="games--gameCardData">
                             <p>Nombre: {image.name}</p>
-                            <p>Estilos: <span>{image.styles}</span></p>
+                            <p>Estilos:</p>
+                            <div>
+                                {image.styles.split(',').map((style, i) => (
+                                    <span className="images--styles" key={i}>{style}</span>
+                                ))}
+                            </div>
                             <div className="img__container"><img
                                 className={image.sfw_status ? "plain" : "blur"}
                                 src={image.sfw_status ? image.location : image.blurred_location}

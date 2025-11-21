@@ -50,6 +50,7 @@ const Login = () => {
                 const newUser = userResponse.data;
                 setUser(newUser);
                 navigate("/");
+                window.location.reload();
             } catch (err) {
                 setUpadteStatus(err.response.data.errors);
             };
