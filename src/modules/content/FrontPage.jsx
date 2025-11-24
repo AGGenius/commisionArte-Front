@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Blur from "react-blur";
 import axios from 'axios';
 import { useUserContext } from "../../context/useUserContext";
 import './FrontPage.css'
@@ -13,6 +12,9 @@ const FrontPage = () => {
     const [imageSize, setImageSize] = useState(false);
     const [activeImages, setActiveImages] = useState([]);
 
+    const [artistCache, setArtistCache] = useState({});
+    const [tooltip, setTooltip] = useState({ text: "", x: 0, y: 0, active: false });
+
     useEffect(() => {
         getAllImages();
     }, [])
@@ -20,6 +22,21 @@ const FrontPage = () => {
     useEffect(() => {
         setToken(localStorage.getItem("token"));
     }, [user]);
+
+
+    const getArtistName = async (artistId) => {
+        if (artistCache[artistId]) return artistCache[artistId];
+
+
+        const artistNameUrl = `http://localhost:3000/api/artists/artistname/`;
+
+        const response = await axios.get(artistNameUrl + artistId);
+        const data = response.data;
+        const artistName = data.name || "Unknown";
+
+        setArtistCache((prev) => ({ ...prev, [artistId]: artistName }));
+        return artistName;
+    };
 
     const getImage = async (image) => {
         const imageId = image.id;
@@ -32,9 +49,7 @@ const FrontPage = () => {
 
                 setMainImage(data);
                 setImageSize(true);
-                console.log(data);
             } catch (error) {
-                //console.log(error);
             };
         } else {
             setMainImage("");
@@ -52,23 +67,24 @@ const FrontPage = () => {
             const data = response.data;
             setImageSet(data);
         } catch (error) {
-            //console.log(error);
         };
     };
 
     const checkSFW = async (e, image) => {
         if (image.sfw_status) { return }
-        if (!token) { return };        
+        if (!token) { return };
         if (user.sfw_status === true) { return };
 
         activateResizeButton(image);
 
-        if (e.target.className === "blur baseImage") {
-            e.target.className = "plain baseImage";
+        if (e.target.className === "blur frontPage__imgContainer--baseImage") {
+            e.target.className = "plain frontPage__imgContainer--baseImage";
             e.target.src = image.location;
+            handleMouseEnter(e, image, true);
         } else {
-            e.target.className = "blur baseImage";
+            e.target.className = "blur frontPage__imgContainer--baseImage";
             e.target.src = image.blurred_location;
+            handleMouseLeave();
         };
     };
 
@@ -78,57 +94,89 @@ const FrontPage = () => {
                 ? prev.filter(x => x !== image.id)
                 : [...prev, image.id]
         );
-    }
+    };
+
+    const handleMouseEnter = async (e, image, imageSfwActualStatus) => {
+        if (!image.sfw_status && !imageSfwActualStatus) { return }
+        if (user.sfw_status === true) { return };
+
+        const name = await getArtistName(image.artist_id);
+        const rect = e.target.getBoundingClientRect();
+
+        setTooltip({
+            text: 'Creada por: ' + name,
+            x: rect.left + rect.width / 2,
+            y: rect.top - 10,
+            active: true
+        });
+    };
+
+    const handleMouseLeave = () => {
+        setTooltip((prev) => ({ ...prev, active: false }));
+    };
 
     return (
         <>
-            <h1>PRIMERAS PRUEBAS</h1>
-            <div className="mainPage">
-                {imageSet ? imageSet.map((image) =>
-                (
-                    <div className="frontPage--image" key={image.id}>
-                        <div className="frontPage--imageData">
-                            <p>Titulo: {image.name}</p>
-                            <p>Estilos:</p>
-                            <div>
-                                {image.styles.split(',').map((style, i) => (
-                                    <span className="images--styles" key={i}>{style}</span>
-                                ))}
+            <div className="frontPage">
+                <h1 className="frontPage--title">GALERIA PRINCIPAL</h1>
+                <div className="frontPage__imageWrap">
+                    {imageSet ? imageSet.map((image) =>
+                    (
+                        <div className="frontPage__imgContainer" key={image.id}>
+                            <div className="frontPage__imgContainer--data">
+                                <p className="frontPage__imgContainer--title--label">Titulo: <span className="frontPage__imgContainer--title">{image.name}</span></p>
+                                <p className="frontPage__imgContainer--styles">Estilos</p>
+                                <div className="frontPage__imgContainer--stylesList">
+                                    {image.styles.split(',').map((style, i) => (
+                                        <span className="frontPage__imgContainer--stylesList--item" key={i}>{style}</span>
+                                    ))}
+                                </div>
+
                             </div>
-                            <div className="img__container">
+                            <div className="frontPage__imgContainer--imageWrap">
                                 <img
-                                    className={image.sfw_status ? "plain baseImage" : "blur baseImage"}
+                                    className={image.sfw_status ? "plain frontPage__imgContainer--baseImage" : "blur frontPage__imgContainer--baseImage"}
                                     src={image.sfw_status ? image.location : image.blurred_location}
                                     alt={'Picture ' + image.name + ' - ' + image.sfw_status}
-                                    onClick={(e) => checkSFW(e, image)} />
-                                {activeImages.includes(image.id) && <button className="img__changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
-                                {image.sfw_status && <button className="img__changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
+                                    onClick={(e) => checkSFW(e, image)}
+                                    onMouseEnter={(e) => handleMouseEnter(e, image, activeImages.includes(image.id))}
+                                    onMouseLeave={handleMouseLeave}
+                                />
+                                {activeImages.includes(image.id) && <button className="frontPage__imgContainer--changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
+                                {image.sfw_status && <button className="frontPage__imgContainer--changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
                             </div>
                         </div>
-                    </div>
-                ))
-                    : <p>Cargando datos...</p>
-                }
-                {imageSize &&
-                    <>
-                        <div className="frontPage--fullImage" key={mainImage.id}>
-                            <div className="frontPage--fullImageData" onClick={() => getImage(mainImage)}>
-                                <p>Titulo: {mainImage.name}</p>
-                                <div className="img__fullImageContainer">
+                    ))
+                        : <p>Cargando datos...</p>
+                    }
+                    {imageSize &&
+                        <>
+                            <div className="frontPage__fullImage" key={mainImage.id} onClick={() => getImage(mainImage)}>
+                                <div className="frontPage__fullImage--data" >
+                                    <p className="frontPage__fullImage--name">Titulo: {mainImage.name}</p>
+                                </div>
+                                <div className="frontPage__fullImage--imageContainer">
                                     <img
-                                        className={"plain img__fullImage"}
+                                        className={"plain frontPage__fullImage--image"}
                                         src={mainImage.location}
                                         alt={'Picture ' + mainImage.name}
                                     />
                                 </div>
                             </div>
+                        </>
+                    }
+                    {tooltip.active && (
+                        <div
+                            className="frontPage__tooltip"
+                            style={{ "--top": tooltip.y + "px", "--left": tooltip.x + "px" }}
+                        >
+                            {tooltip.text}
                         </div>
-                    </>
-                }
+                    )}
+                </div>
             </div>
         </>
     )
-
-}
+};
 
 export default FrontPage;

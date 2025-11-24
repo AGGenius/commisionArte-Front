@@ -1,45 +1,134 @@
-.mainPage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-}
-
+/* Move to index.css */
 img {
     width: 300px;
 }
 
-.baseImage {
+.frontPage {
     height: 100%;
-    width: 300px;
-    
+    width: 100%;
+    gap: 1rem;
+
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-top: 1rem;
+    margin-bottom: 50px;
+}
+
+.frontPage--title {
+    width: 100%;
+    height: 10%;
+
+    font-size: 4rem;
+}
+
+.frontPage__imageWrap {
+    width: 100%;
+    height: 90%;
+    gap: 2rem;
+
+    display: flex;
+    flex-direction: row;
     justify-content: center;
+    align-items: flex-start;
+
+    flex-flow: wrap;
+}
+
+.frontPage__imgContainer {
+    height: 50%;
+    width: 300px;
+    gap: 1rem;
+
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
     align-items: center;
 }
 
-.img__container {
+.frontPage__imgContainer--data {
+    height: 20%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.frontPage__imgContainer--title--label {
+    font-size: .9rem;
+}
+
+.frontPage__imgContainer--title {
+    font-size: 1.5rem;
+}
+
+.frontPage__imgContainer--styles {
+    font-size: .9rem;
+}
+
+.frontPage__imgContainer--stylesList {
+    height: 20%;
+    width: 100%;
+    gap: .5rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.frontPage__imgContainer--stylesList--item {
+    font-size: .8rem;
+    
+    border: 2px solid rgb(46, 46, 46);
+    border-radius: 10px;
+
+    padding: 0 10px 0 10px;
+}
+
+.frontPage__imgContainer--imageWrap {
+    height: auto;
+    max-height: 70%;
+    width: 100%;
+
     position: relative;
-    display: inline-block;
-
-    overflow: hidden;
-
-    border: 2px solid rgb(230, 230, 230);
-    border-radius: 15px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     top: 0;
 }
 
-.img__changeSizeButton {
+.frontPage__imgContainer--baseImage {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    object-fit: contain;
+    overflow: hidden;
+    
+    border: 2px solid rgb(230, 230, 230);
+    border-radius: 15px;
+}
+
+.frontPage__imgContainer--changeSizeButton {
     position: absolute;
     width: 50%;
 
-    bottom: 0; 
+    bottom: 0px;
     left: 50%;
-    margin: 0; 
     transform: translateX(-50%);
 
-    background: rgba(0, 0, 0, 0.6);  
+    background: rgba(0, 0, 0, 0.6);
     color: white;
     border: 2px solid rgb(230, 230, 230);
     border-radius: 15px;
@@ -48,39 +137,55 @@ img {
     font-weight: bold;
 }
 
-.frontPage--fullImage {
-    position: fixed;
-    width: 100%;
+.frontPage__fullImage {
     height: 100%;
+    width: 100%;
     top: 0;
     left: 0;
-}
 
-.frontPage--fullImageData {
-    width: 100%;
-    height: 100%;    
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
+    position: absolute;
+
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.img__fullImageContainer {
+.frontPage__fullImage--data {
+    height: 10%;
     width: 100%;
-    height: 100%;    
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+}
+
+.frontPage__fullImage--name {
+    font-size: 3rem;
+    color: aliceblue;
+}
+
+.frontPage__fullImage--imageContainer {
+    height: 90%;
+    width: 100%;
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
-.img__fullImage {
+.frontPage__fullImage--image {
+    height: 90%;
     width: auto;
-    height: 80%;
 
     border: 2px solid rgb(230, 230, 230);
-    border-radius: 15px; 
+    border-radius: 15px;
+}
+
+.frontPage__tooltip {
+    position: fixed;
+    top: var(--top);
+    left: var(--left);
+    transform: translate(-50%, -100%);
+    background: black;
+    color: white;
+    padding: 6px 10px;
 }
