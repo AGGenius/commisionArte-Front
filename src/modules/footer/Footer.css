@@ -1,9 +1,10 @@
 footer {
     width: 90%;
     min-height: 50px;
-    gap: 1rem;
+    gap: 2rem;
 
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 
@@ -18,9 +19,37 @@ footer {
     margin-top: auto;
 }
 
-footer p {
-    color: rgb(245, 245, 245);
-    font-size: .9rem;
+.footer--nav {
+    width: 45%;
+    min-height: 40px;
+    gap: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.footer--navLink{
+    color: rgb(219, 245, 253);
+    cursor: pointer;
+}
+
+.footer--navLink:hover{
+    color: rgb(231, 243, 247);
+}
+
+.footer--sign {
+    width: 45%;
+    min-height: 45px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    color: rgb(219, 245, 253);
+    font-size: 1rem;
 }
 
 @media screen and (max-width: 1200px) {
