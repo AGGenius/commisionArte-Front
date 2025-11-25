@@ -1,0 +1,30 @@
+footer {
+    width: 90%;
+    min-height: 50px;
+    gap: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(211, 210, 221);
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgba(139, 139, 223, 1) 35%, rgba(35, 66, 128, 1) 100%);
+
+    border-top: 5px solid slateblue;
+    border-left: 5px solid slateblue;    
+    border-right: 5px solid slateblue;
+    border-radius: 15px 15px 0 0;
+
+    margin-top: auto;
+}
+
+footer p {
+    color: rgb(245, 245, 245);
+    font-size: .9rem;
+}
+
+@media screen and (max-width: 1200px) {
+    footer {
+        min-height: 50px;
+    }
+}

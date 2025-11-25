@@ -6,6 +6,7 @@ import ProfilePage from './modules/content/Profile';
 import PersonalGalleryPage from './modules/content/PersonalGalery';
 import OffersPage from './modules/content/Offers';
 import StateCardPage from './modules/content/StateCard';
+import Footer from './modules/footer/Footer';
 //Context
 import { UserProvider } from './context/useUserContext';
 import './App.css'
@@ -24,6 +25,7 @@ function App() {
             <Route path="/offers" element={<OffersPage />} />
             <Route path="/stateCard" element={<StateCardPage />} />
           </Routes>
+          {<Footer />}
         </UserProvider>
       </Router>
     </>

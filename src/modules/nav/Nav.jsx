@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
 import { jwtDecode } from "jwt-decode";
+import LoginIcon from "../../assets/icons/login_icon_137429.svg?react";
+import LogoutIcon from "../../assets/icons/logout_icon_138409.svg?react";
 import Login from "./Login"
 import './Nav.css'
 
@@ -27,9 +29,9 @@ function Nav() {
       const getUserData = async () => {
         let url;
 
-        if(userType === "client") {
+        if (userType === "client") {
           url = apiClientURL;
-        } else {          
+        } else {
           url = apiArtistURL;
         }
         const userResponse = await axios.get(`${url}${userId}/`);
@@ -64,7 +66,7 @@ function Nav() {
   const logOut = () => {
     localStorage.removeItem("token");
     setUser({});
-    navigate("/"); 
+    navigate("/");
     window.location.reload();
   };
 
@@ -93,8 +95,12 @@ function Nav() {
     <nav className={"nav"} ref={newRef}>
       <Link to="/"><p className={"nav--webTittle"}>COMMISION ARTE</p></Link>
       {token && user.account_type === "client" ? clientMenu() : artistMenu()}
-      {!token && <button className="nav--loginWindow" onClick={() => setLoginWindow(!loginWindow)}>LOGIN/REGISTER</button>}
-      {token && <button className="nav--loginWindow" onClick={() => logOut()}>LOGOUT</button>}
+      {!token && <button className="nav--loginWindow" onClick={() => setLoginWindow(!loginWindow)}>
+        <LoginIcon className="nav--loginWindow--loginIcon" />
+      </button>}
+      {token && <button className="nav--loginWindow" onClick={() => logOut()}>
+        <LogoutIcon className="nav--loginWindow--logoutIcon" />
+      </button>}
       {loginWindow && !token && <Login />}
     </nav>
   );

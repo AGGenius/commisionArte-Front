@@ -1,5 +1,5 @@
 .nav {
-    width: 100%;
+    width: 90%;
     height: 75px;
 
     display: flex;
@@ -7,8 +7,13 @@
     justify-content: space-between;
     align-items: center;
 
-    background-color: rgb(155, 169, 231);
-    border-top: 0;
+    background: rgb(211, 210, 221);
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgba(139, 139, 223, 1) 35%, rgba(35, 66, 128, 1) 100%);
+
+    border-bottom: 5px solid slateblue;
+    border-left: 5px solid slateblue;    
+    border-right: 5px solid slateblue;
+    border-radius: 0 0 15px 15px;
     padding: 0 1rem 0 1rem;
 }
 
@@ -19,10 +24,6 @@
     font-weight: bold;
 
     margin-top: .3rem;
-}
-
-.nav--navButton{
-    cursor: pointer;
 }
 
 .nav--loginWrap {
@@ -40,9 +41,46 @@
 .nav--menu {
     width: 60%;
     height: 30px;
+    gap: 1.5rem;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+    list-style-type: none;
+}
+
+.nav--navButton{
+    color: rgb(219, 245, 253);
+    cursor: pointer;
+}
+
+.nav--navButton:hover{
+    color: rgb(231, 243, 247);
+}
+
+.nav--loginWindow {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: 2px solid rgb(66, 49, 126);    
+    fill: rgb(66, 49, 126);
+    background-color: rgba(40, 30, 80, .1);
+}
+
+.nav--loginWindow:hover {
+    border: 2px solid rgb(65, 49, 117);    
+    fill: rgb(87, 78, 117);
+    background-color: rgba(219, 214, 236, 0.4);
+}
+
+
+.nav--loginWindow--loginIcon, .nav--loginWindow--logoutIcon {
+    width: 80%;
+    height: 80%;
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useUserContext } from "../../context/useUserContext";
+import ExpandIcon from "../../assets/icons/expand_111060.svg?react";
 import './FrontPage.css'
 
 const FrontPage = () => {
@@ -124,12 +125,14 @@ const FrontPage = () => {
                     (
                         <div className="frontPage__imgContainer" key={image.id}>
                             <div className="frontPage__imgContainer--data">
-                                <p className="frontPage__imgContainer--title--label">Titulo: <span className="frontPage__imgContainer--title">{image.name}</span></p>
-                                <p className="frontPage__imgContainer--styles">Estilos</p>
+                                <p className="frontPage__imgContainer--title">{image.name}</p>
                                 <div className="frontPage__imgContainer--stylesList">
-                                    {image.styles.split(',').map((style, i) => (
-                                        <span className="frontPage__imgContainer--stylesList--item" key={i}>{style}</span>
-                                    ))}
+                                    <p className="frontPage__imgContainer--label">Estilos</p>
+                                    <div className="frontPage__imgContainer--styles--wrap">
+                                        {image.styles.split(',').map((style, i) => (
+                                            <span className="frontPage__imgContainer--stylesList--item" key={i}>{style}</span>
+                                        ))}
+                                    </div>
                                 </div>
 
                             </div>
@@ -142,8 +145,12 @@ const FrontPage = () => {
                                     onMouseEnter={(e) => handleMouseEnter(e, image, activeImages.includes(image.id))}
                                     onMouseLeave={handleMouseLeave}
                                 />
-                                {activeImages.includes(image.id) && <button className="frontPage__imgContainer--changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
-                                {image.sfw_status && <button className="frontPage__imgContainer--changeSizeButton" onClick={() => getImage(image)}>Ampliar</button>}
+                                {activeImages.includes(image.id) && <div className="frontPage__imgContainer--changeSizeButton" onClick={() => getImage(image)}>
+                                    <ExpandIcon className="frontPage__imgContainer--changeSizeButton--icon" />
+                                </div>}
+                                {image.sfw_status && <div className="frontPage__imgContainer--changeSizeButton" onClick={() => getImage(image)}>
+                                    <ExpandIcon className="frontPage__imgContainer--changeSizeButton--icon" />
+                                </div>}
                             </div>
                         </div>
                     ))
