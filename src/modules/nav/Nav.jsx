@@ -15,6 +15,7 @@ function Nav() {
   const [token, setToken] = useState("");
   const [loginWindow, setLoginWindow] = useState(false);
   const newRef = useRef(null);
+  const loginRef = useRef(null);
   const apiArtistURL = "http://localhost:3000/api/artists/";
   const apiClientURL = "http://localhost:3000/api/clients/";
 
@@ -72,36 +73,37 @@ function Nav() {
 
   const clientMenu = (e) => {
     return (
-      <ul className="nav--menu">
-        {token && <li><Link to="/offers" className="nav--navButton">Solicitudes</Link></li>}
-        {token && <li><Link to="/profile" className="nav--navButton">Perfil</Link></li>}
-        {token && <li><Link to="/stateCard" className="nav--navButton">Tarjetas de trabajo</Link></li>}
+      <ul className="nav__menu">
+        {token && <li><Link to="/offers" className="nav__navButton first">Solicitudes</Link></li>}
+        {token && <li><Link to="/profile" className="nav__navButton">Perfil</Link></li>}
+        {token && <li><Link to="/stateCard" className="nav__navButton last">Tarjetas de trabajo</Link></li>}
       </ul>
     )
   }
 
   const artistMenu = (e) => {
     return (
-      <ul className="nav--menu">
-        {token && <li><Link to="/offers" className="nav--navButton">Trabajos</Link></li>}
-        {token && <li><Link to="/personalGallery" className="nav--navButton">Mi galeria</Link></li>}
-        {token && <li><Link to="/profile" className="nav--navButton">Perfil</Link></li>}
-        {token && <li><Link to="/stateCard" className="nav--navButton">Tarjetas de trabajo</Link></li>}
+      <ul className="nav__menu">
+        {token && <li className="nav__navListElement"><Link to="/offers" className="nav__navButton first">Trabajos</Link></li>}
+        {token && <li className="nav__navListElement"><Link to="/personalGallery" className="nav__navButton">Mi galeria</Link></li>}
+        {token && <li className="nav__navListElement"><Link to="/profile" className="nav__navButton">Perfil</Link></li>}
+        {token && <li className="nav__navListElement"><Link to="/stateCard" className="nav__navButton last">Tarjetas de trabajo</Link></li>}
       </ul>
     )
   }
 
   return (
     <nav className={"nav"} ref={newRef}>
-      <Link to="/"><p className={"nav--webTittle"}>COMMISION ARTE</p></Link>
+      <Link to="/" className={"nav__webTittle"}><p className={"nav__webTittle--text"}>COMMISION ART</p></Link>
       {token && user.account_type === "client" ? clientMenu() : artistMenu()}
-      {!token && <button className="nav--loginWindow" onClick={() => setLoginWindow(!loginWindow)}>
-        <LoginIcon className="nav--loginWindow--loginIcon" />
-      </button>}
-      {token && <button className="nav--loginWindow" onClick={() => logOut()}>
-        <LogoutIcon className="nav--loginWindow--logoutIcon" />
-      </button>}
+      {!token && <div className="nav__loginWindow" onClick={() => setLoginWindow(!loginWindow)}>
+        <LoginIcon className="nav__loginWindow--loginIcon" />
+      </div>}
+      {token && <div className="nav__loginWindow" onClick={() => logOut()}>
+        <LogoutIcon className="nav__loginWindow--logoutIcon" />
+      </div>}
       {loginWindow && !token && <Login />}
+      <div className={loginWindow ? "nav--obscured" : "nav--base"} onClick={() => setLoginWindow(!loginWindow)}></div>
     </nav>
   );
 };

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Register from "./Register";
 import './Login.css'
 
-//Module to generate a login form. The content reacts when the users is logged to display a welcome message and the logout button. 
+//Module to generate a login form. 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
@@ -80,25 +80,25 @@ const Login = () => {
     const logPage = () => {
         return (
             <>
-                <form className="login__logForm" onSubmit={handleSubmit((data) => sendLogin(data))}>
-                    <div className="login__formInputWrap">
-                        <input {...register("email", { required: { value: true, message: "Se debe introducir el email." } })} id="userEmail" type="text" placeholder={"email"}></input>
+                <form className="login--logForm" onSubmit={handleSubmit((data) => sendLogin(data))}>
+                    <div className={"login--formInputWrap" + " " + (!loginType ? "client" : "artist")}>
+                        {loginType ? <p className="login--clientLabel">Artist</p> : <p className="login--clientLabel">Client</p>}
+                        <input className="login--mail" {...register("email", { required: { value: true, message: "Se debe introducir el email." } })} id="userEmail" type="text" placeholder={"email"}></input>
                         {errors.email?.message && <p className="login--errorMessage">{errors.email.message}</p>}
                         <div className="login--passwordWrap">
-                            <input autoComplete="new-password" {...register("password", { required: { value: true, message: "Se debe introducir la contraseña." } })} id="userPass" type={passwordType} placeholder={"contraseña"}></input>
+                            <input className="login--password" autoComplete="new-password" {...register("password", { required: { value: true, message: "Se debe introducir la contraseña." } })} id="userPass" type={passwordType} placeholder={"contraseña"}></input>
                             <span className="login--eyeWrap">
                                 <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
                             </span>
                         </div>
+                        {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
                         <label className="switch">
                             <input type="checkbox" onClick={() => handleToggle()} />
                             <span className="slider round"></span>
                         </label>
-                        {loginType ? <p>Artist</p> : <p>Client</p>}
-                        {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
                         <button className="login__submit" type="submit">Iniciar sesion</button>
                         {updateStatus && <p className="login--statusMessage">{updateStatus}</p>}
-                        <p className="login_registerButton" onClick={() => setRegisterWindow(true)}>Don't have an account? Register here!</p>
+                        <p className="login_registerButton" onClick={() => setRegisterWindow(true)}>¿Aun no tienes cuenta? ¡Registrate aqui!</p>
                     </div>
                 </form>
             </>
@@ -107,7 +107,7 @@ const Login = () => {
 
     return (
         <>
-            {registerWindow ? <Register sendToParent={sendToParent}/> : logPage()}
+            {registerWindow ? <Register sendToParent={sendToParent} /> : logPage()}
         </>
     );
 };

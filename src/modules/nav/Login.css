@@ -1,102 +1,180 @@
-.login__logForm {
-    width: 40%;
-    height: 60%;
+.login--logForm {
+  width: 30%;
+  height: 60%;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    position: absolute;
+  position: absolute;
 
-    z-index: 1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+
+  box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
 }
 
-.login__formInputWrap {
-    width: 100%;
-    height: 100%;
-    gap: 2rem;
+.login--formInputWrap {
+  width: 100%;
+  height: 100%;
+  gap: 2rem;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    background-color: antiquewhite;
+  border-radius: 15px;
+}
+
+.login--formInputWrap.client {
+  background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgba(139, 139, 223, 1) 35%, rgb(73, 92, 129) 100%);
+  border: 5px solid slateblue;
+}
+
+.login--formInputWrap.artist {
+  background: linear-gradient(90deg, rgb(198, 191, 230) 0%, rgba(139, 139, 223, 1) 35%, rgb(73, 92, 129) 100%);
+  border: 5px solid slateblue;
+}
+
+.login--clientLabel {
+  font-size: 3rem;
+  font-weight: bold;
+
+  color: rgb(198, 191, 230);
+}
+
+.login--passwordWrap {
+  width: 50%;
+  height: 1.8rem;
+}
+
+.login--mail {
+  width: 50%;
+  height: 1.8rem;
+
+  background: rgb(232, 229, 247);
+  border: 2px solid rgb(74, 64, 141);
+  border-radius: 10px;
+
+  box-shadow: none;
+
+  padding-left: 10px;
+}
+
+.login--password {
+  width: 100%;
+  height: 100%;
+
+  background: rgb(232, 229, 247);
+  border: 2px solid rgb(74, 64, 141);
+  border-radius: 10px;
+
+  box-shadow: none;
+
+  padding-left: 10px;
+}
+
+.login--mail:hover, .login--password:hover {
+  border: 2px solid rgb(125, 118, 167);
 }
 
 .login__submit {
-    width: 150px;
-    height: 40px;
+  width: 150px;
+  height: 40px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: rgb(232, 229, 247);
+  border: 2px solid rgb(74, 64, 141);
+  border-radius: 15px;
+}
+
+.login__submit:hover {
+  border: 2px solid rgb(228, 225, 243);
 }
 
 .login_registerButton {
+  font-size: 1.2rem;
+  color: rgb(37, 22, 71);
   cursor: pointer;
+}
+
+.login_registerButton:hover {
+  color: rgb(228, 225, 243);
+}
+
+.login--errorMessage, .login--statusMessage {
+  font-size: .9rem;
+  color: rgb(228, 225, 243);
 }
 
 /* The switch - the box around the slider */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 25px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 25px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 25px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: #2196F3;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 25px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

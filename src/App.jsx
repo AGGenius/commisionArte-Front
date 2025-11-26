@@ -6,6 +6,8 @@ import ProfilePage from './modules/content/Profile';
 import PersonalGalleryPage from './modules/content/PersonalGalery';
 import OffersPage from './modules/content/Offers';
 import StateCardPage from './modules/content/StateCard';
+import ContactPage from './modules/content/ContactPage';
+import TermsPage from './modules/content/TermsPage';
 import Footer from './modules/footer/Footer';
 //Context
 import { UserProvider } from './context/useUserContext';
@@ -24,6 +26,10 @@ function App() {
             <Route path="/personalGallery" element={<PersonalGalleryPage />} />
             <Route path="/offers" element={<OffersPage />} />
             <Route path="/stateCard" element={<StateCardPage />} />
+            <Route path="/stateCard" element={<StateCardPage />} />
+            <Route path="/stateCard" element={<StateCardPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/terms" element={<TermsPage />} />
           </Routes>
           {<Footer />}
         </UserProvider>

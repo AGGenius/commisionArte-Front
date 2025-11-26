@@ -109,6 +109,8 @@ img {
     border: 2px solid rgb(175, 192, 207);
     background-color: rgba(46, 46, 46, 0.8);
     color: rgb(232, 239, 245);
+
+    cursor: default;
 }
 
 .frontPage__imgContainer--imageWrap {
