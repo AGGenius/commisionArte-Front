@@ -36,8 +36,7 @@ body {
   align-items: center;
 
   font-size: 1.1rem;
-
-  background-color: rgb(245, 245, 245);
+  background: linear-gradient(-90deg, rgba(198, 191, 230, 0.4) 0%, rgba(100, 100, 216, 0.4) 35%, rgba(30, 90, 211, 0.4) 100%);
 
   overflow: auto;
 }

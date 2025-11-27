@@ -17,7 +17,7 @@ const Register = ({ sendToParent }) => {
     //Fields State
     const [emailState, setEmailState] = useState("");
     const [contactEmailState, setContactEmailState] = useState("");
-    const [passwordState, setPasswordState] = useState([]);
+    const [passwordState, setPasswordState] = useState("");
     const [repeatPasswordState, setRepeatPasswordState] = useState("");
     const [nameState, setNameState] = useState("");
     const [nickState, setNickState] = useState("");
@@ -164,7 +164,7 @@ const Register = ({ sendToParent }) => {
         ]
 
         const validationRegex = [
-            { regex: /.{1,}/ },            
+            { regex: /.{1,}/ },
             { regex: /^-?\d+\.?\d*$/ }
         ];
 
@@ -179,7 +179,7 @@ const Register = ({ sendToParent }) => {
             }
         })
 
-        setNickState(actualCheckList);
+        setTelephoneState(actualCheckList);
     };
 
     //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
@@ -271,85 +271,86 @@ const Register = ({ sendToParent }) => {
 
 
     return (
-        <div className="register__registerForm">
-            <h2 className="register--tittle">Formulario de registro</h2>
-            <h4 className="register--info">No podras iniciar sesión hasta que la cuenta sea aprobada por un administrador</h4>
-            {!registerState ?
-                <form className="register--form" onSubmit={register}>
-                    <div className="register--formPair">
-                        <label htmlFor="newuserEmail">Email</label>
-                        <input id="newuserEmail" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-                    </div>
-                    {emailState &&
-                        <ul>
-                            {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                        </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="newuserContactEmail">Email de contacto</label>
-                        <input id="newuserContactEmail" type="text" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)}></input>
-                    </div>
-                    {contactEmailState &&
-                        <ul>
-                            {contactEmailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                        </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="newuserPass">Contraseña</label>
-                        <div className="register--passwordWrap">
-                            <input id="newuserPass" autocomplete="new-password" type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)}></input>
-                            <span className="register--eyeWrap">
-                                <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
-                            </span>
-                        </div>
-                    </div>
-                    {passwordState &&
-                        <ul>
-                            {passwordState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                        </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="repeatNewUserPass">Repite la contraseña</label>
-                        <div className="register--passwordWrap">
-                            <input id="repeatNewUserPass" autocomplete="new-password" type={repeatPasswordType} value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)}></input>
-                            <span className="register--eyeWrap">
-                                <i className={repeatPasswordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => manageRepeatPasswordType()} />
-                            </span>
-                        </div>
-                    </div>
-                    {repeatPasswordState && <p className="register--formError">{repeatPasswordState}</p>}
-                    <div className="register--formPair">
-                        <label htmlFor="newuserName">Name</label>
-                        <input id="newuserName" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
-                    </div>
-                    {nameState &&
-                        <ul>
-                            {nameState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                        </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="newuserNick">Nick</label>
-                        <input id="newuserNick" type="text" value={nick} onChange={(e) => setNick(e.target.value)}></input>
-                    </div>
-                    {nickState &&
-                        <ul>
-                            {nickState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                        </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="newuserTelephone">Numero de telefono de contacto</label>
-                        <input id="newuserTelephone" type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)}></input>
-                    </div>
-                    {telephoneState &&
-                        <ul>
-                            {telephoneState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
-                        </ul>}
-                    <label className="switch">
-                        <input type="checkbox" onClick={() => handleToggle()} />
-                        <span className="slider round"></span>
-                    </label>
-                    {registerType ? <p>Artist</p> : <p>Client</p>}
-                    <button className="register--formButton" type="submit">Registrarse</button>
-                </form>
-                :
-                <p>{registerState}</p>}
-            <button onClick={handleClick}>Cancel</button>
-        </div>
+        <>
+            <div className="register__registerForm">
+                <div className={"register__registerForm--wrap" + " " + (!registerType ? "client" : "artist")}>
+                    <h2 className="register--tittle">Formulario de registro</h2>
+                    <h4 className="register--info">No podras iniciar sesión hasta que la cuenta sea aprobada por un administrador</h4>
+                    {!registerState ?
+                        <form className={"register--form"} onSubmit={register}>
+                            {registerType ? <p className="register--clientLabel">Artista</p> : <p className="register--clientLabel">Cliente</p>}
+                            <label className="switch">
+                                <input className="register__form--input" type="checkbox" onClick={() => handleToggle()} />
+                                <span className="slider round"></span>
+                            </label>
+                            <div className="register--formPair">
+                                <input className="register__form--input" id="newuserEmail" type="text" placeholder="Email de registro" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                            </div>
+                            {emailState &&
+                                <ul className="register__formError--list">
+                                    {emailState.map((value, i) => (<li className="register__formError--element" key={i}>{value}</li>))}
+                                </ul>}
+                            <div className="register--formPair">
+                                <input className="register__form--input" id="newuserContactEmail" type="text" placeholder="Email de contacto" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)}></input>
+                            </div>
+                            {contactEmailState &&
+                                <ul className="register__formError--list">
+                                    {contactEmailState.map((value, i) => (<li className="register__formError--element" key={i}>{value}</li>))}
+                                </ul>}
+                            <div className="register--formPair">
+                                <div className="register--passwordWrap">
+                                    <input className="register__passwordWrap--input" id="newuserPass" autocomplete="new-password" placeholder="Contraseña" type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                                    <span className="register--eyeWrap">
+                                        <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
+                                    </span>
+                                </div>
+                            </div>
+                            {passwordState &&
+                                <ul className="register__formError--list">
+                                    {passwordState.map((value, i) => (<li className="register__formError--element" key={i}>{value}</li>))}
+                                </ul>}
+                            <div className="register--formPair">
+                                <div className="register--passwordWrap">
+                                    <input className="register__passwordWrap--input" id="repeatNewUserPass" autocomplete="new-password" placeholder="Repite la contraseña" type={repeatPasswordType} value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)}></input>
+                                    <span className="register--eyeWrap">
+                                        <i className={repeatPasswordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => manageRepeatPasswordType()} />
+                                    </span>
+                                </div>
+                            </div>
+                            {repeatPasswordState
+                                &&
+                                <div className="register__formError--list">
+                                    <p className="register__formError--element">{repeatPasswordState}</p>
+                                </div>}
+                            <div className="register--formPair">
+                                <input className="register__form--input" id="newuserName" type="text" placeholder="Nombre" value={name} onChange={(e) => setName(e.target.value)}></input>
+                            </div>
+                            {nameState &&
+                                <ul className="register__formError--list">
+                                    {nameState.map((value, i) => (<li className="register__formError--element" key={i}>{value}</li>))}
+                                </ul>}
+                            <div className="register--formPair">
+                                <input className="register__form--input" id="newuserNick" type="text" placeholder="Nick" value={nick} onChange={(e) => setNick(e.target.value)}></input>
+                            </div>
+                            {nickState &&
+                                <ul className="register__formError--list">
+                                    {nickState.map((value, i) => (<li className="register__formError--element" key={i}>{value}</li>))}
+                                </ul>}
+                            <div className="register--formPair">
+                                <input className="register__form--input" id="newuserTelephone" placeholder="Telefono de contacto" type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)}></input>
+                            </div>
+                            {telephoneState &&
+                                <ul className="register__formError--list">
+                                    {telephoneState.map((value, i) => (<li className="register__formError--element" key={i}>{value}</li>))}
+                                </ul>}
+                            <button className="register--formButton" type="submit">Registrarse</button>
+                        </form>
+                        :
+                        <p>{registerState}</p>}
+                    <button className="register--cancelButton" onClick={handleClick}>Cancel</button>
+                </div>
+            </div>
+        </>
     )
 };
 

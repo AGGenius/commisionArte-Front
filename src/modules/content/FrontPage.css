@@ -140,13 +140,13 @@ img {
 
     border: 2px solid rgb(230, 230, 230);
     border-radius: 15px;
-    box-shadow: 5px 8px 10px rgba(76, 80, 88, 0.5);
+    box-shadow: 5px 8px 10px rgba(49, 68, 105, 0.7);
 }
 
 .frontPage__imgContainer--baseImage:hover {
     border: 2px solid slateblue;
     border-radius: 15px;
-    box-shadow: 7px 10px 10px rgba(76, 80, 88, 0.7);
+    box-shadow: 7px 10px 10px rgba(49, 68, 105, 0.7);
 }
 
 .frontPage__imgContainer--changeSizeButton {
