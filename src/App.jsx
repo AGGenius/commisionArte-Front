@@ -3,7 +3,7 @@ import Nav from './modules/nav/Nav';
 import FrontPage from './modules/content/FrontPage';
 import UploadImage from './modules/content/UploadImage';
 import ProfilePage from './modules/content/Profile';
-import PersonalGalleryPage from './modules/content/PersonalGalery';
+import PersonalGalleryPage from './modules/content/PersonalGallery';
 import OffersPage from './modules/content/Offers';
 import StateCardPage from './modules/content/StateCard';
 import ContactPage from './modules/content/ContactPage';

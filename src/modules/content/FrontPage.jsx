@@ -55,8 +55,7 @@ const FrontPage = () => {
         } else {
             setMainImage("");
             setImageSize(false);
-        }
-
+        };
     };
 
     const getAllImages = async () => {

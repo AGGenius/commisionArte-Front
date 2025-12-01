@@ -93,7 +93,7 @@ const Login = () => {
                         </div>
                         {errors.password?.message && <p className="login--errorMessage">{errors.password.message}</p>}
                         <label className="switch">
-                            <input type="checkbox" onClick={() => handleToggle()} />
+                            <input type="checkbox" checked={loginType} onClick={() => handleToggle()} />
                             <span className="slider round"></span>
                         </label>
                         <button className="login__submit" type="submit">Iniciar sesion</button>
