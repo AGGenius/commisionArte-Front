@@ -94,7 +94,7 @@ function Nav() {
 
   return (
     <nav className={"nav"} ref={newRef}>
-      <Link to="/" className={"nav__webTittle"}><p className={"nav__webTittle--text"}>COMMISION ART</p></Link>
+      <Link to="/" className={"nav__webtitle"}><p className={"nav__webtitle--text"}>COMMISION ART</p></Link>
       {token && user.account_type === "client" ? clientMenu() : artistMenu()}
       {!token && <div className="nav__loginWindow" onClick={() => setLoginWindow(!loginWindow)}>
         <LoginIcon className="nav__loginWindow--loginIcon" />

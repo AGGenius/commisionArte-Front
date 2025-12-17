@@ -274,7 +274,7 @@ const Register = ({ sendToParent }) => {
         <>
             <div className="register__registerForm">
                 <div className={"register__registerForm--wrap" + " " + (!registerType ? "client" : "artist")}>
-                    <h2 className="register--tittle">Formulario de registro</h2>
+                    <h2 className="register--title">Formulario de registro</h2>
                     <h4 className="register--info">No podras iniciar sesión hasta que la cuenta sea aprobada por un administrador</h4>
                     {!registerState ?
                         <form className={"register--form"} onSubmit={register}>

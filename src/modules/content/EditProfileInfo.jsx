@@ -435,7 +435,7 @@ const EditProfileInfo = ({ sendToParent }) => {
 
     return (
         <div className="register__registerForm">
-            <h2 className="register--tittle">Cambia los datos que necesites.</h2>
+            <h2 className="register--title">Cambia los datos que necesites.</h2>
             {!changeDataState ?
                 <form className="register--form" onSubmit={register}>
                     <h3>Datos basicos</h3>

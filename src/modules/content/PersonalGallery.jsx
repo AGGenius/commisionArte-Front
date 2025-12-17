@@ -38,6 +38,8 @@ const PersonalGalleryPage = () => {
             const data = response.data;
             setImageSet(data);
 
+            console.log(data)
+
         } catch (error) {
             console.log(error);
         };

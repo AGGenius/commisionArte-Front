@@ -18,7 +18,7 @@
     padding: 0 1rem 0 1rem;
 }
 
-.nav__webTittle {
+.nav__webtitle {
     width: 30%;
     height: 100%;
 
@@ -27,7 +27,7 @@
     align-items: center;
 }
 
-.nav__webTittle--text {
+.nav__webtitle--text {
     width: 100%;
     height: 100%;
 

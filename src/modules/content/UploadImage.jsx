@@ -90,10 +90,10 @@ const UploadImage = () => {
 
     return (
         <div className="addImage">
-            <h2 className="addImage--tittle">Sube una imagen</h2>
+            <h2 className="addImage--title">Sube una imagen</h2>
             <form className="addImage--form" onSubmit={handleSubmit((data) => uploadImage(data))}>
-                <label htmlFor="createGameTittle">Titulo</label>
-                <input id="createGameTittle" type="text" {...register("title", { required: { value: true, message: "Se debe introducir el titulo." } })}></input>
+                <label htmlFor="createGametitle">Titulo</label>
+                <input id="createGametitle" type="text" {...register("title", { required: { value: true, message: "Se debe introducir el titulo." } })}></input>
                 {errors.title?.message && <p className="addImage--formError">{errors.title?.message}</p>}
                 <label htmlFor="createGameGenre">Estilos</label>
                 <select id="createGameGenre" multiple value={selectedStyles} onChange={handleSelectChange}>

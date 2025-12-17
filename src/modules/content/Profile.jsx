@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
 import axios from "axios";
 import EditProfileInfo from "./EditProfileInfo";
+import './Profile.css'
 
 const ProfilePage = () => {
     const { user, setUser } = useUserContext();
@@ -95,39 +96,53 @@ const ProfilePage = () => {
 
     const profilePage = () => {
         return (
-            <>
-                <h1 className="profile--tittle">Te encuentras en tu perfil, {name}</h1>
-                <div className="profile--userData">
-                    <h3>Información de usuario</h3>
-                    <p className="profile--text profile--name">Nombre: <span>{name}</span></p>
-                    <p className="profile--text profile--email">Correo: <span>{email}</span></p>
-                    <p className="profile--text profile--email">Correo de contacto: <span>{contactEmail}</span></p>
-                    <p className="profile--text profile--nick">Nick: <span>{nick}</span></p>
-                    <p className="profile--text profile--nick">Telefono: <span>{telephone}</span></p>
-                    <p className="profile--text profile--nick">Filtro SFW: <span>{sfwStatus ? "activo" : "inactivo"}</span></p>
-                    <p className="profile--text profile--nick">Reputación: <span>{reputation}</span></p>
+            <div className="profile">
+                <h1 className="profile__title">Perfil de {name}</h1>
+                <div className="profile__userData">
+                    <h3 className="profile__subtitle">Información de usuario</h3>
+                    <p className="profile__text">Nombre:
+                        <span className="profile__text profile__name">{name}</span>
+                    </p>
+                    <p className="profile__text">Correo:
+                        <span className="profile__text profile__email">{email}</span>
+                    </p>
+                    <p className="profile__text">Correo de contacto:
+                        <span className="profile__text profile__email">{contactEmail}</span>
+                    </p>
+                    <p className="profile__text">Nick:
+                        <span className="profile__text profile__nick">{nick}</span>
+                    </p>
+                    <p className="profile__text">Telefono:
+                        <span className="profile__text profile__phone">{telephone}</span>
+                    </p>
+                    <p className="profile__text">Filtro SFW:
+                        <span className="profile__text profile__sfw">{sfwStatus ? "activo" : "inactivo"}</span>
+                    </p>
+                    <p className="profile__text">Reputación:
+                        <span className="profile__text profile__score">{reputation}</span>
+                    </p>
                     {user.account_type === "artist" &&
-                        <>
-                            <p>Estilos:</p>
-                            <div>
+                        <div className="profile__userStyles">
+                            <p className="profile__userStyles--title">Estilos:</p>
+                            <div className="profile__userStyles--list">
                                 {styles.map((style, i) => (
-                                    <span className="images--styles" key={i}>{style}</span>
+                                    <span className="profile__userStyles--style" key={i}>{style}</span>
                                 ))}
                             </div>
-                        </>
+                        </div>
                     }
                 </div>
-                <button onClick={() => setActiveEditWindow(true)}>ACTUALIZAR INFORMACION</button>
-                <button onClick={() => deleteUser()}>BORRAR CUENTA</button>
-                {changeDataState && <h3>{changeDataState}</h3>}
-            </>
+                <button className="profile__editUserButton" onClick={() => setActiveEditWindow(true)}>ACTUALIZAR INFORMACION</button>
+                <button className="profile__deleteUserButton" onClick={() => deleteUser()}>BORRAR CUENTA</button>
+                {changeDataState && <h3 className="profile__editUserState">{changeDataState}</h3>}
+            </div>
         );
     };
 
     const deletePage = () => {
         return (
             <>
-                <h1 className="profile--tittle">Esperamos volver a verte por aqui.</h1>
+                <h1 className="profile__title">Esperamos volver a verte por aqui.</h1>
                 <p>{changeDataState}</p>
                 <button onClick={() => exitPage()}>SALIR</button>
             </>
