@@ -37,7 +37,7 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [changeDataState, setChangeDataState] = useState("");
     const [passwordState, setPasswordState] = useState("");
 
-    const [registerType, setRegisterType] = useState(false);
+    const [editProfileType, setEditProfileType] = useState(false);
     const apiArtistURL = "http://localhost:3000/api/artists/editInfo/";
     const apiClientURL = "http://localhost:3000/api/clients/editInfo/";
 
@@ -333,7 +333,7 @@ const EditProfileInfo = ({ sendToParent }) => {
 
 
     //Function to send the form data to the back-end if all inputs are validated. Gives a custom response from the back-end on successful or unsuccessful events.
-    const register = async (e) => {
+    const editProfile = async (e) => {
         e.preventDefault();
 
         restartChecks();
@@ -425,7 +425,7 @@ const EditProfileInfo = ({ sendToParent }) => {
     };
 
     const handleToggle = () => {
-        setRegisterType(!registerType);
+        setEditProfileType(!editProfileType);
     };
 
     const handleClick = () => {
@@ -434,133 +434,132 @@ const EditProfileInfo = ({ sendToParent }) => {
 
 
     return (
-        <div className="register__registerForm">
-            <h2 className="register--title">Cambia los datos que necesites.</h2>
+        <div className="editProfile">
             {!changeDataState ?
-                <form className="register--form" onSubmit={register}>
-                    <h3>Datos basicos</h3>
-                    <div className="register--formPair">
-                        <label htmlFor="editUserEmail">Email</label>
-                        <input id="editUserEmail" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                <form className="editProfile__form" onSubmit={editProfile}>
+                    <h3 className="editProfile--title">Datos basicos</h3>
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="editUserEmail">Email</label>
+                        <input className="editProfile__form--input" id="editUserEmail" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                     </div>
                     {emailState &&
-                        <ul>
-                            {emailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        <ul className="editProfile__formError--list">
+                            {emailState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                         </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="editUserContactEmail">Email de contacto</label>
-                        <input id="editUserContactEmail" type="text" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)}></input>
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="editUserContactEmail">Email de contacto</label>
+                        <input className="editProfile__form--input" id="editUserContactEmail" type="text" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)}></input>
                     </div>
                     {contactEmailState &&
-                        <ul>
-                            {contactEmailState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        <ul className="editProfile__formError--list">
+                            {contactEmailState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                         </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="editUserName">Nombre</label>
-                        <input id="editUserName" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="editUserName">Nombre</label>
+                        <input className="editProfile__form--input" id="editUserName" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
                     </div>
                     {nameState &&
-                        <ul>
-                            {nameState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        <ul className="editProfile__formError--list">
+                            {nameState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                         </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="editUserNick">Alias</label>
-                        <input id="editUserNick" type="text" value={nick} onChange={(e) => setNick(e.target.value)}></input>
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="editUserNick">Alias</label>
+                        <input className="editProfile__form--input" id="editUserNick" type="text" value={nick} onChange={(e) => setNick(e.target.value)}></input>
                     </div>
                     {nickState &&
-                        <ul>
-                            {nickState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        <ul className="editProfile__formError--list">
+                            {nickState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                         </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="editUserTelephone">Numero de telefono de contacto</label>
-                        <input id="editUserTelephone" type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)}></input>
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="editUserTelephone">Numero de telefono de contacto</label>
+                        <input className="editProfile__form--input" id="editUserTelephone" type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)}></input>
                     </div>
                     {telephoneState &&
-                        <ul>
-                            {telephoneState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        <ul className="editProfile__formError--list">
+                            {telephoneState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                         </ul>}
 
-                    <h3>Campos especificos</h3>
-                    <div className="register--formPair">
-                        <label htmlFor="editUserNSFWfilter">Filtro NSWF</label>
-                        <input id="editUserNSFWfilter" type="checkbox" value={sfw_status ? true : false} checked={sfw_status ? true : false} onChange={(e) => setSfw_status(e.target.checked)}></input>
+                    <h3 className="editProfile--title">Campos especificos</h3>
+                    <div className="editProfile--formPair checkbox">
+                        <label className="editProfile__form--label" htmlFor="editUserNSFWfilter">Filtro NSWF</label>
+                        <input className="editProfile__form--checkbox" id="editUserNSFWfilter" type="checkbox" value={sfw_status ? true : false} checked={sfw_status ? true : false} onChange={(e) => setSfw_status(e.target.checked)}></input>
                     </div>
                     {user.account_type === "artist" &&
                         <>
-                            <div className="register--formPair">
-                                <label htmlFor="editUserActiveComissions">Comisiones activas</label>
-                                <input id="editUserActiveComissions" type="checkbox" value={comm_status ? true : false} checked={comm_status ? true : false} onChange={(e) => setComm_status(e.target.checked)}></input>
+                            <div className="editProfile--formPair checkbox">
+                                <label className="editProfile__form--label" htmlFor="editUserActiveComissions">Comisiones activas</label>
+                                <input className="editProfile__form--checkbox" id="editUserActiveComissions" type="checkbox" value={comm_status ? true : false} checked={comm_status ? true : false} onChange={(e) => setComm_status(e.target.checked)}></input>
                             </div>
-                            <div className="register--formPair">
-                                <label htmlFor="editUserStyles">Estilos</label>
-                                <select id="createGameGenre"  className="editUserStyles" multiple value={selectedStyles} onChange={handleSelectChange}>
+                            <div className="editProfile--formPair styles">
+                                <label className="editProfile__form--label" htmlFor="editUserStyles">Estilos</label>
+                                <select className="editProfile__form--select" id="createGameGenre" multiple value={selectedStyles} onChange={handleSelectChange}>
                                     {stylesArr && stylesArr.sort().map((style, i) => (
                                         <option key={i} value={style}>{style}</option>
                                     ))}
                                 </select>
-                                <input type="text" readOnly value={selectedStyles.join(", ")} placeholder="Tus estilos seleccionados aparecerán aquí" />
+                                <input className="editProfile__form--input" type="text" readOnly value={selectedStyles.join(", ")} placeholder="Estilos" />
                             </div>
                             {stylesState &&
-                                <ul>
-                                    {stylesState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                                <ul className="editProfile__formError--list">
+                                    {stylesState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                                 </ul>}
                         </>
                     }
 
-                    <h3>Cambiar contraseña:</h3>
-                    <h4>Solo completar los campos si se desea cambiar</h4>
-                    <div className="register--formPair">
-                        <label htmlFor="newPass">Nueva contraseña</label>
-                        <div className="register--passwordWrap">
-                            <input id="newPass" autoComplete="new-password" type={passwordType} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}></input>
-                            <span className="register--eyeWrap">
+                    <h3 className="editProfile--title">Cambiar contraseña:</h3>
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="newPass">Nueva contraseña</label>
+                        <div className="editProfile--passwordCheck">
+                            <input className="editProfile__form--input" id="newPass" autoComplete="new-password" type={passwordType} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}></input>
+                            <span className="editProfile--eyeWrap">
                                 <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
                             </span>
                         </div>
                     </div>
                     {newPasswordState &&
-                        <ul>
-                            {newPasswordState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        <ul className="editProfile__formError--list">
+                            {newPasswordState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                         </ul>}
-                    <div className="register--formPair">
-                        <label htmlFor="repeatNewUserPass">Repite la contraseña</label>
-                        <div className="register--passwordWrap">
-                            <input id="repeatNewUserPass" autoComplete="new-password" type={repeatPasswordType} value={repeatNewPassword} onChange={(e) => setRepeatNewPassword(e.target.value)}></input>
-                            <span className="register--eyeWrap">
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="repeatNewUserPass">Repite la contraseña</label>
+                        <div className="editProfile--passwordWrap">
+                            <input className="editProfile__form--input" id="repeatNewUserPass" autoComplete="new-password" type={repeatPasswordType} value={repeatNewPassword} onChange={(e) => setRepeatNewPassword(e.target.value)}></input>
+                            <span className="editProfile--eyeWrap">
                                 <i className={repeatPasswordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => manageRepeatPasswordType()} />
                             </span>
                         </div>
                     </div>
-                    {repeatNewPasswordState && <p className="register--formError">{repeatNewPasswordState}</p>}
+                    {repeatNewPasswordState && <p className="editProfile__formError--item">{repeatNewPasswordState}</p>}
 
-                    <h3>Confirmar cambios</h3>
-                    <div className="register--formPair">
-                        <label htmlFor="newuserPass">Contraseña actual</label>
-                        <div className="register--passwordWrap">
-                            <input id="newuserPass" autoComplete="new-password" type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)}></input>
-                            <span className="register--eyeWrap">
+                    <h3 className="editProfile--title">Confirmar cambios</h3>
+                    <div className="editProfile--formPair">
+                        <label className="editProfile__form--label" htmlFor="newuserPass">Contraseña actual</label>
+                        <div className="editProfile--passwordWrap">
+                            <input className="editProfile__form--input" id="newuserPass" autoComplete="new-password" type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                            <span className="editProfile--eyeWrap">
                                 <i className={passwordType === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={() => managePasswordType()} />
                             </span>
                         </div>
                     </div>
                     {passwordState &&
-                        <ul>
-                            {passwordState.map((value, i) => (<li className="register--formError" key={i}>{value}</li>))}
+                        <ul className="editProfile__formError--list">
+                            {passwordState.map((value, i) => (<li className="editProfile__formError--item" key={i}>{value}</li>))}
                         </ul>}
-                    <button className="register--formButton" type="submit">Cambiar los datos</button>
+                    <div className="editProfile--formButtonPair">
+                        <button className="editProfile--formButton" type="submit">Confirmar</button>
+                        {!changeDataState ?
+                            <>
+                                <button className="editProfile--cancelButton" onClick={handleClick}>Cancelar</button>
+                            </>
+                            :
+                            <>
+                                <button className="editProfile--cancelButton" onClick={handleClick}>Salir</button>
+                            </>
+                        }
+                    </div>
                 </form>
                 :
                 <p>{changeDataState}</p>}
-            {!changeDataState ?
-                <>
-                    <button onClick={handleClick}>Cancelar</button>
-                </>
-                :
-                <>
-                    <button onClick={handleClick}>Salir</button>
-                </>
-            }
-
         </div>
     )
 };
