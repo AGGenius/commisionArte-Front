@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
 import RateUser from "./RateUser.jsx";
 import axios from 'axios';
-//import './AddGame.css'
+import './StateCard.css'
 
 //Module to control the creation of new games.
 const StateCardPage = () => {
@@ -13,6 +13,7 @@ const StateCardPage = () => {
 
     const [stateCardSet, setStateCardSet] = useState([]);
     const [createStatus, setCreateStatus] = useState("");
+    const [statusVisible, setStatusVisible] = useState(false);
     const [editStateCard, setEditStateCard] = useState(false);
     const [editStateCardID, setEditStateCardID] = useState(0);
 
@@ -76,20 +77,28 @@ const StateCardPage = () => {
         }
     }
 
+    const closeEditStateCard = () => {
+        setEditStateCard(false);
+        setEditStateCardID(0)
+    };
+
     const editWorkcardPage = () => {
         return (
-            <>
-                <h2 className="addGame--title">Modificar la petición: {editStateCardID}</h2>
-                <form className="addGame--form" onSubmit={handleSubmit((data) => uploadStateCard(data))}>
-                    <label htmlFor="createGameTitle">Estado actual</label>
-                    <input id="createGameTitle" type="text" {...register("estate", { required: { value: true, message: "Se debe introducir el estado." } })}></input>
-                    {errors.title?.message && <p className="addGame--formError">{errors.title?.message}</p>}
-                    <label htmlFor="createGameDevelopa">Nuevo comentario</label>
-                    <textarea id="createGameDevelopa" type="text" {...register("comment", { required: { value: true, message: "Se debe introducir un comentario." } })}></textarea>
-                    {errors.content?.message && <p className="addGame--formError">{errors.content?.message}</p>}
-                    <button className="addGame--formButton" type="submit">Actualizar tarjeta de trabajo</button>
-                </form>
-            </>
+            <div className="stateCard__update">
+                <div className="stateCard__update--wrap">
+                    <h2 className="stateCard__update--title">Modificar la petición: {editStateCardID}</h2>
+                    <form className="stateCard__update--form" onSubmit={handleSubmit((data) => uploadStateCard(data))}>
+                        <label className="stateCard__update--label" htmlFor="updateStateCardState">Nuevo estado</label>
+                        <input className="stateCard__update--input" id="updateStateCardState" type="text" {...register("estate", { required: { value: true, message: "Se debe introducir el estado." } })}></input>
+                        {errors.title?.message && <p className="stateCard__update--formError">{errors.title?.message}</p>}
+                        <label className="stateCard__update--label" htmlFor="updateStateCardContent">Nuevo comentario</label>
+                        <textarea className="stateCard__update--input textarea" id="updateStateCardContent" type="text" {...register("comment", { required: { value: true, message: "Se debe introducir un comentario." } })}></textarea>
+                        {errors.content?.message && <p className="stateCard__update--formError">{errors.content?.message}</p>}
+                        <button className="stateCard__update--button" type="submit">Actualizar</button>
+                    </form>
+                    <button className="stateCard__update--button" onClick={() => closeEditStateCard()}>Cancelar</button>
+                </div>
+            </div>
         )
     };
 
@@ -108,13 +117,15 @@ const StateCardPage = () => {
             try {
                 const response = await axios.put(uploadStateCardURL + editStateCardID, payload);
                 setCreateStatus(response.data.estado);
+                statusMessage();
                 reset();
                 getStateCards();
                 setEditStateCard(false);
                 setEditStateCardID(0)
             } catch (error) {
                 const errors = error.response.data.errors;
-                setCreateStatus(errors)
+                setCreateStatus(errors);
+                statusMessage();
             };
         };
     };
@@ -146,6 +157,7 @@ const StateCardPage = () => {
     //Function to finalice the work. It has a confirmation window that is necessary to accept to finally delete the element.
     const finaliceWork = async (stateCardID) => {
         if (!token) { return };
+
         const confirmation = await confirm("¿Estas seguro de que quieres confirmar el estado del trabajo como finalizado?");
 
         if (confirmation) {
@@ -159,6 +171,7 @@ const StateCardPage = () => {
             try {
                 const response = await axios.put(uploadStateCardURL + stateCardID, payload);
                 setCreateStatus(response.data.estado);
+                statusMessage();
                 reset();
                 getStateCards();
                 setEditStateCard(false);
@@ -166,6 +179,7 @@ const StateCardPage = () => {
             } catch (error) {
                 const errors = error.response.data.errors;
                 setCreateStatus(errors)
+                statusMessage();
             };
         };
     };
@@ -178,69 +192,83 @@ const StateCardPage = () => {
     const renderOffers = () => {
         const setOfferContent = (stateCard) => {
             return (
-                <>
-                    <p>Artista: {stateCard.artist_name}</p>
-                    <p>Cliente: {stateCard.client_name}</p>
-                    <p>Trabajo: {stateCard.work_title}</p>
-                    <p>Estado: {stateCard.status}</p>
-                    <p>Comentario: {stateCard.commentary}</p>
-                    <p>Creada: {formatDate(stateCard.creation_date)}</p>
-                    <p>Modificada: {formatDate(stateCard.last_modification_date)}</p>
+                <div className="stateCard__data">
+                    <p className="stateCard__data--content">Artista: {stateCard.artist_name}</p>
+                    <p className="stateCard__data--content">Cliente: {stateCard.client_name}</p>
+                    <p className="stateCard__data--content">Trabajo: {stateCard.work_title}</p>
+                    <p className="stateCard__data--content">Estado: {stateCard.status}</p>
+                    <p className="stateCard__data--content">Comentario: {stateCard.commentary}</p>
+                    <p className="stateCard__data--content">Creada: {formatDate(stateCard.creation_date)}</p>
+                    <p className="stateCard__data--content">Modificada: {formatDate(stateCard.last_modification_date)}</p>
                     {stateCard.status != "Finalizado" ? (
                         user.account_type == "artist" ? (
-                            <button onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>) :
-                            (<button onClick={() => finaliceWork(stateCard.id)}>Finalizar trabajo</button>)
-                    ) : user.account_type == "artist" ? ( 
-                        !stateCard.client_rated && 
-                        <button onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>) : (
+                            <button className="stateCard__data--button updateCard" onClick={() => manageEditStateCard(stateCard.id)}>Actualizar tarjeta de trabajo</button>) :
+                            (<button className="stateCard__data--button" onClick={() => finaliceWork(stateCard.id)}>Finalizar trabajo</button>)
+                    ) : user.account_type == "artist" ? (
+                        !stateCard.client_rated &&
+                        <button className="stateCard__data--button" onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>) : (
                         !stateCard.artist_rated &&
-                        <button onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>)                      
+                        <button className="stateCard__data--button" onClick={() => handleRateUser(stateCard)}>Valorar usuario</button>)
                     }
-                </>
+                </div>
             )
         }
 
-        const baseOfferRender = (stateCard) => {
+        const activeStateCardRender = (stateCard) => {
+            if (stateCard.status != "Finalizado") {
+                return (
+                    < div className="stateCard--active" key={stateCard.id} >
+                        {setOfferContent(stateCard)}
+                    </div >
+                )
+            }
+        };
 
-            return (
-                < div className="games--gameCard" key={stateCard.id} >
-                    <div className="games--gameCardData">
-                        {stateCard.status != "Finalizado" ?
-                            <>
-                                <h3>Peticiones activas</h3>
-                                {setOfferContent(stateCard)}
-                            </> :
-                            <>
-                                <h3>Peticiones finalizadas</h3>
-                                {setOfferContent(stateCard)}
-                            </>
-                        }
-                    </div>
-                </div >
-            )
-        }
+        const endedStateCardRender = (stateCard) => {
+            if (stateCard.status === "Finalizado") {
+                return (
+                    < div className="stateCard--finalized" key={stateCard.id} >
+                        {setOfferContent(stateCard)}
+                    </div >
+                )
+            }
+        };
 
         return (
-            <>
-                {createStatus && <p>{createStatus}</p>}
-                <h2>Peticiones publicas</h2>
+            <div className="stateCard">
+                <h3 className="stateCard--title">Peticiones activas</h3>
                 {stateCardSet ? stateCardSet.map((stateCard) =>
                 (
-                    baseOfferRender(stateCard)
+                    activeStateCardRender(stateCard)
                 ))
-                    : <p>Cargando datos peticiones abiertas...</p>
+                    : <p className="stateCard--loadStatus">Cargando datos peticiones abiertas...</p>
                 }
-            </>
+                <h3 className="stateCard--title">Peticiones finalizadas</h3>
+                {stateCardSet ? stateCardSet.map((stateCard) =>
+                (
+                    endedStateCardRender(stateCard)
+                ))
+                    : <p className="stateCard--loadStatus">Cargando datos peticiones finalizadas...</p>
+                }
+            </div>
         );
     };
 
+    const statusMessage = (time = 3000) => {
+        setStatusVisible(true);
+
+        setTimeout(() => {
+            setStatusVisible(false);
+            setCreateStatus("");
+        }, time);
+    };
+
     return (
-        <div className="offers" ref={newRef}>
-            <div>
-                {renderOffers()}
-                {user.account_type === "artist" && editStateCard && editWorkcardPage()}
-                {rateUserWindowState && <RateUser rateStateCard={rateStateCard} sendToParent={sendToParent}/>}
-            </div>
+        <div className="stateCard--main" ref={newRef}>
+            {statusVisible && <p className={`stateCard--toast ${statusVisible ? "show" : ""}`}>{createStatus}</p>}
+            {renderOffers()}
+            {user.account_type === "artist" && editStateCard && editWorkcardPage()}
+            {rateUserWindowState && <RateUser rateStateCard={rateStateCard} sendToParent={sendToParent} />}
         </div>
     )
 }

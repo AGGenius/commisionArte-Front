@@ -1,8 +1,7 @@
-/* Edit Profile */
-.editProfile {
-    width: 45%;
-    height: 70%;
-    gap: 1rem;
+.addImage {
+    width: 35%;
+    height: 80%;
+    gap: 2rem;
 
     display: flex;
     flex-direction: column;
@@ -21,28 +20,9 @@
     padding: 2rem;
 
     box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
-
-    overflow-y: scroll;
-    scroll-padding: 8px;
 }
 
-.editProfile::-webkit-scrollbar-track {
-    background: slateblue;
-    border-radius: 0 12px 12px 0;
-}
-
-.editProfile::-webkit-scrollbar {
-    width: 10px;
-    border-radius: 12px;
-}
-
-.editProfile::-webkit-scrollbar-thumb {
-    background-color: rgb(54, 46, 107);
-    border-radius: 12px;
-    border: 2px solid rgb(171, 165, 209);
-}
-
-.editProfile--title {
+.addImage--title {
     width: 100%;
     height: 5%;
 
@@ -50,9 +30,9 @@
     font-size: 1.5rem;
 }
 
-.editProfile__form {
+.addImage--form {
     width: 100%;
-    height: 95%;
+    height: 85%;
     gap: 1rem;
 
     display: flex;
@@ -63,45 +43,19 @@
     border-radius: 15px;
 }
 
-.editProfile--formPair {
-    width: 50%;
-    height: 4rem;
-    gap: .5rem;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.editProfile--formPair.styles {
-    height: 10rem;
-}
-
-.editProfile--formPair.checkbox {
-    width: 30%;
-    height: 2rem;
-    gap: 1rem;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.editProfile__form--label {
+.addImage--label {
     width: 100%;
     height: 1rem;
 
-    font-size: 1rem;
+    font-size: 1.2rem;
 
     color: rgb(46, 34, 75);
 }
 
-.editProfile__form--input {
+.addImage--input {
     width: 15rem;
-    min-width: 10rem;
-    max-width: 20rem;
+    min-width: 15rem;
+    max-width: 25rem;
     height: 30px;
 
     background: rgb(232, 229, 247);
@@ -113,7 +67,17 @@
     padding-left: 10px;
 }
 
-.editProfile__form--select {
+.addImage--input.imageFile {
+    min-width: 20rem;
+    max-width: 30rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.addImage--select {
     width: 15rem;
     min-width: 10rem;
     max-width: 20rem;
@@ -128,23 +92,23 @@
     padding-left: 10px;
 }
 
-.editProfile__form--select::-webkit-scrollbar-track {
+.addImage--select::-webkit-scrollbar-track {
     background: slateblue;
     border-radius: 0 12px 12px 0;
 }
 
-.editProfile__form--select::-webkit-scrollbar {
+.addImage--select::-webkit-scrollbar {
     width: 8px;
     border-radius: 12px;
 }
 
-.editProfile__form--select::-webkit-scrollbar-thumb {
+.addImage--select::-webkit-scrollbar-thumb {
     background-color: rgb(54, 46, 107);
     border-radius: 12px;
     border: 2px solid rgb(171, 165, 209);
 }
 
-.editProfile__form--checkbox {
+.addImage--checkbox {
     width: 20px;
     height: 20px;
 
@@ -157,45 +121,22 @@
     padding-left: 10px;
 }
 
-.editProfile--eyeWrap {
-    width: 0;
-    height: 0;
-
-    position: absolute;
-}
-
-.editProfile__formError--list {
-    width: 40%;
-}
-
-.editProfile__formError--item {
+.addImage--formError {    
     width: 100%;
     height: .7rem;
-    gap: .5rem;
+    gap: .2rem;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
 
     font-size: .8rem;
 
     color: rgb(37, 22, 71);
 }
 
-.editProfile--formButtonPair {
-    width: 100%;
-    height: auto;
-    gap: 1rem;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.editProfile--formButton,
-.editProfile--cancelButton {
+.addImage--formButton {
     width: 150px;
     height: 40px;
 
@@ -209,7 +150,40 @@
     border-radius: 15px;
 }
 
-.editProfile--formButton:hover,
-.editProfile--cancelButton:hover {
+.addImage--formButton {
     border: 2px solid rgb(228, 225, 243);
+}
+
+.addImage--navButton  {
+    width: 150px;
+    height: 40px;
+    max-height: 5%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 15px;
+}
+
+.addImage--navButton:hover {
+    border: 2px solid rgb(228, 225, 243);
+}
+
+.addImage--status {
+    width: 100%;
+    height: 5%;
+    gap: .5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.2rem;
+
+    color: rgb(37, 22, 71);
 }

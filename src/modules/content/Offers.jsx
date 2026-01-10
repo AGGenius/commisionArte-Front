@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
 import axios from 'axios';
-//import './AddGame.css'
+import './Offers.css'
 
 //Module to control the creation of new games.
 const OffersPage = () => {
@@ -18,7 +18,8 @@ const OffersPage = () => {
     const [offerArtistSet, setArtisOfferSet] = useState([]);
     const addOffer = "http://localhost:3000/api/openWorks/upload";
 
-    const [showData, setShowData] = useState("");
+    const [showClientData, setShowClientData] = useState("");
+    const [showArtistData, setShowArtistData] = useState("");
     const [clientData, setClientData] = useState([]);
     const [artistData, setArtistData] = useState([]);
     const [actualOfferDataID, setActualOfferDataID] = useState(0);
@@ -92,7 +93,6 @@ const OffersPage = () => {
                 reset();
                 getOffers();
             } catch (error) {
-                console.log(error)
                 const errors = error.response.data.errors;
                 setCreateStatus(errors)
             };
@@ -108,65 +108,40 @@ const OffersPage = () => {
     }
 
     const deleteOffer = async (e) => {
+        const confirmation = await confirm("Confirma para borrar la solicitud");
+
         if (!user.id) { return };
 
-        const id = e.target.value;
-        const offerUrl = `http://localhost:3000/api/openWorks/`;
+        if (confirmation) {
+            const id = e.target.value;
+            const offerUrl = `http://localhost:3000/api/openWorks/`;
 
-        try {
-            const response = await axios.delete(offerUrl + id);;
-            setCreateStatus(response.data.estado);
-            getOffers();
-        } catch (error) {
-            const errors = error.response.data.errors;
-            setCreateStatus(errors)
+            try {
+                const response = await axios.delete(offerUrl + id);;
+                setCreateStatus(response.data.estado);
+                getOffers();
+            } catch (error) {
+                const errors = error.response.data.errors;
+                setCreateStatus(errors)
+            };
         };
     };
 
     const takeOffer = async (e) => {
+        const confirmation = await confirm("Confirma para aceptar la solicitud");
+
         if (!user.id) { return };
 
-        const payload = {
-            artist_id: user.id,
-        }
-
-        const id = e.target.value;
-        const offerUrl = `http://localhost:3000/api/openWorks/take/`;
-
-        try {
-            const response = await axios.put(offerUrl + id, payload);;
-            setCreateStatus(response.data.estado);
-            getOffers();
-        } catch (error) {
-            const errors = error.response.data.estado;
-            setCreateStatus(errors)
-        };
-    };
-
-    const declineOffer = async (e, offer) => {
-        if (!user.id) { return };
-
-        const id = e.target.value;
-        const offerUrl = `http://localhost:3000/api/openWorks/decline/`;
-        const rejectUrl = `http://localhost:3000/api/rejected/upload`;
-
-        if (offer) {
-            if (!token) { return };
-
+        if (confirmation) {
             const payload = {
-                artist_id: offer.artist_id,
-                client_id: user.id,
-                openWork_id: id,
+                artist_id: user.id,
             }
 
-            try {
-                const response = await axios.post(rejectUrl, payload);
-            } catch (error) {
-                const errors = error.response.data.errors;
-            };
+            const id = e.target.value;
+            const offerUrl = `http://localhost:3000/api/openWorks/take/`;
 
             try {
-                const response = await axios.put(offerUrl + id);;
+                const response = await axios.put(offerUrl + id, payload);;
                 setCreateStatus(response.data.estado);
                 getOffers();
             } catch (error) {
@@ -176,25 +151,66 @@ const OffersPage = () => {
         };
     };
 
+    const declineOffer = async (e, offer) => {
+        const confirmation = await confirm("Confirma para rechazar la solicitud");
+
+        if (!user.id) { return };
+
+        const id = e.target.value;
+        const offerUrl = `http://localhost:3000/api/openWorks/decline/`;
+        const rejectUrl = `http://localhost:3000/api/rejected/upload`;
+
+        if (offer) {
+            if (!token) { return };
+
+            if (confirmation) {
+                const payload = {
+                    artist_id: offer.artist_id,
+                    client_id: user.id,
+                    openWork_id: id,
+                }
+
+                try {
+                    const response = await axios.post(rejectUrl, payload);
+                } catch (error) {
+                    const errors = error.response.data.errors;
+                };
+
+                try {
+                    const response = await axios.put(offerUrl + id);;
+                    setCreateStatus(response.data.estado);
+                    getOffers();
+                } catch (error) {
+                    const errors = error.response.data.estado;
+                    setCreateStatus(errors)
+                };
+            };
+        };
+    };
+
     const confirmOffer = async (e, offer) => {
+        const confirmation = await confirm("Confirma para confirmar la solicitud");
+
         if (!token) { return };
 
         const id = e.target.value;
         const offerUrl = `http://localhost:3000/api/openWorks/confirm/`;
 
-        const payload = {
-            artist_id: offer.artist_id,
-            client_id: user.id,
-            openWork_id: id,
-        }
+        if (confirmation) {
+            const payload = {
+                artist_id: offer.artist_id,
+                client_id: user.id,
+                openWork_id: id,
+            }
 
-        try {
-            const response = await axios.put(offerUrl + id, payload);
-            setCreateStatus(response.data.estado);
-            getOffers();
-        } catch (error) {
-            const errors = error.response.data.estado;
-            setCreateStatus(errors)
+            try {
+                const response = await axios.put(offerUrl + id, payload);
+                setCreateStatus(response.data.estado);
+                getOffers();
+            } catch (error) {
+                const errors = error.response.data.estado;
+                setCreateStatus(errors)
+            };
         };
     };
 
@@ -203,7 +219,7 @@ const OffersPage = () => {
             if (offer.status === "open") {
                 return (
                     <>
-                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => deleteOffer(e)}>Borrar solicitud</button>}
+                        {<button className="createOffer--button delete" value={offer.id} onClick={(e) => deleteOffer(e)}>Borrar</button>}
                     </>);
             } else if (offer.status === "confirmed") {
                 return (
@@ -211,10 +227,11 @@ const OffersPage = () => {
                     </>);
             } else {
                 return (
-                    <>
-                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => declineOffer(e, offer)}>Rechazar</button>}
-                        {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => confirmOffer(e, offer)}>Confirmar</button>}
-                    </>);
+                    <div className="baseOffer__form--pair">
+                        {<button className="createOffer--button decline" value={offer.id} onClick={(e) => declineOffer(e, offer)}>Rechazar</button>}
+                        {<button className="createOffer--button confirm" value={offer.id} onClick={(e) => confirmOffer(e, offer)}>Confirmar</button>}
+                    </div>
+                );
             }
         }
     };
@@ -231,28 +248,31 @@ const OffersPage = () => {
         if (token && offer.status !== "confirmed") {
             return (
                 <>
-                    {<button className="posts--gameCardButton" value={offer.id} onClick={(e) => takeOffer(e)}>{status}</button>}
+                    {<button className="createOffer--button take" value={offer.id} onClick={(e) => takeOffer(e)}>{status}</button>}
                 </>);
         }
     };
 
     const clientOfferPage = () => {
         return (
-            <>
-                <h2 className="addGame--title">Sube una peticion</h2>
-                <form className="addGame--form" onSubmit={handleSubmit((data) => uploadOffer(data))}>
-                    <label htmlFor="createGameTitle">Titulo</label>
-                    <input id="createGameTitle" type="text" {...register("title", { required: { value: true, message: "Se debe introducir el titulo." } })}></input>
-                    {errors.title?.message && <p className="addGame--formError">{errors.title?.message}</p>}
-                    <label htmlFor="createGameDevelopa">Solicitud</label>
-                    <textarea id="createGameDevelopa" type="text" {...register("content", { required: { value: true, message: "Se debe introducir un texto para la solicitud." } })}></textarea>
-                    {errors.content?.message && <p className="addGame--formError">{errors.content?.message}</p>}
-                    <label htmlFor="createGameDevelopa">SFW</label>
-                    <input id="editUserState" type="checkbox" {...register("sfw_status")} value={active ? active : false} checked={active ? active : false} onChange={(e) => setActive(e.target.checked)}></input>
-                    {errors.sfw_status?.message && <p className="addGame--formError">{errors.sfw_status?.message}</p>}
-                    <button className="addGame--formButton" type="submit">Crear solicitud</button>
+            <div className="createOffer">
+                <h2 className="createOffer__title">Realizar una peticion</h2>
+                <form className="createOffer__form" onSubmit={handleSubmit((data) => uploadOffer(data))}>
+                    <label className="createOffer__form--label" htmlFor="createOfferTitle">Titulo</label>
+                    <input className="createOffer__form--input" id="createOfferTitle" type="text" {...register("title", { required: { value: true, message: "Se debe introducir el titulo." } })}></input>
+                    {errors.title?.message && <p className="createOffer__form--error">{errors.title?.message}</p>}
+                    <label className="createOffer__form--label" htmlFor="createOfferContent">Solicitud</label>
+                    <textarea className="createOffer__form--input" id="createOfferContent" type="text" {...register("content", { required: { value: true, message: "Se debe introducir un texto para la solicitud." } })}></textarea>
+                    {errors.content?.message && <p className="createOffer__form--error">{errors.content?.message}</p>}
+                    <div className="createOffer__form--pair">
+                        <label className="createOffer__form--label check" htmlFor="createOfferSFWcheck">SFW</label>
+                        <input className="createOffer__form--checkbox" id="createOfferSFWcheck" type="checkbox" {...register("sfw_status")} value={active ? active : false} checked={active ? active : false} onChange={(e) => setActive(e.target.checked)}></input>
+                    </div>
+                    {errors.sfw_status?.message && <p className="createOffer__form--error">{errors.sfw_status?.message}</p>}
+                    <button className="createOffer__form--sendButton" type="submit">Crear</button>
                 </form>
-            </>
+                {createStatus && <p className="createOffer__form--status">{createStatus}</p>}
+            </div>
         )
     };
 
@@ -263,35 +283,35 @@ const OffersPage = () => {
             return "Tomada";
         } else if (offer.status === "confirmed") {
             return "Confirmada";
-        }
+        };
     }
 
     const generateShowClientButton = (offer) => {
         return (
             <>
-                <button onClick={() => loadClientInfo(offer)}>Ver solicitante</button>
+                <button className="offers--button" onClick={() => loadClientInfo(offer)}>Solicitante</button>
             </>
         )
     };
 
     const generateShowArtistButton = (offer) => {
-        if(offer.artist_id === 0 || offer.status === "open") {
+        if (offer.artist_id === 0 || offer.status === "open") {
             return;
         }
 
         return (
             <>
-                <button onClick={() => loadArtistInfo(offer)}>Ver artista</button>
+                <button className="offers--button" onClick={() => loadArtistInfo(offer)}>Artista</button>
             </>
         )
     };
 
     const loadClientInfo = async (offer) => {
         if (offer.id === actualOfferDataID) {
-            setShowData(false);
+            setShowClientData(false);
             setActualOfferDataID(0);
             return;
-        }
+        };
 
         try {
             const clientUrl = `http://localhost:3000/api/clients/`;
@@ -300,24 +320,24 @@ const OffersPage = () => {
 
             setActualOfferDataID(offer.id);
             setClientData(data);
-            if (!showData) { setShowData(true); };
+            if (!showClientData) { setShowClientData(true); };
         } catch (error) {
             console.log(error);
         };
     }
 
     const loadArtistInfo = async (offer) => {
-        if(offer.artist_id === 0 || offer.status === "open") {
-            setShowData(false);
+        if (offer.artist_id === 0 || offer.status === "open") {
+            setShowArtistData(false);
             setActualOfferDataID(0);
             return;
-        }
+        };
 
         if (offer.offer_id === actualOfferDataID) {
-            setShowData(false);
+            setShowArtistData(false);
             setActualOfferDataID(0);
             return;
-        }
+        };
 
         try {
             const artistUrl = `http://localhost:3000/api/artists/`;
@@ -326,73 +346,46 @@ const OffersPage = () => {
 
             setActualOfferDataID(offer.offer_id);
             setArtistData(data);
-            if (!showData) { setShowData(true); };
+            if (!showArtistData) { setShowArtistData(true); };
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         };
+    }
+
+    const closeDataCard = () => {
+        setShowArtistData(false);
+        setShowClientData(false);
+        setActualOfferDataID(0);
+        return;
     }
 
     const renderOffers = () => {
         const baseOfferContent = (offer) => {
             return (
-                <>
-                    <p>Titulo: {offer.title}</p>
-                    <p>Contenido: {offer.content}</p>
-                    <p>Estado: {offerStatus(offer)}</p>
-                    <p>SFW: {offer.sfw_status ? "SI" : "NO"}</p>
-                    <p>Creada: {formatDate(offer.creation_date)}</p>
-                    {user.account_type === "client" && offer.status === "taken" && <p>Artist ID: {offer.artist_id}</p>}
+                <div className="baseOffer">
+                    <p className="baseOffer__content">Titulo: {offer.title}</p>
+                    <p className="baseOffer__content">Contenido: {offer.content}</p>
+                    <p className="baseOffer__content">Estado: {offerStatus(offer)}</p>
+                    <p className="baseOffer__content">SFW: {offer.sfw_status ? "SI" : "NO"}</p>
+                    <p className="baseOffer__content">Creada: {formatDate(offer.creation_date)}</p>
+                    {user.account_type === "client" && offer.status === "taken" && <p className="baseOffer__content">Artist ID: {offer.artist_id}</p>}
                     {user.account_type === "client" ? generateDeleteOfferButton(offer) : generateTakeOfferButton(offer)}
                     {user.account_type === "client" ? generateShowArtistButton(offer) : generateShowClientButton(offer)}
-                </>
+                </div>
             )
         }
 
-        const clientOfferContent = () => {
-            if (clientData) {
-                return (
-                    <div>
-                        <p>Nick: {clientData.nick}</p>
-                        <p>Email de contacto: {clientData.contact_email}</p>
-                        {clientData.telephone && <p>Telefono de contacto: {clientData.telephone}</p>}
-                        <p>Reputacion: {clientData.reputation}</p>
-                        <p>Fecha de Registro: {new Date(clientData.register).toLocaleDateString("es-ES")}</p>
-                    </div>
-                )
-            };
-        }
-
-        const artistOfferContent = () => {
-            if (artistData) {
-                return (
-                    <div>
-                        <p>Nick: {artistData.nick}</p>
-                        <p>Email de contacto: {artistData.contact_email}</p>
-                        {artistData.telephone && <p>Telefono de contacto: {artistData.telephone}</p>}
-                        <p>Estilos: {artistData.styles}</p>
-                        <p>Reputacion: {artistData.reputation}</p>
-                        <p>Fecha de Registro: {new Date(artistData.register).toLocaleDateString("es-ES")}</p>
-                    </div>
-                )
-            };
-        }
-
-
         const baseOfferRender = (offer) => {
-
             return (
-                < div className="games--gameCard" key={offer.id} >
-                    <div className="games--gameCardData">
-                        {baseOfferContent(offer)}
-                    </div>
+                < div className="offer__card" key={offer.id} >
+                    {baseOfferContent(offer)}
                 </div >
             )
         }
 
         if (user.account_type === "artist") {
             return (
-                <>
-                    {showData && clientOfferContent()}
+                <div className="offers--artist">
                     {createStatus && <p>{createStatus}</p>}
                     <h2>Peticiones publicas</h2>
                     {offerSet ? offerSet.map((offer) =>
@@ -408,33 +401,69 @@ const OffersPage = () => {
                     ))
                         : <p>Cargando peticiones aceptadas...</p>
                     }
-                </>
+                </div>
             )
         } else {
             return (
-                <>
-                    {showData && artistOfferContent()}
-                    {createStatus && <p>{createStatus}</p>}
-                    <h2>Mis peticiones</h2>
+                <div className="offers--client">
                     {offerSet ? offerSet.map((offer) =>
                     (
                         baseOfferRender(offer)
                     ))
                         : <p>Cargando peticiones realizadas...</p>
                     }
-                </>
+                </div>
             )
         }
+    }
 
+    const clientOfferContent = () => {
+        if (clientData) {
+            return (
+                <div className="clientData">
+                    <div className="clientData--wrap">
+                        <p className="clientData--text">Nick: {clientData.nick}</p>
+                        <p className="clientData--text">Email de contacto: {clientData.contact_email}</p>
+                        {clientData.telephone && <p className="clientData--wrap">Telefono de contacto: {clientData.telephone}</p>}
+                        <p className="clientData--text">Reputacion: {clientData.reputation}</p>
+                        <p className="clientData--text">Fecha de Registro: {new Date(clientData.register).toLocaleDateString("es-ES")}</p>
+                        {<button className="clientData--button" onClick={(e) => closeDataCard(e)}>Cerrar</button>}
+                    </div>
+                </div>
+            )
+        };
+    }
+
+    const artistOfferContent = () => {
+        if (artistData) {
+            return (
+                <div className="artistData">
+                    <div className="artistData--wrap">
+                        <p className="artistData--text">Nick: {artistData.nick}</p>
+                        <p className="artistData--text">Email de contacto: {artistData.contact_email}</p>
+                        {artistData.telephone && <p className="artistData--text">Telefono de contacto: {artistData.telephone}</p>}
+                        <p className="artistData--text">Estilos: {artistData.styles}</p>
+                        <p className="artistData--text">Estilos</p>
+                        <div className="artistData--text--styles--wrap">
+                            {artistData.styles.split(',').map((style, i) => (
+                                <span className="artistData--text--stylesList--item" key={i}>{style}</span>
+                            ))}
+                        </div>
+                        <p className="artistData--text">Reputacion: {artistData.reputation}</p>
+                        <p className="artistData--text">Fecha de Registro: {new Date(artistData.register).toLocaleDateString("es-ES")}</p>
+                        {<button className="clientData--button" onClick={(e) => closeDataCard(e)}>Cerrar</button>}
+                    </div>
+                </div>
+            )
+        };
     }
 
     return (
-        <div className="addGame">
-            <div>
-                {renderOffers()}
-                {user.account_type === "client" && clientOfferPage()}
-            </div>
-
+        <div className="offers">
+            {showClientData && clientOfferContent()}
+            {showArtistData && artistOfferContent()}
+            {renderOffers()}
+            {user.account_type === "client" && clientOfferPage()}
         </div>
     )
 }

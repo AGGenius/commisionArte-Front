@@ -74,9 +74,9 @@ function Nav() {
   const clientMenu = (e) => {
     return (
       <ul className="nav__menu">
-        {token && <li><Link to="/offers" className="nav__navButton first">Solicitudes</Link></li>}
-        {token && <li><Link to="/profile" className="nav__navButton">Perfil</Link></li>}
-        {token && <li><Link to="/stateCard" className="nav__navButton last">Tarjetas de trabajo</Link></li>}
+        {token && <li className="nav__navListElement"><Link to="/offers" className="nav__navButton first">Solicitudes</Link></li>}
+        {token && <li className="nav__navListElement"><Link to="/profile" className="nav__navButton">Perfil</Link></li>}
+        {token && <li className="nav__navListElement"><Link to="/stateCard" className="nav__navButton last">Tarjetas de trabajo</Link></li>}
       </ul>
     )
   }

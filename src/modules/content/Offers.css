@@ -1,0 +1,398 @@
+.offers {
+    width: 90%;
+    height: 85%;
+    gap: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.offers--client {
+    width: 80%;
+    height: 45%;
+    gap: 2rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    z-index: 5;
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgb(139, 147, 223) 35%, rgb(106, 133, 187) 100%);
+    border: 5px solid slateblue;
+    border-radius: 15px;
+    padding: 2rem;
+
+    box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-padding: 8px;
+}
+
+.offers--client::-webkit-scrollbar-track {
+    background: slateblue;
+    border-radius: 0 0 2px 2px;
+}
+
+.offers--client::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 12px;
+}
+
+.offers--client::-webkit-scrollbar-thumb {
+    background-color: rgb(54, 46, 107);
+    border-radius: 12px;
+    border: 2px solid rgb(171, 165, 209);
+}
+
+.offer__card {
+    width: 60%;
+    min-width: 25rem;
+    height: 85%;
+    min-height: 18rem;
+    gap: 1rem;
+
+    z-index: 5;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.baseOffer {
+    width: 100%;
+    height: 100%;
+    gap: .5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid rgb(230, 230, 230);
+    border-radius: 15px;
+    box-shadow: 5px 8px 10px rgba(49, 68, 105, 0.7);
+    background: linear-gradient(-90deg, rgb(198, 191, 230, 0.2) 0%, rgb(139, 147, 223, 0.2) 35%, rgb(106, 133, 187, 0.2) 100%);
+    margin: 1rem;
+}
+
+.baseOffer__content {
+    width: 85%;
+    height: auto;
+
+    font-size: 1rem;
+
+    color: rgb(44, 31, 73);
+}
+
+.baseOffer__form--pair {
+    width: 50%;
+    height: 2rem;
+    gap: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.createOffer--button {
+    width: 200px;
+    height: 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 15px;
+}
+
+.createOffer--button.decline,
+.createOffer--button.confirm {
+    width: 100px;
+}
+
+.createOffer--button:hover {
+    border: 2px solid rgb(228, 225, 243);
+}
+
+.createOffer {
+    width: 45%;
+    height: 45%;
+    gap: .5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 5;
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgb(139, 147, 223) 35%, rgb(106, 133, 187) 100%);
+    border: 5px solid slateblue;
+    border-radius: 15px;
+
+    box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
+}
+
+.createOffer__title {
+    width: 100%;
+    height: 5%;
+
+    font-size: 1.7rem;
+    font-weight: bold;
+
+    color: rgb(37, 22, 71);
+}
+
+.createOffer__form {
+    width: 100%;
+    height: 70%;
+    max-height: 90%;
+    gap: .4rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.createOffer__form--pair {
+    width: 20%;
+    height: 2rem;
+    gap: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.createOffer__form--label {
+    width: 100%;
+    height: 10%;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    color: rgb(198, 191, 230);
+}
+
+.createOffer__form--label.check {
+    width: 100%;
+    height: 100%;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    color: rgb(198, 191, 230);
+}
+
+.createOffer__form--input {
+    width: 50%;
+    height: 30px;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 10px;
+
+    box-shadow: none;
+
+    padding-left: 10px;
+}
+
+.createOffer__form--checkbox {
+    width: 20px;
+    height: 20px;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 10px;
+
+    box-shadow: none;
+
+    padding-left: 10px;
+}
+
+.createOffer__form--sendButton {
+    width: 150px;
+    height: 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 15px;
+}
+
+.createOffer__form--sendButton:hover {
+    border: 2px solid rgb(228, 225, 243);
+}
+
+.createOffer__form--status {
+    width: 80%;
+    height: 5%;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    color: rgb(37, 22, 71);
+}
+
+.createOffer__form--error {
+    width: 100%;
+    height: .7rem;
+    gap: .5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: .8rem;
+
+    color: rgb(37, 22, 71);
+}
+
+.offers--artist {
+    width: 45%;
+    height: 90%;
+    gap: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    z-index: 5;
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgb(139, 147, 223) 35%, rgb(106, 133, 187) 100%);
+    border: 5px solid slateblue;
+    border-radius: 15px;
+    padding: 2rem;
+
+    box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
+
+    overflow-y: auto;
+    scroll-padding: 8px;
+}
+
+.offers--artist::-webkit-scrollbar-track {
+    background: slateblue;
+    border-radius: 0 0 2px 2px;
+}
+
+.offers--artist::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 12px;
+}
+
+.offers--artist::-webkit-scrollbar-thumb {
+    background-color: rgb(54, 46, 107);
+    border-radius: 12px;
+    border: 2px solid rgb(171, 165, 209);
+}
+
+.offers--button,
+.clientData--button {
+    width: 200px;
+    height: 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 15px;
+}
+
+.offers--button:hover,
+.clientData--button:hover {
+    border: 2px solid rgb(228, 225, 243);
+}
+
+.clientData,
+.artistData {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    z-index: 10;
+    background: rgba(10, 6, 51, 0.4);
+    inset: 0;
+}
+
+.clientData--wrap,
+.artistData--wrap {
+    width: 40%;
+    height: 40%;
+    gap: .8rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 15;
+    border-radius: 15px;
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgb(139, 147, 223) 35%, rgb(106, 133, 187) 100%);
+    border: 5px solid slateblue;
+    box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
+}
+
+.clientData--text,
+.artistData--text {
+    width: 85%;
+    height: auto;
+
+    font-size: 1.2rem;
+
+    color: rgb(44, 31, 73);
+}
+
+.artistData--text--styles--wrap {
+    height: 20%;
+    max-height: 2rem;
+    width: 100%;
+
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.artistData--text--stylesList--item {
+    font-size: 1rem;
+
+    border: 2px solid rgb(46, 46, 46);
+    color: rgb(46, 46, 46);
+    border-radius: 10px;
+
+    padding: 0 5px 0 5px;
+}
+
+.artistData--text--stylesList--item:hover {
+    border: 2px solid rgb(175, 192, 207);
+    background-color: rgba(46, 46, 46, 0.8);
+    color: rgb(232, 239, 245);
+
+    cursor: default;
+}

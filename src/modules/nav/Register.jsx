@@ -269,7 +269,6 @@ const Register = ({ sendToParent }) => {
         sendToParent(false);
     };
 
-
     return (
         <>
             <div className="register__registerForm">
@@ -347,7 +346,7 @@ const Register = ({ sendToParent }) => {
                         </form>
                         :
                         <p>{registerState}</p>}
-                    <button className="register--cancelButton" onClick={handleClick}>Cancel</button>
+                    <button className="register--cancelButton" onClick={handleClick}>Cerrar</button>
                 </div>
             </div>
         </>
