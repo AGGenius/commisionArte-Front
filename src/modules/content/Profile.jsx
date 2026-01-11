@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API_URL from "../../config/api";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
 import axios from "axios";
@@ -18,8 +19,8 @@ const ProfilePage = () => {
     const [changeDataState, setChangeDataState] = useState("");
 
     //url
-    const clientsUrl = "http://localhost:3000/api/clients/";
-    const artistsUrl = "http://localhost:3000/api/artists/";
+    const clientsUrl = `${API_URL}/api/clients/`;
+    const artistsUrl = `${API_URL}/api/artists/`;
 
     //User values
     const [email, setEmail] = useState("");

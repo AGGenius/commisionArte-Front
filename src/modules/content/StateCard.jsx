@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import API_URL from "../../config/api";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
@@ -112,7 +113,7 @@ const StateCardPage = () => {
             }
 
 
-            const uploadStateCardURL = `http://localhost:3000/api/stateCards/update/`;
+            const uploadStateCardURL = `${API_URL}/api/stateCards/update/`;
 
             try {
                 const response = await axios.put(uploadStateCardURL + editStateCardID, payload);
@@ -133,7 +134,7 @@ const StateCardPage = () => {
     const getStateCards = async () => {
         if (user.account_type === "client") {
             try {
-                const offersUrl = `http://localhost:3000/api/stateCards/client/`;
+                const offersUrl = `${API_URL}/api/stateCards/client/`;
                 const response = await axios.get(offersUrl + user.id);
                 const data = response.data;
 
@@ -143,7 +144,7 @@ const StateCardPage = () => {
             };
         } else if (user.account_type === "artist") {
             try {
-                const offersUrl = `http://localhost:3000/api/stateCards/artist/`;
+                const offersUrl = `${API_URL}/api/stateCards/artist/`;
                 const response = await axios.get(offersUrl + user.id);
                 const data = response.data;
 
@@ -166,7 +167,7 @@ const StateCardPage = () => {
                 commentary: "Trabajo finalizado correctamente.",
             }
 
-            const uploadStateCardURL = `http://localhost:3000/api/stateCards/update/`;
+            const uploadStateCardURL = `${API_URL}/api/stateCards/update/`;
 
             try {
                 const response = await axios.put(uploadStateCardURL + stateCardID, payload);

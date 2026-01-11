@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import API_URL from "../../config/api";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
@@ -16,8 +17,8 @@ function Nav() {
   const [loginWindow, setLoginWindow] = useState(false);
   const newRef = useRef(null);
   const loginRef = useRef(null);
-  const apiArtistURL = "http://localhost:3000/api/artists/";
-  const apiClientURL = "http://localhost:3000/api/clients/";
+  const apiArtistURL = `${API_URL}/api/artists/`;
+  const apiClientURL = `${API_URL}/api/clients/`;
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

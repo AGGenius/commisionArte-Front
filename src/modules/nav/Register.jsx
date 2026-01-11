@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_URL from "../../config/api";
 import axios from "axios";
 import './Register.css'
 
@@ -25,8 +26,8 @@ const Register = ({ sendToParent }) => {
     const [registerState, setRegisterState] = useState("");
 
     const [registerType, setRegisterType] = useState(false);
-    const apiArtistURL = "http://localhost:3000/api/artists/register";
-    const apiClientURL = "http://localhost:3000/api/clients/register";
+    const apiArtistURL = `${API_URL}/api/artists/register`;
+    const apiClientURL = `${API_URL}/api/clients/register`;
 
     //Function to check the correlation on the passwords. As simple as it gets. Outputs a message if not valid.
     const checkPasswords = () => {

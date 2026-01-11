@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API_URL from "../../config/api";
 import axios from 'axios';
 import { Link } from "react-router-dom"
 import './Footer.css'
@@ -22,7 +23,7 @@ function Footer() {
                 async (position) => {
                     const { latitude, longitude } = position.coords;
 
-                    const weatherURL = `http://localhost:3000/api/weather?lat=${latitude}&lon=${longitude}`;
+                    const weatherURL = `${API_URL}/api/weather?lat=${latitude}&lon=${longitude}`;
                     const response = await axios.get(weatherURL);
                     const data = response.data;
                     setWeather(data);

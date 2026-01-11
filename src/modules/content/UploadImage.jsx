@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import API_URL from "../../config/api";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
@@ -12,7 +13,7 @@ const UploadImage = () => {
     const [token, setToken] = useState("");
     const [createStatus, setCreateStatus] = useState("");
     const [selectedStyles, setSelectedStyles] = useState([]);
-    const addImageURL = "http://localhost:3000/api/portfolio/upload";
+    const addImageURL = `${API_URL}/api/portfolio/upload`;
     const navigate = useNavigate();
 
     const stylesArr = [

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
+import API_URL from "../../config/api";
 import axios from "axios";
 import './EditProfileInfo.css'
 
@@ -38,8 +39,8 @@ const EditProfileInfo = ({ sendToParent }) => {
     const [passwordState, setPasswordState] = useState("");
 
     const [editProfileType, setEditProfileType] = useState(false);
-    const apiArtistURL = "http://localhost:3000/api/artists/editInfo/";
-    const apiClientURL = "http://localhost:3000/api/clients/editInfo/";
+    const apiArtistURL = `${API_URL}/api/artists/editInfo/`;
+    const apiClientURL = `${API_URL}/api/clients/editInfo/"`;
 
     const stylesArr = [
         "traditional",

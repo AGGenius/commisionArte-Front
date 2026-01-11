@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import API_URL from "../../config/api";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
@@ -44,9 +45,9 @@ const RateUser = ({ rateStateCard, sendToParent }) => {
         let rateUserUrl;
 
         if (user.account_type == "artist") {
-            rateUserUrl = `http://localhost:3000/api/clients/rateUser`;
+            rateUserUrl = `${API_URL}/api/clients/rateUser`;
         } else {
-            rateUserUrl = `http://localhost:3000/api/artists/rateUser`;
+            rateUserUrl = `${API_URL}/api/artists/rateUser`;
         }
 
         try {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import API_URL from "../../config/api";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
@@ -16,7 +17,7 @@ const OffersPage = () => {
     const [createStatus, setCreateStatus] = useState("");
     const [offerSet, setOfferSet] = useState([]);
     const [offerArtistSet, setArtisOfferSet] = useState([]);
-    const addOffer = "http://localhost:3000/api/openWorks/upload";
+    const addOffer = `${API_URL}/api/openWorks/upload`;
 
     const [showClientData, setShowClientData] = useState("");
     const [showArtistData, setShowArtistData] = useState("");
@@ -37,7 +38,7 @@ const OffersPage = () => {
     const getOffers = async () => {
         if (user.account_type === "client") {
             try {
-                const offersUrl = `http://localhost:3000/api/openWorks/client/`;
+                const offersUrl = `${API_URL}/api/openWorks/client/`;
                 const response = await axios.get(offersUrl + user.id);
                 const data = response.data;
 
@@ -47,7 +48,7 @@ const OffersPage = () => {
             };
         } else if (user.account_type === "artist") {
             try {
-                const offersUrl = `http://localhost:3000/api/openWorks/available/`;
+                const offersUrl = `${API_URL}/api/openWorks/available/`;
                 const response = await axios.get(offersUrl + user.id);
                 const data = response.data;
 
@@ -57,7 +58,7 @@ const OffersPage = () => {
             };
 
             try {
-                const offersUrl = `http://localhost:3000/api/openWorks/artist/`;
+                const offersUrl = `${API_URL}/api/openWorks/artist/`;
                 const response = await axios.get(offersUrl + user.id);
                 const data = response.data;
 
@@ -114,7 +115,7 @@ const OffersPage = () => {
 
         if (confirmation) {
             const id = e.target.value;
-            const offerUrl = `http://localhost:3000/api/openWorks/`;
+            const offerUrl = `${API_URL}/api/openWorks/`;
 
             try {
                 const response = await axios.delete(offerUrl + id);;
@@ -138,7 +139,7 @@ const OffersPage = () => {
             }
 
             const id = e.target.value;
-            const offerUrl = `http://localhost:3000/api/openWorks/take/`;
+            const offerUrl = `${API_URL}/api/openWorks/take/`;
 
             try {
                 const response = await axios.put(offerUrl + id, payload);;
@@ -157,8 +158,8 @@ const OffersPage = () => {
         if (!user.id) { return };
 
         const id = e.target.value;
-        const offerUrl = `http://localhost:3000/api/openWorks/decline/`;
-        const rejectUrl = `http://localhost:3000/api/rejected/upload`;
+        const offerUrl = `${API_URL}/api/openWorks/decline/`;
+        const rejectUrl = `${API_URL}/api/rejected/upload`;
 
         if (offer) {
             if (!token) { return };
@@ -194,7 +195,7 @@ const OffersPage = () => {
         if (!token) { return };
 
         const id = e.target.value;
-        const offerUrl = `http://localhost:3000/api/openWorks/confirm/`;
+        const offerUrl = `${API_URL}/api/openWorks/confirm/`;
 
         if (confirmation) {
             const payload = {
@@ -314,7 +315,7 @@ const OffersPage = () => {
         };
 
         try {
-            const clientUrl = `http://localhost:3000/api/clients/`;
+            const clientUrl = `${API_URL}/api/clients/`;
             const response = await axios.get(clientUrl + offer.client_id);
             const data = response.data;
 
@@ -340,7 +341,7 @@ const OffersPage = () => {
         };
 
         try {
-            const artistUrl = `http://localhost:3000/api/artists/`;
+            const artistUrl = `${API_URL}/api/artists/`;
             const response = await axios.get(artistUrl + offer.artist_id);
             const data = response.data;
 

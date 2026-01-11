@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API_URL from "../../config/api";
 import axios from 'axios';
 import { useUserContext } from "../../context/useUserContext";
 import ExpandIcon from "../../assets/icons/expand_111060.svg?react";
@@ -29,7 +30,7 @@ const FrontPage = () => {
         if (artistCache[artistId]) return artistCache[artistId];
 
 
-        const artistNameUrl = `http://localhost:3000/api/artists/artistname/`;
+        const artistNameUrl = `${API_URL}/api/artists/artistname/`;
 
         const response = await axios.get(artistNameUrl + artistId);
         const data = response.data;
@@ -44,7 +45,7 @@ const FrontPage = () => {
 
         if (!imageSize) {
             try {
-                const imageUrl = `http://localhost:3000/api/portfolio/`;
+                const imageUrl = `${API_URL}/api/portfolio/`;
                 const response = await axios.get(imageUrl + imageId);
                 const data = response.data;
 
@@ -62,7 +63,7 @@ const FrontPage = () => {
         const logedStatus = !!localStorage.getItem("token");
 
         try {
-            const imageUrl = `http://localhost:3000/api/portfolio?logedStatus=${logedStatus}`;
+            const imageUrl = `${API_URL}/api/portfolio?logedStatus=${logedStatus}`;
             const response = await axios.get(imageUrl);
             const data = response.data;
             setImageSet(data);

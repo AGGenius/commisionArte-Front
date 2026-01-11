@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API_URL from "../../config/api";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/useUserContext";
 import ExpandIcon from "../../assets/icons/expand_111060.svg?react";
@@ -33,7 +34,7 @@ const PersonalGalleryPage = () => {
         }
 
         try {
-            const imageUrl = `http://localhost:3000/api/portfolio/artist/`;
+            const imageUrl = `${API_URL}/api/portfolio/artist/`;
             const response = await axios.get(imageUrl + artistId);
             const data = response.data;
             setImageSet(data);
@@ -48,7 +49,7 @@ const PersonalGalleryPage = () => {
 
         if (!imageSize) {
             try {
-                const imageUrl = `http://localhost:3000/api/portfolio/`;
+                const imageUrl = `${API_URL}/api/portfolio/`;
                 const response = await axios.get(imageUrl + imageId);
                 const data = response.data;
 
@@ -97,7 +98,7 @@ const PersonalGalleryPage = () => {
         const confirmation = await confirm("Confirma para borrar el usuario");
         if (confirmation) {
             try {
-                const imageUrl = `http://localhost:3000/api/portfolio/`;
+                const imageUrl = `${API_URL}/api/portfolio/`;
                 await axios.delete(imageUrl + imageId);
 
                 getMyImages();

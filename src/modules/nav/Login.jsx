@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_URL from "../../config/api";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../../context/useUserContext";
@@ -17,8 +18,8 @@ const Login = () => {
     const [registerWindow, setRegisterWindow] = useState(false);
 
     const sendLogin = async (data) => {
-        const apiArtistURL = "http://localhost:3000/api/artists/";
-        const apiClientURL = "http://localhost:3000/api/clients/";
+        const apiArtistURL = `${API_URL}/api/artists/`;
+        const apiClientURL = `${API_URL}/api/clients/`;
 
         if (data) {
             const payload = {
