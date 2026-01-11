@@ -3,7 +3,7 @@ img {
     width: 300px;
 }
 
-.frontPage {
+.personalGallery {
     height: 100%;
     width: 100%;
     gap: 1rem;
@@ -17,7 +17,7 @@ img {
     margin-bottom: 50px;
 }
 
-.frontPage--title {
+.personalGallery--title {
     width: 100%;
     height: 10%;
 
@@ -25,7 +25,7 @@ img {
     font-size: 4rem;
 }
 
-.frontPage__imageWrap {
+.personalGallery__imageWrap {
     width: 100%;
     height: 90%;
     gap: 2rem;
@@ -38,10 +38,10 @@ img {
     flex-flow: wrap;
 }
 
-.frontPage__imgContainer {
-    height: 50%;
+.personalGallery__imgContainer {
+    height: 70%;
     width: 300px;
-    gap: 1rem;
+    gap: .5rem;
 
     display: flex;
     flex-direction: column-reverse;
@@ -49,7 +49,7 @@ img {
     align-items: center;
 }
 
-.frontPage__imgContainer--data {
+.personalGallery__imgContainer--data {
     height: 20%;
     width: 100%;
 
@@ -59,14 +59,14 @@ img {
     align-items: center;
 }
 
-.frontPage__imgContainer--title {
+.personalGallery__imgContainer--title {
     height: 40%;
     width: 100%;
 
     font-size: 1.5rem;
 }
 
-.frontPage__imgContainer--stylesList {
+.personalGallery__imgContainer--stylesList {
     height: 80%;
     width: 100%;
     gap: .5rem;
@@ -77,14 +77,14 @@ img {
     align-items: center;
 }
 
-.frontPage__imgContainer--label {
+.personalGallery__imgContainer--label {
     height: 20%;
     width: 100%;
 
     font-size: .9rem;
 }
 
-.frontPage__imgContainer--styles--wrap {
+.personalGallery__imgContainer--styles--wrap {
     height: 80%;
     width: 100%;
 
@@ -96,7 +96,7 @@ img {
     flex-wrap: wrap;
 }
 
-.frontPage__imgContainer--stylesList--item {
+.personalGallery__imgContainer--stylesList--item {
     font-size: .8rem;
 
     border: 2px solid rgb(46, 46, 46);
@@ -106,7 +106,7 @@ img {
     padding: 0 5px 0 5px;
 }
 
-.frontPage__imgContainer--stylesList--item:hover {
+.personalGallery__imgContainer--stylesList--item:hover {
     border: 2px solid rgb(175, 192, 207);
     background-color: rgba(46, 46, 46, 0.8);
     color: rgb(232, 239, 245);
@@ -114,9 +114,9 @@ img {
     cursor: default;
 }
 
-.frontPage__imgContainer--imageWrap {
+.personalGallery__imgContainer--imageWrap {
     height: 100%;
-    max-height: 70%;
+    max-height: 60%;
     width: 100%;
 
     position: relative;
@@ -127,7 +127,7 @@ img {
     top: 0;
 }
 
-.frontPage__imgContainer--baseImage {
+.personalGallery__imgContainer--baseImage {
     height: auto;
     max-height: 100%;
     width: auto;
@@ -144,13 +144,13 @@ img {
     box-shadow: 5px 8px 10px rgba(49, 68, 105, 0.7);
 }
 
-.frontPage__imgContainer--baseImage:hover {
+.personalGallery__imgContainer--baseImage:hover {
     border: 2px solid slateblue;
     border-radius: 15px;
     box-shadow: 7px 10px 10px rgba(49, 68, 105, 0.7);
 }
 
-.frontPage__imgContainer--changeSizeButton {
+.personalGallery__imgContainer--changeSizeButton {
     position: absolute;
     height: 30px;
     width: 30px;
@@ -169,21 +169,20 @@ img {
     fill: aliceblue;
 }
 
-.frontPage__imgContainer--changeSizeButton:hover {
+.personalGallery__imgContainer--changeSizeButton:hover {
     background: rgba(230, 230, 230, 0.3);
     border: 2px solid rgba(0, 0, 0, 0.6);
     fill: rgba(0, 0, 0, 8);
 }
 
-
-.frontPage__imgContainer--changeSizeButton--icon {
+.personalGallery__imgContainer--changeSizeButton--icon {
     width: 100%;
     height: 100%;
     display: inline-flex;
     align-items: flex-start;
 }
 
-.frontPage__fullImage {
+.personalGallery__fullImage {
     height: 100%;
     width: 100%;
     top: 0;
@@ -194,7 +193,7 @@ img {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
-.frontPage__fullImage--data {
+.personalGallery__fullImage--data {
     height: 10%;
     width: 100%;
 
@@ -204,12 +203,12 @@ img {
     flex-direction: column;
 }
 
-.frontPage__fullImage--name {
+.personalGallery__fullImage--name {
     font-size: 3rem;
     color: rgb(212, 223, 228);
 }
 
-.frontPage__fullImage--imageContainer {
+.personalGallery__fullImage--imageContainer {
     height: 90%;
     width: 100%;
 
@@ -218,23 +217,27 @@ img {
     align-items: flex-start;
 }
 
-.frontPage__fullImage--image {
+.personalGallery__fullImage--image {
     height: 90%;
     width: auto;
 
     border: 2px solid rgb(35, 25, 63);
 }
 
-.frontPage__tooltip {
+.personalGallery--navButton, .personalGallery--deleteButton {
+    width: 150px;
+    height: 40px;
 
-    position: fixed;
-    top: var(--top);
-    left: var(--left);
-    transform: translate(-50%, -100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    background: black;
-    color: white;
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
     border-radius: 15px;
+}
 
-    padding: 6px 10px;
+.personalGallery--navButton:hover, .personalGallery--deleteButton:hover{
+    border: 2px solid rgb(228, 225, 243);
 }

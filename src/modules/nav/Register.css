@@ -1,0 +1,184 @@
+/* Register */
+.register__registerForm {
+    width: 45%;
+    height: 95%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+
+    box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
+}
+
+.register__registerForm--wrap {
+    width: 100%;
+    height: 100%;
+    gap: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 15px;
+}
+
+.register__registerForm--wrap.client {
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgba(139, 139, 223, 1) 35%, rgb(73, 92, 129) 100%);
+    border: 5px solid slateblue;
+}
+
+.register__registerForm--wrap.artist {
+    background: linear-gradient(90deg, rgb(198, 191, 230) 0%, rgba(139, 139, 223, 1) 35%, rgb(73, 92, 129) 100%);
+    border: 5px solid slateblue;
+}
+
+.register--tittle {
+    width: 100%;
+    height: 3%;
+
+    font-size: 1.8rem;
+    font-weight: bold;
+
+    color: rgb(37, 22, 71);
+}
+
+.register--info {
+    width: 80%;
+    height: 3%;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    color: rgb(37, 22, 71);
+}
+
+.register--form {
+    width: 100%;
+    height: 75%;
+    gap: .5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.register--clientLabel {
+    width: 100%;
+    height: 10%;
+
+    font-size: 3rem;
+    font-weight: bold;
+
+    color: rgb(198, 191, 230);
+}
+
+.register--formPair {
+    width: 100%;
+    height: 2.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.register__form--label {
+    width: 100%;
+    height: 1rem;
+
+    font-size: 1rem;
+
+    color: rgb(46, 34, 75);
+}
+
+.register__form--input {
+    width: 50%;
+    height: 30px;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 10px;
+
+    box-shadow: none;
+
+    padding-left: 10px;
+}
+
+.register--passwordWrap {
+    width: 50%;
+    height: 30px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.register--eyeWrap {
+    width: 0;
+    height: 0;
+
+    position: absolute;
+}
+
+.register__passwordWrap--input {
+    width: 100%;
+    height: 30px;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 10px;
+
+    box-shadow: none;
+
+    padding-left: 10px;
+}
+
+.register__formError--list {
+    width: 40%;
+}
+
+.register__formError--element {
+    width: 100%;
+    height: .7rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    font-size: .7rem;
+
+    color: rgb(37, 22, 71);
+}
+
+.register--formButton,
+.register--cancelButton {
+    width: 150px;
+    height: 40px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 15px;
+}
+
+.register--formButton:hover,
+.register--cancelButton:hover {
+    border: 2px solid rgb(228, 225, 243);
+}

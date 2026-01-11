@@ -1,0 +1,114 @@
+/* Terms page */
+.termsPage {
+    width: 45%;
+    height: 80%;
+    gap: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    position: absolute;
+
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgb(139, 147, 223) 35%, rgb(106, 133, 187) 100%);
+    border: 5px solid slateblue;
+    border-radius: 15px;
+    padding: 2rem;
+
+    box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
+
+    overflow-y: scroll;
+    scroll-padding: 8px;
+}
+
+.termsPage::-webkit-scrollbar-track {
+    background: slateblue;
+    border-radius: 0 12px 12px 0;
+}
+
+.termsPage::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 12px;
+}
+
+.termsPage::-webkit-scrollbar-thumb {
+    background-color: rgb(54, 46, 107);
+    border-radius: 12px;
+    border: 2px solid rgb(171, 165, 209);
+}
+
+.termsPage--header {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.termsPage--title {
+    width: 100%;
+    height: 3%;
+
+    font-size: 1.8rem;
+    font-weight: bold;
+
+    color: rgb(37, 22, 71);
+}
+
+.termsPage__section {
+    width: 100%;
+    height: auto;
+    gap: .5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.termsPage__section--title {
+    width: 100%;
+    height: auto;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    color: rgb(37, 22, 71);
+}
+
+.termsPage__section--content {
+    width: 85%;
+    height: auto;
+
+    font-size: 1rem;
+
+    color: rgb(44, 31, 73);
+}
+
+.termsPage__section--list {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    list-style: none;
+}
+
+.termsPage__section--list--item {
+    width: 100%;
+    height: auto;
+
+    font-size: .9rem;
+
+    color: rgb(44, 31, 73);
+}
