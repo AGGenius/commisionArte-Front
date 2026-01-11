@@ -1,6 +1,6 @@
-.rateUser__window {
-    width: 40%;
-    height: 30%;
+.rateUser {
+    width: 100%;
+    height: 100%;
 
     display: flex;
     flex-direction: column;
@@ -9,16 +9,17 @@
 
     position: absolute;
 
-    z-index: 1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+    z-index: 20;
+    background: rgba(10, 6, 51, 0.4);
+    margin: 0;
+    padding: 0;
+
+    inset: 0;
 }
 
-.rateUser__windowWrap {
-    width: 100%;
-    height: 100%;
+.rateUser__card {
+    width: 40%;
+    height: 30%;
     gap: 2rem;
 
     display: flex;
@@ -26,23 +27,65 @@
     justify-content: center;
     align-items: center;
 
-    background-color: antiquewhite;
+    z-index: 25;
+    border-radius: 15px;
+    background: linear-gradient(-90deg, rgb(198, 191, 230) 0%, rgb(139, 147, 223) 35%, rgb(106, 133, 187) 100%);
+    border: 5px solid slateblue;
+    box-shadow: 10px 5px 10px rgba(55, 55, 110, 0.4);
 }
 
-.rateUser__valuesWrap {
+.rateUser__card--title,
+.rateUser__card--status {
+    width: 100%;
+    height: 5%;
+
+    color: rgb(46, 44, 53);
+    font-size: 1.5rem;
+}
+
+.rateUser__card--wrap {
     width: 90%;
     height: 30%;
-    gap: 1rem;
+    gap: .75rem;
 
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-
-    background-color: antiquewhite;
 }
 
-.login_registerButton {
-  cursor: pointer;
+.rateUser__card--rateButton {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 15px;
 }
 
+.rateUser__card--rateButton:hover {
+    border: 2px solid rgb(228, 225, 243);
+}
+
+.rateUser__card--button {
+    width: 150px;
+    height: 35px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(232, 229, 247);
+    border: 2px solid rgb(74, 64, 141);
+    border-radius: 15px;
+}
+
+.rateUser__card--button:hover {
+    border: 2px solid rgb(228, 225, 243);
+}

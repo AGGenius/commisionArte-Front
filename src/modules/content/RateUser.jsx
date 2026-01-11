@@ -59,22 +59,26 @@ const RateUser = ({ rateStateCard, sendToParent }) => {
     };
 
     return (
-        <div className="rateUser__window">
-            <div className="rateUser__windowWrap">
+        <div className="rateUser">
+            <div className="rateUser__card">
                 {rateQueryStatus ?
-                    <h2>{rateQueryStatus}</h2> :
                     <>
-                        <h2>Valorar usuario</h2>
-                        <div className="rateUser__valuesWrap">
-                            <button value={1} onClick={(e) => handleRate(e)}>1</button>
-                            <button value={2} onClick={(e) => handleRate(e)}>2</button>
-                            <button value={3} onClick={(e) => handleRate(e)}>3</button>
-                            <button value={4} onClick={(e) => handleRate(e)}>4</button>
-                            <button value={5} onClick={(e) => handleRate(e)}>5</button>
+
+                        <h2 className="rateUser__card--status">{rateQueryStatus}</h2>
+                        <button className="rateUser__card--button" onClick={handleClick}>Cerrar</button>
+                    </> :
+                    <>
+                        <h2 className="rateUser__card--title">Valorar usuario</h2>
+                        <div className="rateUser__card--wrap">
+                            <button className="rateUser__card--rateButton" value={1} onClick={(e) => handleRate(e)}>1</button>
+                            <button className="rateUser__card--rateButton" value={2} onClick={(e) => handleRate(e)}>2</button>
+                            <button className="rateUser__card--rateButton" value={3} onClick={(e) => handleRate(e)}>3</button>
+                            <button className="rateUser__card--rateButton" value={4} onClick={(e) => handleRate(e)}>4</button>
+                            <button className="rateUser__card--rateButton" value={5} onClick={(e) => handleRate(e)}>5</button>
                         </div>
+                        <button className="rateUser__card--button" onClick={handleClick}>Cancelar</button>
                     </>
                 }
-                <button onClick={handleClick}>Cancelar</button>
             </div>
         </div>
     )

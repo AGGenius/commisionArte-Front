@@ -187,7 +187,7 @@ const StateCardPage = () => {
     const handleRateUser = stateCard => {
         setRateStateCard(stateCard);
         setRateUserWindowState(true);
-    }
+    };
 
     const renderOffers = () => {
         const setOfferContent = (stateCard) => {
